@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Tripaway</string>
+
+    <string name="facebook_app_id">870284713893702</string>
+    <string name="fb_login_protocol_scheme">fb870284713893702</string>
+
+</resources>

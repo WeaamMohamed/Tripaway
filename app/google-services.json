@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "452856033708",
+    "project_id": "tripapp-5a999",
+    "storage_bucket": "tripapp-5a999.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:452856033708:android:2d6de16452dee574134a09",
+        "android_client_info": {
+          "package_name": "com.example.tripaway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "452856033708-fltsv2veari5cpm1bf60r5vp1tqou6oj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tripaway",
+            "certificate_hash": "ea04d536406bb29599d138d1250fa2fa73c4cf74"
+          }
+        },
+        {
+          "client_id": "452856033708-337bm514qkn7ujvk4rv6oicpfs1d2oi2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAiolNMnomGblZohidwLCENJxBf5H_9bc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "452856033708-337bm514qkn7ujvk4rv6oicpfs1d2oi2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
