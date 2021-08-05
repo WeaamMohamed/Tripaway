@@ -12,8 +12,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    // My first Commit
-    // Hello Again to the app
     Button btnSignUp, btnLogin;
 
     @Override
