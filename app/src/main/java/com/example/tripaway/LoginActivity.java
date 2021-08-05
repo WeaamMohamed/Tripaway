@@ -37,7 +37,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
-
+    FirebaseAuth Auth;
     EditText etEmail, etPassword;
     TextView tvSignUp;
     Button btnLogin;
