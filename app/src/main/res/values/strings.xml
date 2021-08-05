@@ -3,5 +3,11 @@
 
     <string name="facebook_app_id">870284713893702</string>
     <string name="fb_login_protocol_scheme">fb870284713893702</string>
+    <string name="tripawy">Tripawy</string>
+    <string name="login">LogIn</string>
+    <string name="email_address">Email Address</string>
+    <string name="sign_up">Sign Up?</string>
+    <string name="forget_password">Forget Password?</string>
+    <string name="log_in">LOGIN</string>
 
 </resources>

@@ -63,10 +63,10 @@ public class LoginActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.email_editText);
         etPassword = findViewById(R.id.password_editText);
-        btnLogin = findViewById(R.id.login_button);
-        tvSignUp = findViewById(R.id.signUpText);
+        btnLogin = findViewById(R.id.btn_login);
+        tvSignUp = findViewById(R.id.txt_signup);
         mAuth = FirebaseAuth.getInstance();
-        btnFacebook = findViewById(R.id.login_facebook_button);
+        //btnFacebook = findViewById(R.id.login_facebook_button);
 
         btnLoginGoogle =findViewById(R.id.signin_google_button);
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {

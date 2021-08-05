@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        btnSignUp = findViewById(R.id.signup);
-        btnLogin = findViewById(R.id.login_btn);
+        btnSignUp = findViewById(R.id.btn_sign_up);
+        btnLogin = findViewById(R.id.btn_log_in);
 
 
 
