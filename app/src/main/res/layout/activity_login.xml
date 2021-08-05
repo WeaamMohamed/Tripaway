@@ -13,7 +13,8 @@
         app:srcCompat="@drawable/my_logo"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/txt_log_in"
@@ -38,7 +39,9 @@
         android:ems="10"
         android:hint="@string/email_address"
         android:inputType="textEmailAddress"
-        android:paddingStart="5dp" />
+        android:paddingStart="5dp"
+        android:autofillHints=""
+        tools:ignore="RtlSymmetry" />
 
     <EditText
         android:id="@+id/edit_txt_password"
@@ -51,10 +54,12 @@
         android:drawableStart="@drawable/ic_password"
         android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:paddingStart="5dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:autofillHints=""
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/txt_signup"

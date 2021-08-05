@@ -9,11 +9,14 @@
     <string name="sign_up">Sign Up?</string>
     <string name="forget_password">Forget Password?</string>
     <string name="log_in">LOGIN</string>
-    <string name="password">Password</string>
+    <string name="password2">Password</string>
     <string name="login2">Login?</string>
     <string name="google">Google</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="username">Username</string>
+    <string name="todo">TODO</string>
+    <string name="todo2">TODO</string>
+    <string name="password">Password</string>
 
 </resources>

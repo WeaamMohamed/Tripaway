@@ -13,7 +13,8 @@
         app:srcCompat="@drawable/my_logo"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="150dp"
+        android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/app_name"
