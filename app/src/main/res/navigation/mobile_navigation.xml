@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_upcoming">
+
+    <fragment
+        android:id="@+id/nav_upcoming"
+        android:name="com.example.tripaway.ui.gallery.UpcomingFragment"
+        android:label="@string/menu_upcoming"
+        tools:layout="@layout/fragment_upcoming" />
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.example.tripaway.ui.home.HomeFragment"
+        android:label="@string/menu_history"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/nav_sync"
+        android:name="com.example.tripaway.ui.gallery.UpcomingFragment"
+        android:label="@string/menu_sync"
+        tools:layout="@layout/fragment_upcoming" />
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.tripaway.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_logout"
+        tools:layout="@layout/fragment_slideshow" />
+</navigation>
