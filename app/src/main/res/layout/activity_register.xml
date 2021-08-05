@@ -82,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/sign_up"
-        android:layout_below="@id/txt_logIn"
+        android:layout_below="@id/txt_login_click"
         android:layout_centerInParent="true"
         android:paddingEnd="50dp"
         android:paddingStart="50dp"
