@@ -1,110 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <EditText
-        android:id="@+id/email_editText"
+    <TextView
+        android:id="@+id/txt_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:hint="email"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.467"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_editText" />
+        android:text="@string/sign_up"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/purple_900"
+        android:layout_marginBottom="50dp"/>
 
-    <EditText
-        android:id="@+id/password_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.467"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_editText" />
-
-    <Button
-        android:id="@+id/signup_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="168dp"
-        android:text="sign up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_editText" />
 
     <EditText
-        android:id="@+id/name_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="108dp"
+        android:id="@+id/edit_txt_name"
+        android:layout_width="250dp"
+        android:layout_height="61dp"
+        android:layout_below="@id/txt_login"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_person"
+        android:drawablePadding="12dp"
         android:ems="10"
-        android:hint="name"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/facebook_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="148dp"
-        android:text="facebook"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_button" />
-
-    <Button
-        android:id="@+id/signin_google_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="156dp"
-        android:text="google"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/facebook_button" />
+        android:hint="Username"
+        android:inputType="textEmailAddress"
+        android:paddingStart="5dp" />
 
 
-    <Button
-        android:id="@+id/twitter_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/edit_txt_email"
+        android:layout_width="250dp"
+        android:layout_height="61dp"
+        android:layout_below="@id/edit_txt_name"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_email"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="@string/email_address"
+        android:inputType="textEmailAddress"
+        android:paddingStart="5dp" />
+
+    <EditText
+        android:id="@+id/edit_txt_password"
+        android:layout_width="250dp"
+        android:layout_height="62dp"
+        android:layout_below="@id/edit_txt_email"
+        android:layout_centerInParent="true"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="168dp"
-        android:text="twitter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signin_google_button" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login_button"
-        android:layout_width="220dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="124dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/twitter_button" />
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_password"
+        android:drawablePadding="12dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingStart="5dp"
+        android:layout_marginBottom="20dp"/>
 
     <TextView
-        android:id="@+id/textView_login"
+        android:id="@+id/txt_login_click"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="80dp"
         android:clickable="true"
-        android:text="login?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_editText" />
+        android:text="@string/login2"
+        android:layout_below="@id/edit_txt_password"
+        android:layout_centerInParent="true"
+        android:focusable="true"
+        android:layout_marginBottom="50dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:layout_below="@id/txt_logIn"
+        android:layout_centerInParent="true"
+        android:paddingEnd="50dp"
+        android:paddingStart="50dp"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
+        android:id="@+id/btn_google"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/google"
+        android:layout_below="@id/btn_sign_up"
+        android:layout_centerInParent="true" />
+
+    <Button
+        android:id="@+id/btn_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/facebook"
+        android:layout_below="@id/btn_sign_up"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@id/btn_google"
+        android:layout_marginStart="5dp"/>
+
+    <Button
+        android:id="@+id/btn_twitter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/twitter"
+        android:layout_below="@id/btn_sign_up"
+        android:layout_centerInParent="true"
+        android:layout_toStartOf="@id/btn_google"
+        android:layout_marginEnd="5dp"/>
+
+</RelativeLayout>

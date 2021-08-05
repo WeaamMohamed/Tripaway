@@ -46,17 +46,17 @@ public class RegisterActivity extends AppCompatActivity {
         //TODO:
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        btnRegister = findViewById(R.id.signup_button);
-        etName = findViewById(R.id.name_editText);
-        etEmail = findViewById(R.id.email_editText);
-        etPassword = findViewById(R.id.password_editText);
+        btnRegister = findViewById(R.id.btn_sign_up);
+        etName = findViewById(R.id.edit_txt_name);
+        etEmail = findViewById(R.id.edit_txt_email);
+        etPassword = findViewById(R.id.edit_txt_password);
 
-        btnFacebook = findViewById(R.id.facebook_button);
-        btnGoogle = findViewById(R.id.signin_google_button);
-        btnTwitter = findViewById(R.id.twitter_button);
-        tvLogin = findViewById(R.id.textView_login);
+        btnFacebook = findViewById(R.id.btn_facebook);
+        btnGoogle = findViewById(R.id.btn_google);
+        btnTwitter = findViewById(R.id.btn_twitter);
+        tvLogin = findViewById(R.id.txt_login_click);
 
-        btnFacebookLogin = (LoginButton) findViewById(R.id.facebook_login_button);
+        //btnFacebookLogin = (LoginButton) findViewById(R.id.facebook_login_button);
 
 //btnFacebookLogin.setReadPermissions("Facebook");
         mCallbackManager = CallbackManager.Factory.create();

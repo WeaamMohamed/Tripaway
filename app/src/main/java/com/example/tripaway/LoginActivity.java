@@ -61,26 +61,27 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
-        etEmail = findViewById(R.id.email_editText);
-        etPassword = findViewById(R.id.password_editText);
+        etEmail = findViewById(R.id.edit_txt_email);
+        etPassword = findViewById(R.id.edit_txt_password);
         btnLogin = findViewById(R.id.btn_login);
         tvSignUp = findViewById(R.id.txt_signup);
         mAuth = FirebaseAuth.getInstance();
         //btnFacebook = findViewById(R.id.login_facebook_button);
 
-        btnLoginGoogle =findViewById(R.id.signin_google_button);
+        //btnLoginGoogle =findViewById(R.id.signin_google_button);
+        /*
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signInWithGoogle();
             }
         });
+        */
+       //btnFacebook.setReadPermissions("email");
 
-       btnFacebook.setReadPermissions("email");
+        //mCallbackManager = CallbackManager.Factory.create();
 
-        mCallbackManager = CallbackManager.Factory.create();
-
-
+        /*
         // Callback registration
         btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -108,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
 
         createGoogleRequest();
 
+        */
 
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
