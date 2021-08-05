@@ -43,4 +43,10 @@
         android:layout_centerInParent="true"
         android:paddingEnd="60dp"
         android:paddingStart="60dp" />
+
+    <Button
+        android:id="@+id/btnHomeScreenActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnHomeScreenActivity" />
 </RelativeLayout>

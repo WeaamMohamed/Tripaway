@@ -1,6 +1,5 @@
 package com.example.tripaway;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +15,13 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    private Context mContext ;
+    private Observer<String> mContext ;
     private List<Trips> mData ;
     private UpcomingFragment timeFragment;
 
 
     public RecyclerViewAdapter(Observer<String> mContext, List<Trips> mData) {
-        this.mContext = (Context) mContext;
+        this.mContext = mContext;
         this.mData = mData;
     }
     public RecyclerViewAdapter(UpcomingFragment upcomingFragment, List<Trips> lstBook) {
