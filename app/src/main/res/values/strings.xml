@@ -14,5 +14,6 @@
     <string name="google">Google</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
+    <string name="username">Username</string>
 
 </resources>
