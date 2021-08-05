@@ -1,11 +1,8 @@
 package com.example.tripaway;
 
-import java.sql.Date;
-import java.sql.Time;
-
 public class Trips {
-    Time time;
-    Date date;
+    String time;
+    String date;
     String name;
     String startPoint;
     String endPoint;
@@ -20,19 +17,19 @@ public class Trips {
         this.notes = notes;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

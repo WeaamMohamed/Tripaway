@@ -63,7 +63,7 @@
         android:id="@+id/imgArrow"
         android:layout_width="32dp"
         android:layout_height="39dp"
-        android:contentDescription="@string/FromTo"
+        android:contentDescription="@string/fromTo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTripName"
         app:srcCompat="@drawable/arrow" />
@@ -86,7 +86,7 @@
         android:layout_height="51dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
-        android:contentDescription="@string/addNote"
+        android:contentDescription="@string/btnNotes"
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/btnStartTrip"
         app:layout_constraintTop_toBottomOf="@+id/txtTripType"

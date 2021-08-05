@@ -29,7 +29,6 @@ public class UpcomingFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO: add items in tripsList
         tripsList = new ArrayList<>();
         tripsList.add(new Trips("9.30","2/11/2022","newDamietta","Damietta","newDamietta", new String[]{"alaa"}));
     }

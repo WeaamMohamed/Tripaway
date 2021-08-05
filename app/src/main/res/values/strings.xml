@@ -14,5 +14,24 @@
     <string name="google">Google</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
+    <string name="todo">TODO</string>
+    <string name="menu_upcoming">menu_upcoming</string>
+    <string name="menu_history">menu_history</string>
+    <string name="menu_sync">menu_sync</string>
+    <string name="menu_logout">menu_logout</string>
+    <string name="action_settings">action_settings</string>
+    <string name="txtViewDate">Date</string>
+    <string name="textViewTime">Time</string>
+    <string name="txtTripName">Trip Name</string>
+    <string name="txtTripType">Upcoming</string>
+    <string name="txtStartPoint">Start Point</string>
+    <string name="txtEndPoint">End Point</string>
+    <string name="fromTo">fromTo</string>
+    <string name="StartTrip">StartTrip</string>
+    <string name="btnStartTrip">Start</string>
+    <string name="btnNotes">btnNotes</string>
+    <string name="LOGO">LOGO</string>
+    <string name="mail">mail</string>
+    <string name="username">useName</string>
 
 </resources>
