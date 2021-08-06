@@ -14,11 +14,11 @@
 
     <ImageView
         android:id="@+id/imageLogo"
-        android:layout_width="110dp"
-        android:layout_height="80dp"
+        android:layout_width="107dp"
+        android:layout_height="94dp"
         android:contentDescription="@string/LOGO"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        app:srcCompat="@drawable/tripawy" />
+        app:srcCompat="@drawable/logo2" />
 
     <TextView
         android:id="@+id/userName"

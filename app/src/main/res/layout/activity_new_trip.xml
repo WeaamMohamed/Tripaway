@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewTripActivity">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="171dp"
+        android:layout_height="33dp"
+        android:text="@string/txtTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtTitleNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Trip name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="@string/edtTitleNew"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+    <TextView
+        android:id="@+id/txtStartPointNew"
+        android:layout_width="171dp"
+        android:layout_height="33dp"
+        android:text="@string/txtStartPointNew"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTitleNew" />
+
+    <EditText
+        android:id="@+id/edtStartPointNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Start point"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="@string/edtStartPointNew"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtStartPointNew" />
+
+    <TextView
+        android:id="@+id/txtEndPointNew"
+        android:layout_width="171dp"
+        android:layout_height="33dp"
+        android:text="@string/txtEndPoint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtStartPointNew" />
+
+    <EditText
+        android:id="@+id/edtEndPointNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="End point"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="@string/edtEndPointNew"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEndPointNew" />
+
+    <Button
+        android:id="@+id/btnCurrentLocation"
+        android:layout_width="216dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/btnCurrentLocation"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtStartPointNew"
+        app:layout_constraintTop_toBottomOf="@+id/edtTitleNew" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

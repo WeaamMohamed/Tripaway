@@ -50,5 +50,13 @@
     <string name="logoutFrgment">Logout</string>
     <string name="userName">Alaa Elmor</string>
     <string name="email">alaa.m.elmor@gmail.com</string>
+    <string name="btnNewTrip" />
+    <string name="txtTitle">Title</string>
+    <string name="edtTitleNew" />
+    <string name="txtStartPointNew">Start Point</string>
+    <string name="btnCurrentLocation">Current location</string>
+    <string name="edtStartPointNew" />
+    <string name="edtEndPointNew" />
+
 
 </resources>
