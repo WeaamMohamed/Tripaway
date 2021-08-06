@@ -1,4 +1,4 @@
-package com.example.tripaway.ui.gallery;
+package com.example.tripaway.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,10 +18,10 @@ import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpcomingFragment extends Fragment {
+public class HistoryFragment extends Fragment {
     List<Trips> tripsList ;
     RecyclerView recyclerView;
-    private UpcomingViewModel upcomingViewModel;
+    private HistoryViewModel historyViewModel;
     private FragmentUpcomingBinding binding;
 
 
@@ -30,7 +30,7 @@ public class UpcomingFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         tripsList = new ArrayList<>();
-        tripsList.add(new Trips("9.30","2/11/2022","newDamietta","Damietta","newDamietta", new String[]{"alaa"}));
+        tripsList.add(new Trips("1.00","1/1/2022","zag","Damietta","zag", new String[]{"alaa"}));
         View view=inflater.inflate(R.layout.fragment_upcoming, container, false);
         recyclerView=(RecyclerView) view.findViewById(R.id.idRVTrips);
         RecyclerViewAdapter myAdapter = new RecyclerViewAdapter((ArrayList<Trips>) tripsList);

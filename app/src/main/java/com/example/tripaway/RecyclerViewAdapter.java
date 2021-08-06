@@ -5,37 +5,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripaway.ui.gallery.UpcomingFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
-    private Observer<String> mContext ;
     private List<Trips> mData ;
-    private UpcomingFragment timeFragment;
+    private UpcomingFragment upcomingFragment;
 
 
-    public RecyclerViewAdapter(Observer<String> mContext, List<Trips> mData) {
-        this.mContext = mContext;
+    public RecyclerViewAdapter(ArrayList<Trips> mData) {
         this.mData = mData;
     }
-    public RecyclerViewAdapter(UpcomingFragment upcomingFragment, List<Trips> lstBook) {
-        this.timeFragment = timeFragment;
-        this.mData = lstBook;
-    }
+    /*public RecyclerViewAdapter(UpcomingFragment upcomingFragment, List<Trips> tripsList) {
+        this.upcomingFragment = upcomingFragment;
+        this.mData = tripsList;
+    }*/
 
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+/*
         View view ;
         LayoutInflater mInflater = LayoutInflater.from(timeFragment.getContext());
         view = mInflater.inflate(R.layout.card_layout,parent,false);
+        return new MyViewHolder(view);*/
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -63,7 +62,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView txtStart;
         public TextView txtEnd;
         public String[] notes;
-        CardView cardView ;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -72,7 +70,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             txtEnd = (TextView) itemView.findViewById(R.id.txtEndPoint);
             txtDate = (TextView) itemView.findViewById(R.id.txtViewDate);
             txtTime = (TextView) itemView.findViewById(R.id.textViewTime);
-            cardView = (CardView) itemView.findViewById(R.id.card_layout);
         }
     }
 }

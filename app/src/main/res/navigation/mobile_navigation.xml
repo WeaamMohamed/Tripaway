@@ -8,24 +8,24 @@
     <fragment
         android:id="@+id/nav_upcoming"
         android:name="com.example.tripaway.ui.gallery.UpcomingFragment"
-        android:label="@string/menu_upcoming"
+        android:label="@string/upcomingFragment"
         tools:layout="@layout/fragment_upcoming" />
 
     <fragment
         android:id="@+id/nav_history"
-        android:name="com.example.tripaway.ui.home.HomeFragment"
-        android:label="@string/menu_history"
+        android:name="com.example.tripaway.ui.home.HistoryFragment"
+        android:label="@string/fragmentHistory"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/nav_sync"
         android:name="com.example.tripaway.ui.gallery.UpcomingFragment"
-        android:label="@string/menu_sync"
+        android:label="@string/syncFragment"
         tools:layout="@layout/fragment_upcoming" />
 
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.tripaway.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_logout"
+        android:label="@string/logoutFrgment"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>

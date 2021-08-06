@@ -15,10 +15,10 @@
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="todo">TODO</string>
-    <string name="menu_upcoming">menu_upcoming</string>
-    <string name="menu_history">menu_history</string>
-    <string name="menu_sync">menu_sync</string>
-    <string name="menu_logout">menu_logout</string>
+    <string name="menu_upcoming">Upcoming</string>
+    <string name="menu_history">History</string>
+    <string name="menu_sync">Sync</string>
+    <string name="menu_logout">Logout</string>
     <string name="action_settings">action_settings</string>
     <string name="txtViewDate">Date</string>
     <string name="textViewTime">Time</string>
@@ -44,5 +44,11 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="fragmentHistory">History</string>
+    <string name="upcomingFragment">Upcoming</string>
+    <string name="syncFragment">Sync</string>
+    <string name="logoutFrgment">Logout</string>
+    <string name="userName">Alaa Elmor</string>
+    <string name="email">alaa.m.elmor@gmail.com</string>
 
 </resources>
