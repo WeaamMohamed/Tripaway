@@ -1,4 +1,4 @@
-package com.example.tripaway.ui.gallery;
+package com.example.tripaway.ui.Upcoming;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

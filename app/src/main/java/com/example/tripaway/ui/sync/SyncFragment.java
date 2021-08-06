@@ -1,4 +1,4 @@
-package com.example.tripaway.ui.slideshow;
+package com.example.tripaway.ui.sync;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,26 +9,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.tripaway.databinding.FragmentSlideshowBinding;
+import com.example.tripaway.databinding.FragmentSyncBinding;
 
-public class SlideshowFragment extends Fragment {
+public class SyncFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
-    private FragmentSlideshowBinding binding;
+    private SyncViewModel syncViewModel;
+    private FragmentSyncBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        syncViewModel =
+                new ViewModelProvider(this).get(SyncViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentSyncBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textSync;
+        syncViewModel.getText().observe(getViewLifecycleOwner(), new androidx.lifecycle.Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

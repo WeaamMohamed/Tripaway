@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/nav_upcoming"
-        android:name="com.example.tripaway.ui.gallery.UpcomingFragment"
+        android:name="com.example.tripaway.ui.Upcoming.UpcomingFragment"
         android:label="@string/upcomingFragment"
         tools:layout="@layout/fragment_upcoming" />
 
     <fragment
         android:id="@+id/nav_history"
-        android:name="com.example.tripaway.ui.home.HistoryFragment"
+        android:name="com.example.tripaway.ui.history.HistoryFragment"
         android:label="@string/fragmentHistory"
         tools:layout="@layout/fragment_history" />
 
     <fragment
         android:id="@+id/nav_sync"
-        android:name="com.example.tripaway.ui.gallery.UpcomingFragment"
+        android:name="com.example.tripaway.ui.sync.SyncFragment"
         android:label="@string/syncFragment"
         tools:layout="@layout/fragment_upcoming" />
 
     <fragment
         android:id="@+id/nav_logout"
-        android:name="com.example.tripaway.ui.slideshow.SlideshowFragment"
+        android:name="com.example.tripaway.ui.logout.SlideshowFragment"
         android:label="@string/logoutFrgment"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_logout" />
 </navigation>

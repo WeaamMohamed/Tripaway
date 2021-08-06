@@ -1,4 +1,4 @@
-package com.example.tripaway.ui.home;
+package com.example.tripaway.ui.history;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

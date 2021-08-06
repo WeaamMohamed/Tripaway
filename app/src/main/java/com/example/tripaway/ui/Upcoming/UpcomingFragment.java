@@ -1,4 +1,4 @@
-package com.example.tripaway.ui.gallery;
+package com.example.tripaway.ui.Upcoming;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +28,7 @@ public class UpcomingFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         tripsList = new ArrayList<>();
         tripsList.add(new Trips("9.30","2/11/2022","newDamietta","Damietta","newDamietta", new String[]{"alaa"}));
@@ -36,6 +37,7 @@ public class UpcomingFragment extends Fragment {
         RecyclerViewAdapter myAdapter = new RecyclerViewAdapter((ArrayList<Trips>) tripsList);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
 /*
         upcomingViewModel =
@@ -56,6 +58,7 @@ public class UpcomingFragment extends Fragment {
         });*/
         return view;
     }
+
 
     @Override
     public void onDestroyView() {

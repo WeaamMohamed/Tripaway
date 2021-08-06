@@ -57,6 +57,13 @@
     <string name="btnCurrentLocation">Current location</string>
     <string name="edtStartPointNew" />
     <string name="edtEndPointNew" />
+    <string name="menuActionNotes">Notes</string>
+    <string name="menuActionEdit">Edit</string>
+    <string name="menuActionDelete">Delete</string>
+    <string name="menuActionCancel">Cancel\\</string>
+    <string name="btnMenu">. . .</string>
+    <string name="menuActionCancell">Cancel</string>
+    <string name="updateData">Update data</string>
 
 
 </resources>
