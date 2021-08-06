@@ -1,7 +1,5 @@
 package com.example.tripaway;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,17 +10,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
+import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import com.facebook.FacebookSdk;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -64,33 +60,33 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         // Callback registration
-        btnFacebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-
-                Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "Authentication with facebook Successfully");
-//                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-//                startActivity(intent);
-                Intent i = new Intent(RegisterActivity.this, HomeActivity.class);
-                //   set the new task and clear flags
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-                //TODO:
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-                //TODO:
-            }
-        });
+//        btnFacebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                // App code
+//
+//                Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
+//                Log.i(TAG, "Authentication with facebook Successfully");
+////                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+////                startActivity(intent);
+//                Intent i = new Intent(RegisterActivity.this, HomeActivity.class);
+//                //   set the new task and clear flags
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(i);
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                // App code
+//                //TODO:
+//            }
+//
+//            @Override
+//            public void onError(FacebookException exception) {
+//                // App code
+//                //TODO:
+//            }
+//        });
 
 
 
