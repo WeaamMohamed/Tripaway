@@ -38,7 +38,7 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
         LayoutInflater mInflater = LayoutInflater.from(timeFragment.getContext());
         view = mInflater.inflate(R.layout.card_layout,parent,false);
         return new MyViewHolder(view);*/
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_history,parent,false);
 
         return new MyViewHolder(view);
     }

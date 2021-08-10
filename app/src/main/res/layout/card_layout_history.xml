@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <!--    <menu-->
+    <!--        android:layout_width="49dp"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.907"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/textViewTime"-->
+    <!--        app:layout_constraintTop_toTopOf="parent">-->
+
+    <!--        <item-->
+    <!--            android:id="@+id/menuActionNotes"-->
+    <!--            android:title="@string/menuActionNotes"-->
+    <!--            app:showAsAction="ifRoom" />-->
+
+    <!--        &lt;!&ndash; Settings, should always be in the overflow &ndash;&gt;-->
+    <!--        <item-->
+    <!--            android:id="@+id/menuActionEdit"-->
+    <!--            android:title="@string/menuActionEdit"-->
+    <!--            app:showAsAction="ifRoom" />-->
+
+    <!--        <item-->
+    <!--            android:id="@+id/menuActionDelete"-->
+    <!--            android:title="@string/menuActionDelete"-->
+    <!--            app:showAsAction="ifRoom" />-->
+
+    <!--        &lt;!&ndash; Settings, should always be in the overflow &ndash;&gt;-->
+    <!--        <item-->
+    <!--            android:id="@+id/menuActionCancel"-->
+    <!--            android:title="@string/menuActionCancel"-->
+    <!--            app:showAsAction="ifRoom" />-->
+
+    <!--    </menu>-->
+
+    <Button
+        android:id="@+id/btnViewOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:text="&#8942;"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="#131313"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.982"
+        app:layout_constraintStart_toEndOf="@+id/textViewTime"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtViewDate"
+        android:layout_width="75dp"
+        android:layout_height="33dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/txtViewDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="43dp"
+        android:layout_height="33dp"
+        android:text="@string/textViewTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtViewDate"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTripName"
+        android:layout_width="wrap_content"
+        android:layout_height="59dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/txtTripName"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtViewDate" />
+
+    <TextView
+        android:id="@+id/txtTripType"
+        android:layout_width="87dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/txtTripTypeee"
+        app:layout_constraintStart_toEndOf="@+id/txtTripName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
+
+    <TextView
+        android:id="@+id/txtStartPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/txtStartPoint"
+        app:layout_constraintStart_toEndOf="@+id/imgArrow"
+        app:layout_constraintTop_toBottomOf="@+id/txtTripName" />
+
+    <TextView
+        android:id="@+id/txtEndPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="33dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/txtEndPoint"
+        app:layout_constraintStart_toEndOf="@+id/imgArrow"
+        app:layout_constraintTop_toBottomOf="@+id/txtStartPoint" />
+
+    <ImageView
+        android:id="@+id/imgArrow"
+        android:layout_width="42dp"
+        android:layout_height="58dp"
+        android:contentDescription="@string/fromTo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTripName"
+        app:srcCompat="@drawable/arrow" />
+
+    <Button
+        android:id="@+id/btnStartTrip"
+        android:layout_width="276dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/StartTrip"
+        android:text="@string/Delete"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEndPoint" />
+
+    <ImageButton
+        android:id="@+id/btnNotes"
+        android:layout_width="60dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="96dp"
+        android:contentDescription="@string/btnNotes"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/btnStartTrip"
+        app:layout_constraintTop_toBottomOf="@+id/txtTripType"
+        app:srcCompat="@drawable/notebtn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

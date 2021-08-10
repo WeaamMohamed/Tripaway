@@ -72,6 +72,9 @@
     <string name="btnAddTrip">Add Trip</string>
     <string name="txtRepeaterSpinner" />
     <string name="txtDirectionSpinner" />
+    <string name="txtTripTypee" />
+    <string name="txtTripTypeee">trip type</string>
+    <string name="Delete">Delete</string>
 
 
 </resources>
