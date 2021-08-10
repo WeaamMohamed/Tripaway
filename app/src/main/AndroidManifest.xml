@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripaway">
         <activity
+            android:name=".Splash"
+            android:exported="true" />
+        <activity
             android:name=".NewTripActivity"
             android:exported="true" />
 
