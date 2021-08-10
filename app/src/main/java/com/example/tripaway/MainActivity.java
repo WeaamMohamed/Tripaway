@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
-    //edit
+    //edit2
     Button btnSignUp, btnLogin;
     Button home;
     @Override
