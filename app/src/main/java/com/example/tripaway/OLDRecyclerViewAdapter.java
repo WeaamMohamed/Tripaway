@@ -11,18 +11,18 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tripaway.ui.Upcoming.UpcomingFragment;
+import com.example.tripaway.models.OldTripsModel;
+import com.example.tripaway.ui.history.HistoryFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerViewAdapter.MyViewHolder> {
 
-    private List<Trips> mData ;
-    private UpcomingFragment upcomingFragment;
+    private ArrayList<OldTripsModel> mData ;
+    private HistoryFragment historyFragment;
     Context context;
 
-    public RecyclerViewAdapter(ArrayList<Trips> mData) {
+    public OLDRecyclerViewAdapter(ArrayList<OldTripsModel> mData) {
         this.mData = mData;
     }
     /*public RecyclerViewAdapter(UpcomingFragment upcomingFragment, List<Trips> tripsList) {
@@ -46,12 +46,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        holder.txtName.setText(mData.get(position).getName());
-        holder.txtTime.setText((CharSequence) mData.get(position).getTime());
-        holder.txtDate.setText((CharSequence) mData.get(position).getDate());
+        holder.txtName.setText(mData.get(position).getTripName());
+        holder.txtTime.setText( mData.get(position).getSpeedInformation());
+        holder.txtDate.setText( mData.get(position).getDistanceInformation());
         holder.txtStart.setText(mData.get(position).getStartPoint());
         holder.txtEnd.setText(mData.get(position).getEndPoint());
-        holder.notes = mData.get(position).getNotes();
+        holder.notes = mData.get(position).getNotes().toArray(new String[0]);
         holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

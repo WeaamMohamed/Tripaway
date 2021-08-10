@@ -11,29 +11,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripaway.R;
-import com.example.tripaway.RecyclerViewAdapter;
-import com.example.tripaway.Trips;
+import com.example.tripaway.OLDRecyclerViewAdapter;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
+import com.example.tripaway.models.OldTripsModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HistoryFragment extends Fragment {
-    List<Trips> tripsList ;
+    List<OldTripsModel> historyList ;
     RecyclerView recyclerView;
     private HistoryViewModel historyViewModel;
     private FragmentUpcomingBinding binding;
 
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        tripsList = new ArrayList<>();
-        tripsList.add(new Trips("1.00","1/1/2022","zag","Damietta","zag", new String[]{"alaa"}));
+        historyList = new ArrayList<>();
+        historyList.add(new OldTripsModel(true,"firstTripInHistory","Damietta","zag","10","10", Arrays.asList(new String[]{"alaa"})));
         View view=inflater.inflate(R.layout.fragment_upcoming, container, false);
         recyclerView=(RecyclerView) view.findViewById(R.id.idRVTrips);
-        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter((ArrayList<Trips>) tripsList);
+        OLDRecyclerViewAdapter myAdapter = new OLDRecyclerViewAdapter((ArrayList<OldTripsModel>) historyList);
         recyclerView.setAdapter(myAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
