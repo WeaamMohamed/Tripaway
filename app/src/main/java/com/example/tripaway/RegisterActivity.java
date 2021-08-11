@@ -176,7 +176,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "Registered Successfully");
 
-                        Intent i = new Intent(RegisterActivity.this, HomeActivity.class);
+                        Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
                    //   set the new task and clear flags
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);

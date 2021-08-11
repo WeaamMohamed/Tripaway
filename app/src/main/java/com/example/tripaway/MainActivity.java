@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //there is user then don't start the login activity and go directly to main
         if (FirebaseAuth.getInstance().getCurrentUser() !=null)
         {
-            startActivity(new Intent(this,HomeActivity.class));
+            startActivity(new Intent(this,HomeScreenActivity.class));
             this.finish();
         }
 
