@@ -42,7 +42,7 @@ public class DatabaseAdapter {
         c = db.query(Helper.TABLE_NAME, columns, null, null, null, null, null);
         trips = new UpcomingTripModel[c.getCount()];
         while (c.moveToNext()) {
-          //  trips[i] = new UpcomingTripModel(c.getString(0),c.getString(1),c.getString(2), Collections.singletonList(c.getString(3)));
+            trips[i] = new UpcomingTripModel(c.getString(0),c.getString(1),c.getString(2), Collections.singletonList(c.getString(3)));
             i++;
         }
         return trips;

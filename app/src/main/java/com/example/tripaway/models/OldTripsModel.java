@@ -21,7 +21,21 @@ public class OldTripsModel {
     private Timestamp timestamp;
 
 
-
+    public OldTripsModel(boolean done, String tripName, String startPoint,
+                         String endPoint, String speed,
+                         String distance, List<String> notes,
+                         String date,
+                         String time) {
+        this.done = done;
+        this.tripName = tripName;
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.speed = speed;
+        this.distance = distance;
+        this.notes = notes;
+        this.date = date;
+        this.time = time;
+    }
     public OldTripsModel(boolean done, String tripName, String startPoint,
                          String endPoint, String speed,
                          String distance, List<String> notes,
