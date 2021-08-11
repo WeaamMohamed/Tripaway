@@ -1,6 +1,8 @@
 package com.example.tripaway.ui.Upcoming;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +61,13 @@ public class UpcomingFragment extends Fragment {
                         .orderBy("timestamp", Query.Direction.ASCENDING);
 
         //recycler options
-        FirestoreRecyclerOptions<OldTripsModel> options = new FirestoreRecyclerOptions.Builder<OldTripsModel>()
-                .setQuery(query,OldTripsModel.class)
+        FirestoreRecyclerOptions<UpcomingTripModel> options = new FirestoreRecyclerOptions.Builder<UpcomingTripModel>()
+                .setQuery(query,UpcomingTripModel.class)
                 .build();
 
 
         //Recycler adapter
-        adapter  = new FirestoreRecyclerAdapter<OldTripsModel, OldTripsViewHolder>(options) {
+        adapter  = new FirestoreRecyclerAdapter<UpcomingTripModel, UpcomingTripsViewHolder>(options) {
 
             @Override
             public void onDataChanged() {
@@ -86,15 +88,15 @@ public class UpcomingFragment extends Fragment {
 
             @NonNull
             @Override
-            public OldTripsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public UpcomingTripsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
 
-                return new OldTripsViewHolder(view);
+                return new UpcomingTripsViewHolder(view);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull OldTripsViewHolder holder, int position, @NonNull OldTripsModel model) {
+            protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, int position, @NonNull UpcomingTripModel model) {
 
 
                 holder.tvTripName.setText(model.getTripName());
@@ -108,8 +110,16 @@ public class UpcomingFragment extends Fragment {
 
         //view holder
 
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+       // recyclerView.setHasFixedSize(false);
+
+
+        //TODO: 
+      //  recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
+
+
+
         recyclerView.setAdapter(adapter);
 //        UOCOMINGRecyclerViewAdapter myAdapter = new UOCOMINGRecyclerViewAdapter((ArrayList<UpcomingTripModel>) upcomingList);
 //        recyclerView.setAdapter(myAdapter);
@@ -137,12 +147,12 @@ public class UpcomingFragment extends Fragment {
         return view;
     }
     //viewHolder
-    private class OldTripsViewHolder extends  RecyclerView.ViewHolder{
+    private class UpcomingTripsViewHolder extends  RecyclerView.ViewHolder{
 
         TextView tvTripName, tvStartPoint, tvEndPoint,
                 tvDate, tvTime;
 
-        public OldTripsViewHolder(@NonNull View itemView) {
+        public UpcomingTripsViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvTripName = itemView.findViewById(R.id.txtTripName);
@@ -158,19 +168,52 @@ public class UpcomingFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
+
+        if (adapter != null) {
+            adapter.startListening();
+        }
+      //  adapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-        adapter.stopListening();
+        if (adapter != null) {
+            adapter.stopListening();
+        }
+        //adapter.stopListening();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+
+
+
+//    This problem is caused by RecyclerView Data modified in different thread. The best way is checking all data access. And a workaround is wrapping LinearLayoutManager.
+//
+//    Previous answer
+//    There was actually a bug in RecyclerView and the support 23.1.1 still not fixed.
+//
+//    For a workaround, notice that backtrace stacks, if we can catch this Exception in one of some class it may skip this crash. For me, I create a LinearLayoutManagerWrapper and override the onLayoutChildren:
+
+    public class WrapContentLinearLayoutManager extends LinearLayoutManager {
+        public WrapContentLinearLayoutManager(Context context) {
+            super(context);
+        }
+
+        //... constructor
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("TAG", "meet a IOOBE in RecyclerView");
+            }
+        }
     }
 }
