@@ -17,6 +17,7 @@ import com.example.tripaway.UOCOMINGRecyclerViewAdapter;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.UpcomingTripModel;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,9 @@ public class UpcomingFragment extends Fragment {
 
         // Inflate the layout for this fragment
         upcomingList = new ArrayList<>();
-        upcomingList.add(new UpcomingTripModel("Damietta","dam","zag","2/11/2022","9.30",true,NO_REPEAT, Arrays.asList(new String[]{"alaa"})));
+        upcomingList.add(new UpcomingTripModel("Damietta","dam","zag","2/11/2022","9.30",true,1, Arrays.asList(new String[]{"alaa"}),
+                new Timestamp( System.currentTimeMillis()))
+               );
         View view=inflater.inflate(R.layout.fragment_upcoming, container, false);
         recyclerView=(RecyclerView) view.findViewById(R.id.idRVTrips);
         UOCOMINGRecyclerViewAdapter myAdapter = new UOCOMINGRecyclerViewAdapter((ArrayList<UpcomingTripModel>) upcomingList);

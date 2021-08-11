@@ -1,6 +1,7 @@
 package com.example.tripaway.models;
 
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class UpcomingTripModel {
     private boolean isOneDirection;
     private int repeat;
     private List<String> notes;
+    private Timestamp timestamp;
 
     public UpcomingTripModel(String tripName, String date, String time, List<String> notes) {
         this.tripName = tripName;
@@ -26,7 +28,8 @@ public class UpcomingTripModel {
     }
     public UpcomingTripModel(String tripName, String startPoint, String endPoint,
                              String date, String time, boolean isOneDirection, int repeat,
-                             List<String> notes) {
+                             List<String> notes ,
+                             Timestamp timestamp) {
         this.tripName = tripName;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
@@ -35,7 +38,9 @@ public class UpcomingTripModel {
         this.isOneDirection = isOneDirection;
         this.repeat = repeat;
         this.notes = notes;
+        this.timestamp = timestamp;
     }
+    public UpcomingTripModel(){}
 
 
     public  Map<String, Object> getUpcomingTripsMap()
@@ -53,6 +58,7 @@ public class UpcomingTripModel {
         upcomingMap.put("time", time);
         upcomingMap.put("Notes", notes);
         upcomingMap.put("isOneDirection", isOneDirection);
+        upcomingMap.put("timestamp", timestamp);
 
 
 
