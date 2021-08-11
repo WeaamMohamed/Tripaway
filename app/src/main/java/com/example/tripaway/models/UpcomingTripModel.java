@@ -15,7 +15,7 @@ public class UpcomingTripModel {
     private String date;
     private String time;
     private boolean isOneDirection;
-    private Repeat repeat;
+    private int repeat;
     private List<String> notes;
 
     public UpcomingTripModel(String tripName, String date, String time, List<String> notes) {
@@ -25,7 +25,7 @@ public class UpcomingTripModel {
         this.notes = notes;
     }
     public UpcomingTripModel(String tripName, String startPoint, String endPoint,
-                             String date, String time, boolean isOneDirection, Repeat repeat,
+                             String date, String time, boolean isOneDirection, int repeat,
                              List<String> notes) {
         this.tripName = tripName;
         this.startPoint = startPoint;
@@ -38,7 +38,6 @@ public class UpcomingTripModel {
     }
 
 
-
     public  Map<String, Object> getUpcomingTripsMap()
     {
 
@@ -49,7 +48,9 @@ public class UpcomingTripModel {
         upcomingMap.put("endPoint", endPoint);
         //TODO:
         //repeat.ordinal() to convert
-        upcomingMap.put("repeat", repeat.ordinal());
+        upcomingMap.put("repeat", repeat);
+        upcomingMap.put("date", date);
+        upcomingMap.put("time", time);
         upcomingMap.put("Notes", notes);
         upcomingMap.put("isOneDirection", isOneDirection);
 
@@ -58,6 +59,8 @@ public class UpcomingTripModel {
         return upcomingMap;
 
     }
+
+
 
 
 
@@ -118,11 +121,11 @@ public class UpcomingTripModel {
         this.isOneDirection = isOneDirection;
     }
 
-    public Repeat getRepeat() {
+    public int getRepeat() {
         return repeat;
     }
 
-    public void setRepeat(Repeat repeat) {
+    public void setRepeat(int repeat) {
         this.repeat = repeat;
     }
 

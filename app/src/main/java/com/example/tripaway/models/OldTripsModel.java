@@ -12,21 +12,28 @@ public class OldTripsModel {
     private String tripName;
     private String startPoint;
     private String endPoint;
-    private String speedInformation;
-    private String distanceInformation;
+    private String speed;
+    private String distance;
     private List<String> notes;
+    private String date;
+    private String time;
+
 
 
     public OldTripsModel(boolean done, String tripName, String startPoint,
-                         String endPoint, String speedInformation,
-                         String distanceInformation, List<String> notes) {
+                         String endPoint, String speed,
+                         String distance, List<String> notes,
+                         String date,
+                         String time) {
         this.done = done;
         this.tripName = tripName;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.speedInformation = speedInformation;
-        this.distanceInformation = distanceInformation;
+        this.speed = speed;
+        this.distance = distance;
         this.notes = notes;
+        this.date = date;
+        this.time = time;
     }
 
 
@@ -39,10 +46,12 @@ public class OldTripsModel {
         oldTripsMap.put("tripName", tripName);
         oldTripsMap.put("startPoint", startPoint);
         oldTripsMap.put("endPoint", endPoint);
-        oldTripsMap.put("Notes", notes);
-        oldTripsMap.put("speedInformation", speedInformation);
-        oldTripsMap.put("distanceInformation", distanceInformation);
-        oldTripsMap.put("done", done);
+        oldTripsMap.put("notes", notes);
+        oldTripsMap.put("speed", speed);
+        oldTripsMap.put("distance", distance);
+        oldTripsMap.put("isDone", done);
+        oldTripsMap.put("date", date);
+        oldTripsMap.put("time", time);
 
 
 
@@ -88,19 +97,51 @@ public class OldTripsModel {
 
 
     public String getSpeedInformation() {
-        return speedInformation;
+        return speed;
     }
 
-    public void setSpeedInformation(String speedInformation) {
-        this.speedInformation = speedInformation;
+    public void setSpeedInformation(String speed) {
+        this.speed = speed;
+    }
+
+    public String getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(String speed) {
+        this.speed = speed;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getDistanceInformation() {
-        return distanceInformation;
+        return distance;
     }
 
     public void setDistanceInformation(String distanceInformation) {
-        this.distanceInformation = distanceInformation;
+        this.distance = distanceInformation;
     }
 
     public List<String> getNotes() {
