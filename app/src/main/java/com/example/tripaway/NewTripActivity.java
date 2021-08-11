@@ -19,16 +19,24 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tripaway.models.UpcomingTripModel;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -41,12 +49,40 @@ public class NewTripActivity extends AppCompatActivity  {
     String[] repeat = {"NO_REPEAT", "DAILY","WEAKLY","MONTHLY"};
     TextView j_spinner_selected_direction,j_spinner_selected_repeat;
     Spinner j_spinner_direction,j_spinner_repeat;
+    FirebaseFirestore dbFireStore;
+    FirebaseAuth mAuth;
+    UpcomingTripModel upcomingTripModel;
+
+    int repeatedAlarm = 0;
+    boolean isOneDirection = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
         String apiKey = getString(R.string.api_key);
+
+
+        dbFireStore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        btnAddTrip = (Button) findViewById(R.id.btnAddTrip);
+        btnAddTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                //TODO: validation
+
+                saveDataInFireStore();
+
+                startActivity(new Intent(NewTripActivity.this, UpcomingTripsActivity.class));
+
+
+
+            }
+
+        });
 //        if (!Places.isInitialized()) {
 //            Places.initialize(getApplicationContext(), apiKey);
 //        }
@@ -107,14 +143,7 @@ public class NewTripActivity extends AppCompatActivity  {
             }
 
         });
-        btnAddTrip = (Button) findViewById(R.id.btnAddTrip);
-        btnAddTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-
-        });
         txtTimePicker = (EditText) findViewById(R.id.timePicker);
         txtTimePicker.setFocusable(false);
         txtTimePicker.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +171,9 @@ public class NewTripActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> arg0, View view, int arg2, long arg3) {
 
                 j_spinner_selected_direction.setText(j_spinner_direction.getSelectedItem().toString());
+                Log.i("WEAAM  direction", j_spinner_direction.getSelectedItemPosition() +" ");
+                isOneDirection = j_spinner_direction.getSelectedItemPosition() == 0? true: false ;
+
             }
 
             @Override
@@ -159,6 +191,8 @@ public class NewTripActivity extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> arg0, View view, int arg2, long arg3) {
 
                 j_spinner_selected_repeat.setText(j_spinner_repeat.getSelectedItem().toString());
+                repeatedAlarm = j_spinner_repeat.getSelectedItemPosition();
+                Log.i("WEAAM  repeated", j_spinner_repeat.getSelectedItemPosition() +" ");
             }
 
             @Override
@@ -168,6 +202,57 @@ public class NewTripActivity extends AppCompatActivity  {
         });
 
     }
+
+    private void saveDataInFireStore() {
+
+
+
+
+        ArrayList<String > notesList = new ArrayList<>();
+        notesList.add("My note");
+
+
+
+//        upcomingTripModel = new UpcomingTripModel("my Trip",
+//                "MitGhamr", "Zagazig", "current date",
+//                "current time", true, UpcomingTripModel.Repeat.NO_REPEAT,
+//                notesList
+//        );
+
+        upcomingTripModel = new UpcomingTripModel(tripTitle.getText().toString(),
+                startPoint.getText().toString(), endPoint.getText().toString(),
+                txtDatePicker.getText().toString(),
+                txtTimePicker.getText().toString(),isOneDirection
+                , repeatedAlarm ,
+                notesList
+        );
+
+        dbFireStore.collection("users")
+                .document(mAuth.getUid())
+                .collection("upcoming")
+                .add(upcomingTripModel.getUpcomingTripsMap())
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        Log.i("WEAAM", "Data Added to FireStore successfully.");
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+
+                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
+
+
+            }
+        });
+
+
+
+    }
+
     private void handleDate() {
         Calendar calendar = Calendar.getInstance();
         int YEAR = calendar.get(Calendar.YEAR);

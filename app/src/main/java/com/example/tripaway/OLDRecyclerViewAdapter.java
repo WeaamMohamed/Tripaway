@@ -47,8 +47,8 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         holder.txtName.setText(mData.get(position).getTripName());
-        holder.txtTime.setText( mData.get(position).getSpeedInformation());
-        holder.txtDate.setText( mData.get(position).getDistanceInformation());
+        holder.txtTime.setText( mData.get(position).getTime());
+        holder.txtDate.setText( mData.get(position).getDate());
         holder.txtStart.setText(mData.get(position).getStartPoint());
         holder.txtEnd.setText(mData.get(position).getEndPoint());
         holder.notes = mData.get(position).getNotes().toArray(new String[0]);

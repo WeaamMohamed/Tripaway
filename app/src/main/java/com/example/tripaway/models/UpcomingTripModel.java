@@ -15,7 +15,7 @@ public class UpcomingTripModel {
     private String date;
     private String time;
     private boolean isOneDirection;
-    private Repeat repeat;
+    private int repeat;
     private List<String> notes;
 
     public UpcomingTripModel(String tripName, String date, String time, List<String> notes) {
@@ -25,7 +25,7 @@ public class UpcomingTripModel {
         this.notes = notes;
     }
     public UpcomingTripModel(String tripName, String startPoint, String endPoint,
-                             String date, String time, boolean isOneDirection, Repeat repeat,
+                             String date, String time, boolean isOneDirection, int repeat,
                              List<String> notes) {
         this.tripName = tripName;
         this.startPoint = startPoint;
@@ -47,10 +47,12 @@ public class UpcomingTripModel {
         upcomingMap.put("tripName", tripName);
         upcomingMap.put("startPoint", startPoint);
         upcomingMap.put("endPoint", endPoint);
+        upcomingMap.put("date", date);
+        upcomingMap.put("time", time);
         //TODO:
         //repeat.ordinal() to convert
-        upcomingMap.put("repeat", repeat.ordinal());
-        upcomingMap.put("Notes", notes);
+        upcomingMap.put("repeat", repeat);
+        upcomingMap.put("notes", notes);
         upcomingMap.put("isOneDirection", isOneDirection);
 
 
@@ -66,7 +68,36 @@ public class UpcomingTripModel {
         NO_REPEAT,
         DAILY,
         WEAKLY,
-        MONTHLY,
+        MONTHLY;
+
+        public static String fromIntegerToString(int x) {
+            switch(x) {
+                case 0:
+                    return "NO_REPEAT";
+                case 1:
+                    return "DAILY";
+                case 3:
+                    return "WEAKLY";
+                case 4:
+                    return "MONTHLY";
+            }
+            return null;
+        }
+
+        public static Repeat fromIntegerToRepeatedValue(int x) {
+            switch(x) {
+                case 0:
+                    return NO_REPEAT;
+                case 1:
+                    return DAILY;
+                case 3:
+                    return WEAKLY;
+                case 4:
+                    return MONTHLY;
+            }
+            return null;
+        }
+
 
     }
 
@@ -118,11 +149,11 @@ public class UpcomingTripModel {
         this.isOneDirection = isOneDirection;
     }
 
-    public Repeat getRepeat() {
+    public int getRepeat() {
         return repeat;
     }
 
-    public void setRepeat(Repeat repeat) {
+    public void setRepeat(int repeat) {
         this.repeat = repeat;
     }
 
