@@ -36,6 +36,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -224,7 +225,8 @@ public class NewTripActivity extends AppCompatActivity  {
                 txtDatePicker.getText().toString(),
                 txtTimePicker.getText().toString(),isOneDirection
                 , repeatedAlarm ,
-                notesList
+                notesList,
+                new Timestamp(System.currentTimeMillis())
         );
 
         dbFireStore.collection("users")

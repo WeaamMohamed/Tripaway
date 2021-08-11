@@ -2,6 +2,7 @@ package com.example.tripaway.models;
 
 
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ public class OldTripsModel {
     private String distance;
     private List<String> notes;
 
+    private Timestamp timestamp;
     private String date;
     private String time;
 
@@ -44,7 +46,8 @@ public class OldTripsModel {
     public OldTripsModel(boolean isDone, String tripName, String startPoint, String endPoint, String speed,
                          String distance,
                          List<String> notes,
-                         String date, String time) {
+                         String date, String time,
+                         Timestamp timestamp) {
         this.isDone = isDone;
         this.tripName = tripName;
         this.startPoint = startPoint;
@@ -54,6 +57,7 @@ public class OldTripsModel {
         this.notes = notes;
         this.date = date;
         this.time = time;
+        this.timestamp = timestamp;
     }
 
 
@@ -70,6 +74,8 @@ public class OldTripsModel {
         oldTripsMap.put("speedInformation", speed);
         oldTripsMap.put("distanceInformation", distance);
         oldTripsMap.put("done", isDone);
+        oldTripsMap.put("timestamp", timestamp);
+
 
 
 
