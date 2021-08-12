@@ -4,11 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,21 +18,16 @@ import com.example.tripaway.OLDRecyclerViewAdapter;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.OldTripsModel;
-import com.example.tripaway.models.UpcomingTripModel;
-import com.example.tripaway.ui.Upcoming.UpcomingFragment;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HistoryFragment extends Fragment {
     //ArrayList<OldTripsModel> historyList ;
@@ -237,7 +230,7 @@ public class HistoryFragment extends Fragment {
             tvDate = itemView.findViewById(R.id.txtViewDate);
             tvDuration = itemView.findViewById(R.id.txtDuration);
             tvDistance = itemView.findViewById(R.id.txtDistance);
-            btnDelete = itemView.findViewById(R.id.btnDeleteTrip);
+            btnDelete = itemView.findViewById(R.id.btnStartTrip);
             btnShowNotes = itemView.findViewById(R.id.btnNotes);
 
 
