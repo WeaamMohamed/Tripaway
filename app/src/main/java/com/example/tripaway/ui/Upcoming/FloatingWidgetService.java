@@ -1,4 +1,4 @@
-package com.example.tripaway;
+package com.example.tripaway.ui.Upcoming;
 
 import android.app.Service;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
+
+import com.example.tripaway.R;
 
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
@@ -347,7 +349,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 break;
             case R.id.open_activity_button:
                 //open the activity and stop service
-                Intent intent = new Intent(FloatingWidgetService.this, com.example.tripaway.ui.Upcoming.UpcomingFragment.class);
+                Intent intent = new Intent(FloatingWidgetService.this, FloatingWidgetActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
