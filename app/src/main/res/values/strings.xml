@@ -75,6 +75,7 @@
     <string name="txtTripTypee" />
     <string name="txtTripTypeee">trip type</string>
     <string name="Delete">Delete</string>
+    <string name="btn"><![CDATA[&#8942;]]></string>
 
 
 </resources>

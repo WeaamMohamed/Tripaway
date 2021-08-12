@@ -52,12 +52,12 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
         holder.txtStart.setText(mData.get(position).getStartPoint());
         holder.txtEnd.setText(mData.get(position).getEndPoint());
         holder.notes = mData.get(position).getNotes().toArray(new String[0]);
-        holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+        holder.buttonOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 //creating a popup menu
-                PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonViewOption);
+                PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonOption);
                 //inflating menu from xml resource
                 popup.inflate(R.menu.card);
                 //adding click listener
@@ -102,7 +102,7 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
         public TextView txtStart;
         public TextView txtEnd;
         public String[] notes;
-        public Button buttonViewOption;
+        public Button buttonOption;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -111,7 +111,7 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
             txtEnd = (TextView) itemView.findViewById(R.id.txtEndPoint);
             txtDate = (TextView) itemView.findViewById(R.id.txtViewDate);
             txtTime = (TextView) itemView.findViewById(R.id.textViewTime);
-            buttonViewOption = (Button) itemView.findViewById(R.id.btnViewOptions);
+            buttonOption = (Button) itemView.findViewById(R.id.btnOptions);
         }
     }
 }

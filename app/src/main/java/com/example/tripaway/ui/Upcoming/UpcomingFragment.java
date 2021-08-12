@@ -4,8 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
-import com.example.tripaway.models.OldTripsModel;
 import com.example.tripaway.models.UpcomingTripModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -28,6 +29,7 @@ import java.util.List;
 
 public class UpcomingFragment extends Fragment {
     List<UpcomingTripModel> upcomingList ;
+//    UOCOMINGRecyclerViewAdapter myAdapter;
     RecyclerView recyclerView;
     private FirebaseFirestore dbFireStore;
     private FirebaseAuth mAuth;
@@ -104,6 +106,40 @@ public class UpcomingFragment extends Fragment {
                 holder.tvEndPoint.setText(model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
+                holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //creating a popup menu
+                        PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonViewOption);
+                        //inflating menu from xml resource
+                        popup.inflate(R.menu.card);
+                        //adding click listener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
+                                    case R.id.menuActionNotes:
+                                        //handle menu1 click
+                                        return true;
+                                    case R.id.menuActionEdit:
+                                        //handle menu2 click
+                                        return true;
+                                    case R.id.menuActionDelete:
+                                        //handle menu3 click
+                                        return true;
+                                    case R.id.menuActionCancel:
+                                        //handle menu3 click
+                                        return true;
+                                    default:
+                                        return false;
+                                }
+                            }
+                        });
+                        //displaying the popup
+                        popup.show();
+
+                    }
+                });
             }
         };
 
@@ -151,6 +187,7 @@ public class UpcomingFragment extends Fragment {
 
         TextView tvTripName, tvStartPoint, tvEndPoint,
                 tvDate, tvTime;
+        TextView buttonViewOption;
 
         public UpcomingTripsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -160,6 +197,7 @@ public class UpcomingFragment extends Fragment {
             tvEndPoint = itemView.findViewById(R.id.txtEndPoint);
             tvTime = itemView.findViewById(R.id.textViewTime);
             tvDate = itemView.findViewById(R.id.txtViewDate);
+            buttonViewOption = itemView.findViewById(R.id.btnViewOption);
 
 
         }
