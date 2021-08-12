@@ -4,12 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_layout"
     android:layout_width="match_parent"
-    android:elevation="6dp"
-    android:layout_margin="10dp"
-    android:background="#F3F3F3"
-    android:padding="5dp"
     android:layout_height="wrap_content">
-
 
 
     <!--    <menu-->
@@ -44,18 +39,18 @@
 
     <!--    </menu>-->
 
-    <TextView
-        android:id="@+id/btnViewOption"
-        android:layout_width="40dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
+    <Button
+        android:id="@+id/btnOptions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:text="&#8942;"
         android:textAppearance="?android:textAppearanceLarge"
         android:textColor="#131313"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.982"
+        app:layout_constraintStart_toEndOf="@+id/textViewTime"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -80,7 +75,6 @@
         android:id="@+id/txtTripName"
         android:layout_width="wrap_content"
         android:layout_height="59dp"
-        android:clickable="true"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/txtTripName"
         android:textSize="18sp"
@@ -94,7 +88,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="@string/txtTripType"
+        android:text="@string/txtTripTypeee"
         app:layout_constraintStart_toEndOf="@+id/txtTripName"
         app:layout_constraintTop_toBottomOf="@+id/textViewTime" />
 
@@ -130,10 +124,9 @@
         android:id="@+id/btnDeleteTrip"
         android:layout_width="276dp"
         android:layout_height="48dp"
-        android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/StartTrip"
-        android:text="@string/btnStartTrip"
+        android:text="@string/Delete"
         app:backgroundTint="@color/dark_blue"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtEndPoint" />

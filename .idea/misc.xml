@@ -10,16 +10,21 @@
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/activity_new_trip.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/activity_register.xml" value="0.2" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/activity_upcoming_trips.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/app_bar_home_screen.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/card_layout.xml" value="0.264" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/card_layout_history.xml" value="0.18958333333333333" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/content_home_screen.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_gallery.xml" value="0.17300724637681159" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_history.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_home.xml" value="0.13020833333333334" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_java.xml" value="0.15579710144927536" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_logout.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_slideshow.xml" value="0.17300724637681159" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_sync.xml" value="0.16259057971014493" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/fragment_upcoming.xml" value="0.2" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/history_card_view.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/nav_header_home_screen.xml" value="0.13020833333333334" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/menu/activity_main_drawer.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/menu/card.xml" value="0.19375" />

@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
+    //history fragment with fireStore
     Button btnSignUp, btnLogin;
     Button home;
     @Override
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //there is user then don't start the login activity and go directly to main
         if (FirebaseAuth.getInstance().getCurrentUser() !=null)
         {
-            startActivity(new Intent(this,HomeActivity.class));
+            startActivity(new Intent(this,HomeScreenActivity.class));
             this.finish();
         }
 

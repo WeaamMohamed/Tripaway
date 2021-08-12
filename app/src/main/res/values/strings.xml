@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Tripaway</string>
-
+    <string name="api_key">AIzaSyD7qztjBaBRKNSYqnuB3Nf55uGE1uQYJpA</string>
     <string name="facebook_app_id">870284713893702</string>
     <string name="fb_login_protocol_scheme">fb870284713893702</string>
     <string name="tripawy">Tripawy</string>
@@ -64,6 +64,20 @@
     <string name="btnMenu">. . .</string>
     <string name="menuActionCancell">Cancel</string>
     <string name="updateData">Update data</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pickTime">Pick time</string>
+    <string name="datePicker" />
+    <string name="timePicker" />
+    <string name="btnAddTrip">Add Trip</string>
+    <string name="txtRepeaterSpinner" />
+    <string name="txtDirectionSpinner" />
+    <string name="txtTripTypee" />
+    <string name="txtTripTypeee">trip type</string>
+    <string name="Delete">Delete</string>
+    <string name="btn"><![CDATA[&#8942;]]></string>
+    <string name="btnShowNotes">SHOW NOTES</string>
+    <string name="deleteTrip">DELETE</string>
 
 
 </resources>

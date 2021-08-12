@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 //                        startActivity(intent);
 
-                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                        Intent i = new Intent(LoginActivity.this, HomeScreenActivity.class);
                         //   set the new task and clear flags
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
@@ -267,7 +267,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                            Intent i = new Intent(LoginActivity.this, HomeScreenActivity.class);
                             //   set the new task and clear flags
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
