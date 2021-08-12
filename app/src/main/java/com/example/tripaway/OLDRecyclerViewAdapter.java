@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,6 +74,7 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
         public TextView txtEnd;
         public String[] notes;
         public Button buttonOption;
+        public ImageView imgHistory;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -82,6 +84,7 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
             txtDate = (TextView) itemView.findViewById(R.id.txtViewDate);
             txtTime = (TextView) itemView.findViewById(R.id.textViewTime);
             buttonOption = (Button) itemView.findViewById(R.id.btnOptions);
+            imgHistory = (ImageView) itemView.findViewById(R.id.imgHistory);
         }
     }
 }
