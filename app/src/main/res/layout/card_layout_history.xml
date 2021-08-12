@@ -121,7 +121,7 @@
         app:srcCompat="@drawable/arrow" />
 
     <Button
-        android:id="@+id/btnDeleteTrip"
+        android:id="@+id/btnStartTrip"
         android:layout_width="276dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
@@ -139,7 +139,7 @@
         android:layout_marginTop="96dp"
         android:contentDescription="@string/btnNotes"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/btnDeleteTrip"
+        app:layout_constraintStart_toEndOf="@+id/btnStartTrip"
         app:layout_constraintTop_toBottomOf="@+id/txtTripType"
         app:srcCompat="@drawable/notebtn" />
 

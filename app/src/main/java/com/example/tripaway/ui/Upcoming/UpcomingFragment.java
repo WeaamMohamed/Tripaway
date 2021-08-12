@@ -1,5 +1,6 @@
 package com.example.tripaway.ui.Upcoming;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,21 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
-import com.example.tripaway.models.OldTripsModel;
 import com.example.tripaway.models.UpcomingTripModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UpcomingFragment extends Fragment {
@@ -105,7 +103,7 @@ public class UpcomingFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, int position, @NonNull UpcomingTripModel model) {
+            protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
 
                 getSnapshots().getSnapshot(position).getId();
 
@@ -155,6 +153,13 @@ public class UpcomingFragment extends Fragment {
 
                     }
                 });
+                holder.startMap.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(getContext(), model.getStartPoint()+model.getEndPoint() , Toast.LENGTH_SHORT).show();
+                    }
+                    });
+
             }
         };
 
@@ -204,6 +209,7 @@ public class UpcomingFragment extends Fragment {
         TextView tvTripName, tvStartPoint, tvEndPoint,
                 tvDate, tvTime;
         TextView buttonViewOption;
+        Button startMap;
 
         public UpcomingTripsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -214,6 +220,7 @@ public class UpcomingFragment extends Fragment {
             tvTime = itemView.findViewById(R.id.textViewTime);
             tvDate = itemView.findViewById(R.id.txtViewDate);
             buttonViewOption = itemView.findViewById(R.id.btnViewOption);
+            startMap = itemView.findViewById(R.id.btnStartTrip);
 
 
 

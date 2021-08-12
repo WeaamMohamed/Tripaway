@@ -128,7 +128,7 @@
 
 
         <Button
-            android:id="@+id/btnDeleteTrip"
+            android:id="@+id/btnStartTrip"
             android:layout_width="325dp"
             android:layout_height="48dp"
             android:contentDescription="@string/deleteTrip"
