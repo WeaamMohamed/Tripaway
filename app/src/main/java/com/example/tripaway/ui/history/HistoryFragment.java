@@ -38,6 +38,7 @@ import java.util.Arrays;
 
 public class HistoryFragment extends Fragment {
     //ArrayList<OldTripsModel> historyList ;
+    //
     RecyclerView recyclerView;
     private HistoryViewModel historyViewModel;
     private FragmentUpcomingBinding binding;
