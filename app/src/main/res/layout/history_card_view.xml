@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="4dp"
+    android:clipChildren="true"
+    android:layout_margin="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--visible content-->
+
+        <!--end visible content-->
+
+        <!--hidden content-->
+        <TextView
+            android:id="@+id/txtTripName"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/txtTripName"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtViewDate" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/select"
+            app:tint="#555555" />
+
+        <LinearLayout
+            android:id="@+id/lytVisible"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/btnStartTrip"
+                android:layout_width="325dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/deleteTrip"
+                android:text="@string/Delete"
+                app:backgroundTint="@color/dark_blue"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtEndPoint" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lytHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/txtViewDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/textViewTime"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtViewDate"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txtStartPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/txtStartPoint"
+                app:layout_constraintStart_toEndOf="@+id/imgArrow"
+                app:layout_constraintTop_toBottomOf="@+id/txtTripName" />
+
+            <TextView
+                android:id="@+id/txtEndPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/txtEndPoint"
+                app:layout_constraintStart_toEndOf="@+id/imgArrow"
+                app:layout_constraintTop_toBottomOf="@+id/txtStartPoint" />
+
+            <Button
+                android:id="@+id/btnNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/btnShowNotes"
+                android:text="@string/btnShowNotes" />
+
+        </LinearLayout>
+
+        <!--end hidden content-->
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -2,11 +2,9 @@ package com.example.tripaway;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +36,7 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
         LayoutInflater mInflater = LayoutInflater.from(timeFragment.getContext());
         view = mInflater.inflate(R.layout.card_layout,parent,false);
         return new MyViewHolder(view);*/
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout_history,parent,false);
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.history_card_view,parent,false);
 
         return new MyViewHolder(view);
     }
@@ -47,44 +45,16 @@ public class OLDRecyclerViewAdapter extends RecyclerView.Adapter<OLDRecyclerView
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         holder.txtName.setText(mData.get(position).getTripName());
-        holder.txtTime.setText( mData.get(position).getDistanceInformation());
-        holder.txtDate.setText( mData.get(position).getSpeedInformation());
+        holder.txtTime.setText( mData.get(position).getTime());
+        holder.txtDate.setText( mData.get(position).getDate());
         holder.txtStart.setText(mData.get(position).getStartPoint());
         holder.txtEnd.setText(mData.get(position).getEndPoint());
         holder.notes = mData.get(position).getNotes().toArray(new String[0]);
-        holder.buttonOption.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                //creating a popup menu
-                PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonOption);
-                //inflating menu from xml resource
-                popup.inflate(R.menu.card);
-                //adding click listener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.menuActionNotes:
-                                //handle menu1 click
-                                return true;
-                            case R.id.menuActionEdit:
-                                //handle menu2 click
-                                return true;
-                            case R.id.menuActionDelete:
-                                //handle menu3 click
-                                return true;
-                            case R.id.menuActionCancel:
-                                //handle menu3 click
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                //displaying the popup
-                popup.show();
-
+            public void onClick(View v) {
+                View hiddenView = holder.itemView.findViewById(R.id.lytHidden);
+                hiddenView.setVisibility( hiddenView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
             }
         });
     }
