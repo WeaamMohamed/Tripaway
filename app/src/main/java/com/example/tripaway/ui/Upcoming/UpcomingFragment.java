@@ -2,7 +2,11 @@ package com.example.tripaway.ui.Upcoming;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,10 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripaway.FloatingWidgetService;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.UpcomingTripModel;
@@ -32,6 +38,8 @@ import com.google.firebase.firestore.Query;
 
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class UpcomingFragment extends Fragment {
     List<UpcomingTripModel> upcomingList ;
 //    UOCOMINGRecyclerViewAdapter myAdapter;
@@ -41,8 +49,8 @@ public class UpcomingFragment extends Fragment {
     FirestoreRecyclerAdapter adapter;
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
+    private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
    // onTripItemClickListener listener;
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -156,13 +164,37 @@ public class UpcomingFragment extends Fragment {
                 holder.startMap.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), model.getStartPoint()+model.getEndPoint() , Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), model.getStartPoint()+model.getEndPoint() , Toast.LENGTH_SHORT).show();
+                        String source = model.getStartPoint();
+                        String dest = model.getEndPoint();
+                        Uri uri = Uri.parse("http://www.google.com/maps/dir/" + source + "/" + dest);
+                        Intent MapIntent = new Intent(Intent.ACTION_VIEW, uri);
+                        MapIntent.setPackage("com.google.android.apps.maps");
+                        if(MapIntent.resolveActivity(getContext().getPackageManager())  != null){
+                            startActivity(MapIntent);
+                        }
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getContext())) {
+                            //If the draw over permission is not available open the settings screen
+                            //to grant the permission.
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + getContext().getPackageName()));
+                            getActivity().startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
+                        }
+                        else {
+                            //If permission is granted start floating widget service
+                            //startFloatingWidgetService();
+                            getActivity().startService(new Intent(getContext(), FloatingWidgetService.class));
+                            getActivity().finish();
+                        }
+
                     }
-                    });
+                });
 
             }
-        };
 
+
+        };
 
         //view holder
 
@@ -173,12 +205,29 @@ public class UpcomingFragment extends Fragment {
       //  recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
-
-
-
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE) {
+            //Check if the permission is granted or not.
+            if (resultCode == RESULT_OK){
+                //If permission granted start floating widget service
+                //startFloatingWidgetService();
+                getActivity().startService(new Intent(this.getContext(), FloatingWidgetService.class));
+//              finish();
+            }
+            else
+                //Permission is not available then display toast
+                Toast.makeText(this.getContext(), getResources().getString(R.string.draw_other_app_permission_denied),
+                        Toast.LENGTH_SHORT).show();
+
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     private void deleteTripFromFireStore(String documentId) {
