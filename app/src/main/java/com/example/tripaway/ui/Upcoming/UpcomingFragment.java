@@ -17,14 +17,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
+import com.example.tripaway.models.OldTripsModel;
 import com.example.tripaway.models.UpcomingTripModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpcomingFragment extends Fragment {
@@ -36,6 +43,7 @@ public class UpcomingFragment extends Fragment {
     FirestoreRecyclerAdapter adapter;
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
+   // onTripItemClickListener listener;
 
 
 
@@ -46,10 +54,7 @@ public class UpcomingFragment extends Fragment {
 //        //TODO: String date? String time?
 
         // Inflate the layout for this fragment
-//        upcomingList = new ArrayList<>();
-//        upcomingList.add(new UpcomingTripModel("Damietta","dam","zag","2/11/2022","9.30",true,1, Arrays.asList(new String[]{"alaa"}),
-//                new Timestamp( System.currentTimeMillis()))
-//               );
+
         View view=inflater.inflate(R.layout.fragment_upcoming, container, false);
         recyclerView=(RecyclerView) view.findViewById(R.id.idRVTrips);
         dbFireStore = FirebaseFirestore.getInstance();
@@ -70,6 +75,8 @@ public class UpcomingFragment extends Fragment {
 
         //Recycler adapter
         adapter  = new FirestoreRecyclerAdapter<UpcomingTripModel, UpcomingTripsViewHolder>(options) {
+
+
 
             @Override
             public void onDataChanged() {
@@ -100,6 +107,13 @@ public class UpcomingFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, int position, @NonNull UpcomingTripModel model) {
 
+                getSnapshots().getSnapshot(position).getId();
+
+
+//                Log.i("WEAAM", "document id: " +  getSnapshots().getSnapshot(position).getId());
+//                Log.i("WEAAM", "document : " +   getItem(position));
+                getSnapshots().getSnapshot(position).getId();
+
 
                 holder.tvTripName.setText(model.getTripName());
                 holder.tvStartPoint.setText(model.getStartPoint());
@@ -119,13 +133,14 @@ public class UpcomingFragment extends Fragment {
                             public boolean onMenuItemClick(MenuItem item) {
                                 switch (item.getItemId()) {
                                     case R.id.menuActionNotes:
+
                                         //handle menu1 click
                                         return true;
                                     case R.id.menuActionEdit:
                                         //handle menu2 click
                                         return true;
                                     case R.id.menuActionDelete:
-                                        //handle menu3 click
+                                        deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
                                         return true;
                                     case R.id.menuActionCancel:
                                         //handle menu3 click
@@ -157,31 +172,32 @@ public class UpcomingFragment extends Fragment {
 
 
         recyclerView.setAdapter(adapter);
-//        UOCOMINGRecyclerViewAdapter myAdapter = new UOCOMINGRecyclerViewAdapter((ArrayList<UpcomingTripModel>) upcomingList);
-//        recyclerView.setAdapter(myAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-/*
-        upcomingViewModel =
-                new ViewModelProvider(this).get(UpcomingViewModel.class);
-
-        binding = FragmentUpcomingBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        upcomingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                RecyclerView myrv = (RecyclerView) root.findViewById(R.id.idRVTrips);
-                RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(this,tripsList);
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-                myrv.setLayoutManager(gridLayoutManager);
-                myrv.setAdapter(myAdapter);
-            }
-        });*/
 
         return view;
     }
+
+    private void deleteTripFromFireStore(String documentId) {
+        dbFireStore.collection("users")
+                .document(mAuth.getUid())
+                .collection("upcoming")
+                .document(documentId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("WEAAM", "document successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("WEAAM", "Error deleting document: "+  e.getMessage());
+                    }
+                });
+
+
+    }
+
     //viewHolder
     private class UpcomingTripsViewHolder extends  RecyclerView.ViewHolder{
 
@@ -198,6 +214,25 @@ public class UpcomingFragment extends Fragment {
             tvTime = itemView.findViewById(R.id.textViewTime);
             tvDate = itemView.findViewById(R.id.txtViewDate);
             buttonViewOption = itemView.findViewById(R.id.btnViewOption);
+
+
+
+//            Log.i("Upcomomingview holder: ",  getItemId() +" ");
+//
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//
+//
+//                    Log.i("WEAAM", "item Clicked"  + itemView.getId());
+//
+//
+//
+//
+//
+//                }
+//            });
 
 
         }
@@ -254,4 +289,27 @@ public class UpcomingFragment extends Fragment {
             }
         }
     }
+
+
+
+    //To send data from adapter to Activity
+//    public  interface onTripItemClickListener{
+//
+//
+//        //DocumentSnapshot contains data read from a document in your Cloud FireStore database.
+//        // The data can be extracted with the getData() or get(String) methods.
+//        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+//
+//
+//
+//    }
+//
+//    public  void setOnItemClickListener(onTripItemClickListener listener){
+//        this.listener = listener;
+//    };
+
+
+
+
+
 }

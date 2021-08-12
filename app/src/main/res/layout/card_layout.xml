@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_layout"
     android:layout_width="match_parent"
+    android:elevation="6dp"
+    android:layout_margin="10dp"
+    android:background="#F3F3F3"
+    android:padding="5dp"
     android:layout_height="wrap_content">
+
 
 
     <!--    <menu-->
@@ -75,6 +80,7 @@
         android:id="@+id/txtTripName"
         android:layout_width="wrap_content"
         android:layout_height="59dp"
+        android:clickable="true"
         android:gravity="center_horizontal|center_vertical"
         android:text="@string/txtTripName"
         android:textSize="18sp"
@@ -121,7 +127,7 @@
         app:srcCompat="@drawable/arrow" />
 
     <Button
-        android:id="@+id/btnStartTrip"
+        android:id="@+id/btnDeleteTrip"
         android:layout_width="276dp"
         android:layout_height="48dp"
         android:layout_marginStart="4dp"
@@ -140,7 +146,7 @@
         android:layout_marginTop="96dp"
         android:contentDescription="@string/btnNotes"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/btnStartTrip"
+        app:layout_constraintStart_toEndOf="@+id/btnDeleteTrip"
         app:layout_constraintTop_toBottomOf="@+id/txtTripType"
         app:srcCompat="@drawable/notebtn" />
 

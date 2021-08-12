@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.tripaway.HomeActivity;
+import com.example.tripaway.LoginActivity;
 import com.example.tripaway.NewTripActivity;
 import com.example.tripaway.databinding.FragmentLogoutBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SlideshowFragment extends Fragment {
 
@@ -19,8 +22,16 @@ public class SlideshowFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        Intent intent = new Intent(getContext(), NewTripActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(getContext(), NewTripActivity.class);
+//        startActivity(intent);
+
+
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getContext(), LoginActivity.class));
+
+
+
+
         return null;
     }
 

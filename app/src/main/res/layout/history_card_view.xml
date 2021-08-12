@@ -8,6 +8,7 @@
     app:cardCornerRadius="4dp"
     android:clipChildren="true"
     android:layout_margin="16dp"
+    android:padding="5dp"
     android:clickable="true"
     android:focusable="true"
     android:background="?attr/selectableItemBackgroundBorderless">
@@ -25,32 +26,33 @@
         <TextView
             android:id="@+id/txtTripName"
             android:layout_width="wrap_content"
-            android:layout_height="59dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/txtTripName"
+            android:textColor="#0D0101"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtViewDate" />
+
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="88dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/select"
-            app:tint="#555555" />
+            android:layout_height="120dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/travel_image" />
 
         <LinearLayout
             android:id="@+id/lytVisible"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="70dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="16dp">
 
             <Button
-                android:id="@+id/btnStartTrip"
+                android:id="@+id/btnDeleteTrip"
                 android:layout_width="325dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="16dp"
                 android:contentDescription="@string/deleteTrip"
                 android:text="@string/Delete"
                 app:backgroundTint="@color/dark_blue"
@@ -81,12 +83,13 @@
                 android:id="@+id/textViewTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/textViewTime"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="4dp"
+                android:text="@string/textViewTime"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/txtViewDate"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/txtStartPoint"
                 android:layout_width="match_parent"
@@ -106,6 +109,30 @@
                 android:text="@string/txtEndPoint"
                 app:layout_constraintStart_toEndOf="@+id/imgArrow"
                 app:layout_constraintTop_toBottomOf="@+id/txtStartPoint" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtDuration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:text="duration"
+                    android:textColor="#028579"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtDistance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="distance" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnNotes"

@@ -13,7 +13,7 @@ public class OldTripsModel {
     private String tripName;
     private String startPoint;
     private String endPoint;
-    private String speed;
+    private String duration;
     private String distance;
     private List<String> notes;
     private String date;
@@ -22,7 +22,7 @@ public class OldTripsModel {
 
 
     public OldTripsModel(boolean done, String tripName, String startPoint,
-                         String endPoint, String speed,
+                         String endPoint, String duration,
                          String distance, List<String> notes,
                          String date,
                          String time) {
@@ -30,14 +30,14 @@ public class OldTripsModel {
         this.tripName = tripName;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.speed = speed;
+        this.duration = duration;
         this.distance = distance;
         this.notes = notes;
         this.date = date;
         this.time = time;
     }
     public OldTripsModel(boolean done, String tripName, String startPoint,
-                         String endPoint, String speed,
+                         String endPoint, String duration,
                          String distance, List<String> notes,
                          String date,
                          String time,
@@ -46,7 +46,7 @@ public class OldTripsModel {
         this.tripName = tripName;
         this.startPoint = startPoint;
         this.endPoint = endPoint;
-        this.speed = speed;
+        this.duration = duration;
         this.distance = distance;
         this.notes = notes;
         this.date = date;
@@ -66,7 +66,7 @@ public class OldTripsModel {
         oldTripsMap.put("startPoint", startPoint);
         oldTripsMap.put("endPoint", endPoint);
         oldTripsMap.put("notes", notes);
-        oldTripsMap.put("speed", speed);
+        oldTripsMap.put("duration", duration);
         oldTripsMap.put("distance", distance);
         oldTripsMap.put("isDone", done);
         oldTripsMap.put("date", date);
@@ -114,22 +114,12 @@ public class OldTripsModel {
         this.endPoint = endPoint;
     }
 
-
-
-    public String getSpeedInformation() {
-        return speed;
+    public String getDuration() {
+        return duration;
     }
 
-    public void setSpeedInformation(String speed) {
-        this.speed = speed;
-    }
-
-    public String getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(String speed) {
-        this.speed = speed;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
     public String getDistance() {
@@ -139,6 +129,14 @@ public class OldTripsModel {
     public void setDistance(String distance) {
         this.distance = distance;
     }
+
+//    public Timestamp getTimestamp() {
+//        return timestamp;
+//    }
+//
+//    public void setTimestamp(Timestamp timestamp) {
+//        this.timestamp = timestamp;
+//    }
 
     public String getDate() {
         return date;
@@ -156,13 +154,6 @@ public class OldTripsModel {
         this.time = time;
     }
 
-    public String getDistanceInformation() {
-        return distance;
-    }
-
-    public void setDistanceInformation(String distanceInformation) {
-        this.distance = distanceInformation;
-    }
 
     public List<String> getNotes() {
         return notes;

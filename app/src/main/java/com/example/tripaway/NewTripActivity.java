@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tripaway.models.OldTripsModel;
 import com.example.tripaway.models.UpcomingTripModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -135,6 +136,7 @@ public class NewTripActivity extends AppCompatActivity  {
                 //TODO: validation
 
                 saveDataInFireStore();
+               // saveOLDDataToFireStore();
                 NewTripActivity.this.finish();
 
              //   startActivity(new Intent(NewTripActivity.this, UpcomingTripsActivity.class));
@@ -235,6 +237,51 @@ public class NewTripActivity extends AppCompatActivity  {
                 .document(mAuth.getUid())
                 .collection("upcoming")
                 .add(upcomingTripModel.getUpcomingTripsMap())
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        Log.i("WEAAM", "Data Added to FireStore successfully.");
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure( Exception e) {
+
+
+                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
+
+
+            }
+        });
+
+
+
+    }
+
+
+    private void saveOLDDataToFireStore() {
+
+
+
+
+        ArrayList<String > notesList = new ArrayList<>();
+        notesList.add("My note");
+
+        OldTripsModel oldTripsModel = new OldTripsModel(false,
+                "my trip","start","end","duration",
+                "34km",
+                notesList,
+                "date",
+                "time",
+                new Timestamp( System.currentTimeMillis())
+
+        );
+
+        dbFireStore.collection("users")
+                .document(mAuth.getUid())
+                .collection("oldTrips")
+                .add(oldTripsModel.getOldTripsMap())
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
