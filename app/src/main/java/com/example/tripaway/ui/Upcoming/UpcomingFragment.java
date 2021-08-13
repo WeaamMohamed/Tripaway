@@ -1,5 +1,6 @@
 package com.example.tripaway.ui.Upcoming;
 
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -18,27 +19,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tripaway.EditTripActivity;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
-import com.example.tripaway.models.OldTripsModel;
 import com.example.tripaway.models.UpcomingTripModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class UpcomingFragment extends Fragment {
     List<UpcomingTripModel> upcomingList ;
@@ -49,12 +42,10 @@ public class UpcomingFragment extends Fragment {
     FirestoreRecyclerAdapter adapter;
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
-    private Map<String, Object>upcomingMapData = new HashMap<>();
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
-
 //    private static final String ST_POINT = "START";
 //    private static final String END_POINT = "END";
-
+   // onTripItemClickListener listener;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -117,8 +108,12 @@ public class UpcomingFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
 
-               // clickedDocumentId = getSnapshots().getSnapshot(position).getId();
+                getSnapshots().getSnapshot(position).getId();
 
+
+//                Log.i("WEAAM", "document id: " +  getSnapshots().getSnapshot(position).getId());
+//                Log.i("WEAAM", "document : " +   getItem(position));
+                getSnapshots().getSnapshot(position).getId();
 
 
                 holder.tvTripName.setText(model.getTripName());
@@ -127,11 +122,8 @@ public class UpcomingFragment extends Fragment {
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
                 holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
-
                     @Override
                     public void onClick(View view) {
-                       // clickedDocumentId = getSnapshots().getSnapshot(position).getId();
-
                         //creating a popup menu
                         PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonViewOption);
                         //inflating menu from xml resource
@@ -147,10 +139,9 @@ public class UpcomingFragment extends Fragment {
                                         return true;
                                     case R.id.menuActionEdit:
                                         //handle menu2 click
-                                        openEditActivity(getSnapshots().getSnapshot(position).getId());
                                         return true;
                                     case R.id.menuActionDelete:
-                                        deleteUpcomingTripFromFireStore(getSnapshots().getSnapshot(position).getId());
+                                        deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
                                         return true;
                                     case R.id.menuActionCancel:
                                         //handle menu3 click
@@ -192,26 +183,12 @@ public class UpcomingFragment extends Fragment {
 //                            getActivity().finish();
 //                        }
 
-                        sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId());
-
                         Intent intent = new Intent(getActivity(), FloatingWidgetActivity.class);
                         String stPoint = model.getStartPoint();
                         intent.putExtra("START", stPoint);
                         String endPoint = model.getEndPoint();
                         intent.putExtra("END", endPoint);
                         startActivity(intent);
-
-
-
-                      // deleteUpcomingTripFromFireStore(clickedDocumentId);
-
-
-
-
-
-
-
-
 
                     }
                 });
@@ -235,70 +212,6 @@ public class UpcomingFragment extends Fragment {
         return view;
     }
 
-    private void openEditActivity(String clickedDocumentId) {
-
-        Intent intent = new Intent(getActivity(), EditTripActivity.class);
-        intent.putExtra("documentId", clickedDocumentId);
-        startActivity(intent);
-
-    }
-
-    private void sendDataFromUpcomingToHistory(String documentId) {
-
-
-
-       dbFireStore.collection("users")
-               .document(mAuth.getUid())
-               .collection("upcoming")
-               .document(documentId)
-               .get()
-               .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                   @Override
-                   public void onSuccess(DocumentSnapshot documentSnapshot) {
-                     upcomingMapData =  documentSnapshot.getData();
-                     sendingDataToOldTripsFireStore(upcomingMapData);
-                     deleteUpcomingTripFromFireStore(documentId);
-                   }
-               });
-
-
-
-
-
-
-
-
-
-    }
-
-    private void sendingDataToOldTripsFireStore(Map<String, Object> upcomingMapData) {
-
-
-        upcomingMapData.put("timestamp", new Timestamp( System.currentTimeMillis()));
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("oldTrips")
-                .add(upcomingMapData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                        Log.i("WEAAM", "Data Added to FireStore successfully.");
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure( Exception e) {
-
-
-                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
-
-
-            }
-        });
-
-    }
-
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE) {
@@ -319,7 +232,7 @@ public class UpcomingFragment extends Fragment {
 //        }
 //    }
 
-    private void deleteUpcomingTripFromFireStore(String documentId) {
+    private void deleteTripFromFireStore(String documentId) {
         dbFireStore.collection("users")
                 .document(mAuth.getUid())
                 .collection("upcoming")
@@ -360,6 +273,24 @@ public class UpcomingFragment extends Fragment {
             buttonViewOption = itemView.findViewById(R.id.btnViewOption);
             startMap = itemView.findViewById(R.id.btnStartTrip);
 
+
+
+//            Log.i("Upcomomingview holder: ",  getItemId() +" ");
+//
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//
+//
+//
+//                    Log.i("WEAAM", "item Clicked"  + itemView.getId());
+//
+//
+//
+//
+//
+//                }
+//            });
 
 
         }
@@ -416,6 +347,24 @@ public class UpcomingFragment extends Fragment {
             }
         }
     }
+
+
+
+    //To send data from adapter to Activity
+//    public  interface onTripItemClickListener{
+//
+//
+//        //DocumentSnapshot contains data read from a document in your Cloud FireStore database.
+//        // The data can be extracted with the getData() or get(String) methods.
+//        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+//
+//
+//
+//    }
+//
+//    public  void setOnItemClickListener(onTripItemClickListener listener){
+//        this.listener = listener;
+//    };
 
 
 
