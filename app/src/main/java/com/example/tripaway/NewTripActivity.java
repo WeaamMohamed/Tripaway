@@ -65,31 +65,7 @@ public class NewTripActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
         String apiKey = getString(R.string.api_key);
-//        if (!Places.isInitialized()) {
-//            Places.initialize(getApplicationContext(), apiKey);
-//        }
-//
-//        // Create a new Places client instance.
-//        PlacesClient placesClient = Places.createClient(this);
-//        // Initialize the AutocompleteSupportFragment.
-//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//        autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
-//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(@NonNull Place place) {
-//                // TODO: Get info about the selected place.
-//                Toast.makeText(getApplicationContext(), place.getName(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onError(@NonNull Status status) {
-//                // TODO: Handle the error.
-//                Toast.makeText(getApplicationContext(), status.toString(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
+
         Places.initialize(getApplicationContext(),apiKey);
         tripTitle = (EditText) findViewById(R.id.edtTitleNew);
         tripTitle.setOnClickListener(new View.OnClickListener() {
@@ -135,9 +111,14 @@ public class NewTripActivity extends AppCompatActivity  {
 
                 //TODO: validation
 
-                saveDataInFireStore();
+                if(validation())
+                {
+                    saveDataInFireStore();
+                    NewTripActivity.this.finish();
+                }
+
                // saveOLDDataToFireStore();
-                NewTripActivity.this.finish();
+
 
              //   startActivity(new Intent(NewTripActivity.this, UpcomingTripsActivity.class));
 
@@ -207,6 +188,58 @@ public class NewTripActivity extends AppCompatActivity  {
 
     }
 
+    private boolean validation() {
+        boolean valid = true;
+
+        String tripName = tripTitle.getText().toString();
+        String start = startPoint.getText().toString();
+        String end = endPoint.getText().toString();
+        String time = txtTimePicker.getText().toString();
+        String date = txtDatePicker.getText().toString();
+
+
+        if (tripName.isEmpty()) {
+            tripTitle.setError("Please enter your trip title");
+            valid = false;
+        }
+        else {
+            tripTitle.setError(null);
+        }
+
+
+        if (start.isEmpty()) {
+            startPoint.setError("Please enter your start point");
+            valid = false;
+        } else {
+            startPoint.setError(null);
+        }
+
+
+        if (end.isEmpty()) {
+            endPoint.setError("Please enter your end point");
+            valid = false;
+        } else {
+            endPoint.setError(null);
+        }
+
+
+        if (time.isEmpty()) {
+            txtTimePicker.setError("Please enter your time");
+            valid = false;
+        } else {
+            txtTimePicker.setError(null);
+        }
+
+        if (date.isEmpty()) {
+            txtDatePicker.setError("Please enter your date");
+            valid = false;
+        } else {
+            txtDatePicker.setError(null);
+        }
+
+        return  valid;
+    }
+
     private void saveDataInFireStore() {
 
 
@@ -214,14 +247,6 @@ public class NewTripActivity extends AppCompatActivity  {
 
         ArrayList<String > notesList = new ArrayList<>();
         notesList.add("My note");
-
-
-
-//        upcomingTripModel = new UpcomingTripModel("my Trip",
-//                "MitGhamr", "Zagazig", "current date",
-//                "current time", true, UpcomingTripModel.Repeat.NO_REPEAT,
-//                notesList
-//        );
 
         upcomingTripModel = new UpcomingTripModel(tripTitle.getText().toString(),
                 startPoint.getText().toString(), endPoint.getText().toString(),
@@ -260,49 +285,49 @@ public class NewTripActivity extends AppCompatActivity  {
     }
 
 
-    private void saveOLDDataToFireStore() {
-
-
-
-
-        ArrayList<String > notesList = new ArrayList<>();
-        notesList.add("My note");
-
-        OldTripsModel oldTripsModel = new OldTripsModel(false,
-                "my trip","start","end","duration",
-                "34km",
-                notesList,
-                "date",
-                "time",
-                new Timestamp( System.currentTimeMillis())
-
-        );
-
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("oldTrips")
-                .add(oldTripsModel.getOldTripsMap())
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                        Log.i("WEAAM", "Data Added to FireStore successfully.");
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure( Exception e) {
-
-
-                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
-
-
-            }
-        });
-
-
-
-    }
+//    private void saveOLDDataToFireStore() {
+//
+//
+//
+//
+//        ArrayList<String > notesList = new ArrayList<>();
+//        notesList.add("My note");
+//
+//        OldTripsModel oldTripsModel = new OldTripsModel(false,
+//                "my trip","start","end","duration",
+//                "34km",
+//                notesList,
+//                "date",
+//                "time",
+//                new Timestamp( System.currentTimeMillis())
+//
+//        );
+//
+//        dbFireStore.collection("users")
+//                .document(mAuth.getUid())
+//                .collection("oldTrips")
+//                .add(oldTripsModel.getOldTripsMap())
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//
+//                        Log.i("WEAAM", "Data Added to FireStore successfully.");
+//
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure( Exception e) {
+//
+//
+//                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
+//
+//
+//            }
+//        });
+//
+//
+//
+//    }
 
     private void handleDate() {
         Calendar calendar = Calendar.getInstance();

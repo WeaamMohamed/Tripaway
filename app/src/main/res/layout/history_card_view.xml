@@ -40,97 +40,102 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/travel_image" />
+            app:srcCompat="@drawable/travel6" />
 
-            <LinearLayout
-                android:id="@+id/lytHidden"
+        <LinearLayout
+            android:id="@+id/lytHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="16dp"
+            android:paddingRight="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textViewTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:visibility="gone">
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/textViewTime"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtViewDate"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/txtViewDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/txtViewDate"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txtViewDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/txtViewDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textViewTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/textViewTime"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/txtViewDate"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txtStartPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/txtStartPoint"
+                app:layout_constraintStart_toEndOf="@+id/imgArrow"
+                app:layout_constraintTop_toBottomOf="@+id/txtTripName" />
 
-                <TextView
-                    android:id="@+id/txtStartPoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/txtStartPoint"
-                    app:layout_constraintStart_toEndOf="@+id/imgArrow"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTripName" />
-
-                <TextView
-                    android:id="@+id/txtEndPoint"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/txtEndPoint"
-                    app:layout_constraintStart_toEndOf="@+id/imgArrow"
-                    app:layout_constraintTop_toBottomOf="@+id/txtStartPoint" />
+            <TextView
+                android:id="@+id/txtEndPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/txtEndPoint"
+                app:layout_constraintStart_toEndOf="@+id/imgArrow"
+                app:layout_constraintTop_toBottomOf="@+id/txtStartPoint" />
 
 
-                <TextView
-                    android:id="@+id/txtDuration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:text="duration"
-                    android:textColor="#028579"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="duration"
+                android:textColor="#028579"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtDistance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="distance"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#028579"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtDistance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:text="distance"
+                android:textColor="#028579"
+                android:textStyle="bold" />
 
 
-                <Button
-                    android:id="@+id/btnNotes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#EFA73C"
-                    android:contentDescription="@string/btnShowNotes"
-                    android:text="@string/btnShowNotes"
-                    android:textColor="@color/white" />
+            <Button
+                android:id="@+id/btnNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#EFA73C"
+                android:contentDescription="@string/btnShowNotes"
+                android:paddingTop="10dp"
+                android:text="@string/btnShowNotes"
+                android:textColor="@color/white" />
 
-            </LinearLayout>
+        </LinearLayout>
 
             <!--end hidden content-->
 
 
         <Button
             android:id="@+id/btnStartTrip"
-            android:layout_width="325dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:contentDescription="@string/deleteTrip"
             android:text="@string/Delete"
             app:backgroundTint="@color/dark_blue"

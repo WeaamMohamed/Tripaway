@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.tripaway.HomeActivity;
 import com.example.tripaway.LoginActivity;
 import com.example.tripaway.NewTripActivity;
 import com.example.tripaway.databinding.FragmentLogoutBinding;
@@ -27,7 +26,10 @@ public class SlideshowFragment extends Fragment {
 
 
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getContext(), LoginActivity.class));
+        Intent intent = new Intent(getContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        startActivity(intent ) ;
+        getActivity().finish();
 
 
 

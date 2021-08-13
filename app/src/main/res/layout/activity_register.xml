@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
 
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -74,13 +76,14 @@
         android:id="@+id/txt_login_click"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="80dp"
-        android:clickable="true"
-        android:text="@string/login2"
         android:layout_below="@id/edit_txt_password"
         android:layout_centerInParent="true"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="50dp"
+        android:clickable="true"
         android:focusable="true"
-        android:layout_marginBottom="50dp"/>
+        android:text="Already Registered?  login"
+        android:textColor="@color/dark_blue" />
 
     <Button
         android:id="@+id/btn_sign_up"
@@ -101,15 +104,35 @@
         android:layout_below="@id/btn_sign_up"
         android:layout_centerInParent="true" />
 
-    <Button
-        android:id="@+id/btn_facebook"
+
+
+    <FrameLayout
+        android:id="@+id/FrameLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/facebook"
         android:layout_below="@id/btn_sign_up"
-        android:layout_centerInParent="true"
-        android:layout_toEndOf="@id/btn_google"
-        android:layout_marginStart="5dp"/>
+        android:layout_toEndOf="@id/btn_google">
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/btn_facebook_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+
+        <Button
+            android:id="@+id/btn_facebook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/facebook"
+            android:layout_below="@id/btn_sign_up"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/btn_google"
+            android:layout_marginStart="5dp"/>
+    </FrameLayout>
+
+
+
 
     <Button
         android:id="@+id/btn_twitter"

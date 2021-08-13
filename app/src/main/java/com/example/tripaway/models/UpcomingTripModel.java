@@ -124,7 +124,7 @@ public class UpcomingTripModel {
     }
 
     public void setOneDirection(boolean oneDirection) {
-        this.isOneDirection = isOneDirection;
+        this.isOneDirection = oneDirection;
     }
 
     public int getRepeat() {

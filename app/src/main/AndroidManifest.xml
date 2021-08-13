@@ -25,7 +25,6 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".HomeActivity" />
         <activity
             android:name=".HomeScreenActivity"
             android:exported="true"

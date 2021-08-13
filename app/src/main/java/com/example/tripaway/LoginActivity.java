@@ -37,7 +37,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
-    FirebaseAuth Auth;
     EditText etEmail, etPassword;
     TextView tvSignUp;
     Button btnLogin;
@@ -45,19 +44,12 @@ public class LoginActivity extends AppCompatActivity {
     final String TAG = "WEAAM";
     private final static int RC_SIGN_IN = 123;
 
-    LoginButton btnFacebook;
-    CallbackManager mCallbackManager;
-    private GoogleSignInClient mGoogleSignInClient;
-    Button btnLoginGoogle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//        CallbackManager mCallbackManager = CallbackManager.Factory.create();
 
         FacebookSdk.sdkInitialize(getApplicationContext());
 
@@ -66,50 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         tvSignUp = findViewById(R.id.txt_signup);
         mAuth = FirebaseAuth.getInstance();
-        //btnFacebook = findViewById(R.id.login_facebook_button);
-
-        //btnLoginGoogle =findViewById(R.id.signin_google_button);
-        /*
-        btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signInWithGoogle();
-            }
-        });
-        */
-       //btnFacebook.setReadPermissions("email");
-
-        //mCallbackManager = CallbackManager.Factory.create();
-
-        /*
-        // Callback registration
-        btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-
-                Toast.makeText(LoginActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "Authentication with facebook Successfully");
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-                //TODO:
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-                //TODO:
-            }
-        });
-
-        createGoogleRequest();
-
-        */
 
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,101 +87,90 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void createGoogleRequest() {
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
-
-    }
-
-
-    //to signIn with google
-    private void signInWithGoogle() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        //TODO:
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
 
     private void loginUser() {
+
 
         String email = etEmail.getText().toString();
         String password = etPassword.getText().toString();
 
-        //TODO: validation
-
-        if(TextUtils.isEmpty(email))
-        {
-
-            etEmail.setError("Email cannot be empty.");
-            etEmail.requestFocus();
-        }
-        else if(TextUtils.isEmpty(password))
-        {
-            etPassword.setError("password cannot be empty.");
-            etPassword.requestFocus();
-
-        }
-       else
+        if(validate(email, password))
         {
 
 
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                     new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(Task<AuthResult> task) {
+                        @Override
+                        public void onComplete(Task<AuthResult> task) {
 
 
-                    if(task.isSuccessful())
-                    {
+                            if(task.isSuccessful())
+                            {
 
-                        Toast.makeText(LoginActivity.this, "Successful login", Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, " Successful login");
-//                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                        startActivity(intent);
-
-                        Intent i = new Intent(LoginActivity.this, HomeScreenActivity.class);
-                        //   set the new task and clear flags
-                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(i);
+                               // Toast.makeText(LoginActivity.this, "Successful login", Toast.LENGTH_SHORT).show();
+                                Log.i(TAG, " Successful login");
 
 
-
-                    }
-                    else {
-
-
-                        //TODO: use red toast
-                        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                        Log.i(TAG, "login  failed" + task.getException().getMessage());
-
-
-                    }
+                                Intent i = new Intent(LoginActivity.this, HomeScreenActivity.class);
+                                //   set the new task and clear flags
+                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(i);
 
 
 
-                }
-            });
+                            }
+                            else {
+
+
+                                //TODO: use red toast
+                                Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                                Log.i(TAG, "login  failed" + task.getException().getMessage());
+
+
+                            }
+
+
+
+                        }
+                    });
         }
+
+
+
+
 
     }
 
+    private boolean validate(String email, String password) {
+        boolean valid = true;
 
 
+        //TODO: validation
 
-    //TODO: search
+        if(email.isEmpty())
+        {
+            etEmail.setError("Email cannot be empty.");
+            etEmail.requestFocus();
+            valid = false;
+        }
+        else
+        {
+            etEmail.setError(null);
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-//
+        }
+        if(password.isEmpty())
+        {
+            etPassword.setError("password cannot be empty.");
+            valid = false;
+
+        }
+        else
+        {
+            etPassword.setError(null);
+        }
+
+        return valid;
+    }
 
 
     @Override
@@ -282,22 +219,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//
-//
-//
-//        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-//        //   set the new task and clear flags
-//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(i);
-//
-//    }
 
 
 
