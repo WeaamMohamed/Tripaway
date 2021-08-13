@@ -112,7 +112,8 @@
                 android:layout_marginTop="4dp"
                 android:text="distance"
                 android:textColor="#028579"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
 
             <Button

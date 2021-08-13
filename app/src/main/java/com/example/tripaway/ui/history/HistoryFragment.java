@@ -118,8 +118,8 @@ public class HistoryFragment extends Fragment {
 
 
                 holder.tvTripName.setText(model.getTripName());
-                holder.tvStartPoint.setText(model.getStartPoint());
-                holder.tvEndPoint.setText(model.getEndPoint());
+                holder.tvStartPoint.setText("From " + model.getStartPoint());
+                holder.tvEndPoint.setText("To "+ model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
                 holder.tvDistance.setText(model.getDistance());

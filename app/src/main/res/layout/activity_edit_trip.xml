@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewTripActivity">
+
+
+    <EditText
+        android:id="@+id/edtTitleNew"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Trip name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="@string/edtTitleNew"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtStartPoint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:editable="false"
+        android:ems="10"
+        android:hint="Start point"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="@string/edtStartPointNew"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCurrentLocation" />
+
+    <EditText
+        android:id="@+id/edtEndPoint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="End point"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:text="@string/edtEndPointNew"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtStartPoint" />
+
+    <Button
+        android:id="@+id/btnCurrentLocation"
+        android:layout_width="113dp"
+        android:layout_height="41dp"
+        android:text="@string/btnCurrentLocation"
+        app:backgroundTint="@color/dark_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtTitleNew" />
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btnTimePicker"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="@string/pickTime"-->
+    <!--        tools:layout_editor_absoluteX="56dp"-->
+    <!--        tools:layout_editor_absoluteY="312dp" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btnDatePicker"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="@string/pickTime"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btnTimePicker"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/edtEndPointNew" />-->
+
+    <EditText
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="Pick date"
+        android:inputType="textPersonName"
+        android:text="@string/datePicker"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtEndPoint" />
+
+    <EditText
+        android:id="@+id/timePicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="Pick time"
+        android:inputType="textPersonName"
+        android:text="@string/timePicker"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+
+    <Button
+        android:id="@+id/btnEditTrip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/dark_blue"
+        android:text="Save Changes"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/repeaterSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/txtRepeaterSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtRepeaterSpinner"
+        app:layout_constraintTop_toTopOf="@+id/txtRepeaterSpinner" />
+
+    <Spinner
+        android:id="@+id/directionSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDirectionSpinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDirectionSpinner"
+        app:layout_constraintTop_toTopOf="@+id/txtDirectionSpinner" />
+
+    <TextView
+        android:id="@+id/txtRepeaterSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:hint="repeat"
+        android:text="@string/txtEndPoint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timePicker" />
+
+    <TextView
+        android:id="@+id/txtDirectionSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:hint="direcion"
+        android:text="@string/txtDirectionSpinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtRepeaterSpinner" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

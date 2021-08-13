@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripaway">
-        <activity android:name=".UpcomingTripsActivity"></activity>
+        <activity android:name=".EditTripActivity"></activity>
+        <activity android:name=".UpcomingTripsActivity" />
         <activity
             android:name=".Splash"
             android:exported="true" />
@@ -32,7 +33,7 @@
             android:theme="@style/Theme.Tripaway.NoActionBar" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".ui.Upcoming.FloatingWidgetActivity"/>
+        <activity android:name=".ui.Upcoming.FloatingWidgetActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,7 +46,6 @@
             android:name=".ui.Upcoming.FloatingWidgetService"
             android:enabled="true"
             android:exported="false" />
-
     </application>
 
 </manifest>

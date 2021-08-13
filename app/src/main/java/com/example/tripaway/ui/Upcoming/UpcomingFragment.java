@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripaway.EditTripActivity;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.OldTripsModel;
@@ -49,8 +50,8 @@ public class UpcomingFragment extends Fragment {
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
-    String clickedDocumentId;
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
+
 //    private static final String ST_POINT = "START";
 //    private static final String END_POINT = "END";
 
@@ -116,12 +117,8 @@ public class UpcomingFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
 
-                getSnapshots().getSnapshot(position).getId();
+               // clickedDocumentId = getSnapshots().getSnapshot(position).getId();
 
-
-//                Log.i("WEAAM", "document id: " +  getSnapshots().getSnapshot(position).getId());
-//                Log.i("WEAAM", "document : " +   getItem(position));
-                getSnapshots().getSnapshot(position).getId();
 
 
                 holder.tvTripName.setText(model.getTripName());
@@ -130,8 +127,11 @@ public class UpcomingFragment extends Fragment {
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
                 holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View view) {
+                       // clickedDocumentId = getSnapshots().getSnapshot(position).getId();
+
                         //creating a popup menu
                         PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonViewOption);
                         //inflating menu from xml resource
@@ -147,6 +147,7 @@ public class UpcomingFragment extends Fragment {
                                         return true;
                                     case R.id.menuActionEdit:
                                         //handle menu2 click
+                                        openEditActivity(getSnapshots().getSnapshot(position).getId());
                                         return true;
                                     case R.id.menuActionDelete:
                                         deleteUpcomingTripFromFireStore(getSnapshots().getSnapshot(position).getId());
@@ -190,7 +191,8 @@ public class UpcomingFragment extends Fragment {
 //                            getActivity().startService(new Intent(getActivity(), FloatingWidgetService.class));
 //                            getActivity().finish();
 //                        }
-                         clickedDocumentId = getSnapshots().getSnapshot(position).getId();
+
+                        sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId());
 
                         Intent intent = new Intent(getActivity(), FloatingWidgetActivity.class);
                         String stPoint = model.getStartPoint();
@@ -200,7 +202,6 @@ public class UpcomingFragment extends Fragment {
                         startActivity(intent);
 
 
-                        sendDataFromUpcomingToHistory(clickedDocumentId);
 
                       // deleteUpcomingTripFromFireStore(clickedDocumentId);
 
@@ -234,6 +235,14 @@ public class UpcomingFragment extends Fragment {
         return view;
     }
 
+    private void openEditActivity(String clickedDocumentId) {
+
+        Intent intent = new Intent(getActivity(), EditTripActivity.class);
+        intent.putExtra("documentId", clickedDocumentId);
+        startActivity(intent);
+
+    }
+
     private void sendDataFromUpcomingToHistory(String documentId) {
 
 
@@ -248,7 +257,7 @@ public class UpcomingFragment extends Fragment {
                    public void onSuccess(DocumentSnapshot documentSnapshot) {
                      upcomingMapData =  documentSnapshot.getData();
                      sendingDataToOldTripsFireStore(upcomingMapData);
-                     deleteUpcomingTripFromFireStore(clickedDocumentId);
+                     deleteUpcomingTripFromFireStore(documentId);
                    }
                });
 
