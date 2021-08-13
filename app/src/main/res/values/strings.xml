@@ -32,7 +32,7 @@
     <string name="btnNotes">btnNotes</string>
     <string name="LOGO">LOGO</string>
     <string name="mail">mail</string>
-    <string name="username">useName</string>
+    <string name="username">Username</string>
     <string name="btnHomeScreenActivity">btnHomeScreenActivity</string>
     <string name="title_activity_home_screen2">HomeScreenActivity2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -80,5 +80,6 @@
     <string name="deleteTrip">DELETE</string>
 
     <string name="draw_other_app_permission_denied">Draw over other app permission not available. App won\'t work without permission. Please try again.</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>

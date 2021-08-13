@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,6 +44,7 @@
             android:minHeight="48dp"
             android:text="@string/edtTitleNew"
             android:textSize="20sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +58,7 @@
             android:editable="false"
             android:ems="10"
             android:hint="Start point"
+            android:layout_marginStart="10dp"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text="@string/edtStartPointNew"
@@ -71,6 +73,7 @@
             android:layout_marginTop="20dp"
             android:ems="10"
             android:hint="End point"
+            android:layout_marginStart="10dp"
             android:inputType="textPersonName"
             android:minHeight="48dp"
             android:text="@string/edtEndPointNew"
@@ -115,6 +118,7 @@
             android:inputType="textPersonName"
             android:text="@string/datePicker"
             android:textSize="20sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edtEndPoint" />
 
@@ -129,6 +133,7 @@
             android:inputType="textPersonName"
             android:text="@string/timePicker"
             android:textSize="20sp"
+            android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/datePicker" />
 
@@ -170,6 +175,7 @@
             android:layout_marginTop="36dp"
             android:hint="repeat"
             android:text="@string/txtEndPoint"
+            android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/timePicker" />
 
@@ -180,6 +186,7 @@
             android:layout_marginTop="58dp"
             android:hint="direcion"
             android:text="@string/txtDirectionSpinner"
+            android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtRepeaterSpinner" />
 

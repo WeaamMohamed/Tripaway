@@ -62,12 +62,28 @@
             android:layout_height="62dp"
             android:layout_below="@id/edit_txt_email"
             android:layout_centerInParent="true"
-            android:layout_marginTop="8dp"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_password"
             android:drawablePadding="12dp"
             android:ems="10"
             android:hint="@string/password"
+            android:inputType="textPassword"
+            android:paddingStart="5dp"
+            android:layout_marginBottom="10dp"
+            android:autofillHints=""
+            tools:ignore="RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/edit_confirm_password"
+            android:layout_width="250dp"
+            android:layout_height="62dp"
+            android:layout_below="@id/edit_txt_password"
+            android:layout_centerInParent="true"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="12dp"
+            android:ems="10"
+            android:hint="@string/confirm_password"
             android:inputType="textPassword"
             android:paddingStart="5dp"
             android:layout_marginBottom="20dp"
@@ -78,7 +94,7 @@
             android:id="@+id/txt_login_click"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/edit_txt_password"
+            android:layout_below="@id/edit_confirm_password"
             android:layout_centerInParent="true"
             android:layout_marginEnd="80dp"
             android:layout_marginBottom="50dp"
@@ -132,8 +148,6 @@
                 android:layout_toEndOf="@id/btn_google"
                 android:layout_marginStart="5dp"/>
         </FrameLayout>
-
-
 
 
         <Button
