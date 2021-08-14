@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripaway">
         <activity android:name=".EditTripActivity"></activity>
+        <activity android:name=".NotesActivity"></activity>
         <activity android:name=".UpcomingTripsActivity" />
         <activity
             android:name=".Splash"

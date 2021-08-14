@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripaway.NotesActivity;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.UpcomingTripModel;
@@ -119,6 +120,8 @@ public class UpcomingFragment extends Fragment {
                                 switch (item.getItemId()) {
                                     case R.id.menuActionNotes:
                                         //handle menu1 click
+                                        Intent intent = new Intent(getContext(), NotesActivity.class);
+                                        startActivity(intent);
                                         return true;
                                     case R.id.menuActionEdit:
                                         //handle menu2 click
