@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -34,6 +35,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     final String TAG = "WEAAM";
     private final static int RC_SIGN_IN = 123;
+    FirebaseFirestore dbFireStore;
 
 
     @Override
@@ -58,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         tvSignUp = findViewById(R.id.txt_signup);
         mAuth = FirebaseAuth.getInstance();
+        dbFireStore = FirebaseFirestore.getInstance();
 
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
 
-                               // Toast.makeText(LoginActivity.this, "Successful login", Toast.LENGTH_SHORT).show();
                                 Log.i(TAG, " Successful login");
 
 
@@ -115,6 +119,8 @@ public class LoginActivity extends AppCompatActivity {
                                 //   set the new task and clear flags
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(i);
+
+                                saveOldTimeAndDateToSQL();
 
 
 
@@ -137,6 +143,27 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
+    }
+
+    private void saveOldTimeAndDateToSQL() {
+
+        dbFireStore.collection("users").document(mAuth.getUid())
+                .collection("upcoming")
+                .get().addOnSuccessListener(data -> {
+
+
+                    if(data.getDocuments() != null)
+                       for(int i = 0; i< data.getDocuments().size(); i++)
+                       {
+                           Log.i("date",  data.getDocuments().get(i).getString("date"));
+                           Log.i("time",  data.getDocuments().get(i).getString("time"));
+                       }
+
+
+
+                });
 
 
     }

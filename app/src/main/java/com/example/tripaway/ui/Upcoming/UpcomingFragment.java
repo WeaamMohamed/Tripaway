@@ -113,6 +113,11 @@ public class UpcomingFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
 
+
+
+
+
+
                 getSnapshots().getSnapshot(position).getId();
                 getSnapshots().getSnapshot(position).getId();
                 holder.tvTripName.setText(model.getTripName());
@@ -202,6 +207,8 @@ public class UpcomingFragment extends Fragment {
         //  recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+
+
         return view;
     }
 
