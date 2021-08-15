@@ -59,7 +59,7 @@ public class UpcomingFragment extends Fragment {
     private FirebaseFirestore dbFireStore;
     private FirebaseAuth mAuth;
     FirestoreRecyclerAdapter adapter;
-    AlarmManager alarmManager;
+
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
@@ -105,11 +105,12 @@ public class UpcomingFragment extends Fragment {
             @Override
             public UpcomingTripsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
+
                 return new UpcomingTripsViewHolder(view);
             }
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
-                alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+
                 getSnapshots().getSnapshot(position).getId();
                 getSnapshots().getSnapshot(position).getId();
                 holder.tvTripName.setText(model.getTripName());
@@ -117,31 +118,8 @@ public class UpcomingFragment extends Fragment {
                 holder.tvEndPoint.setText("to "+model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
-                Intent intent = new Intent(getActivity(), AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+                holder.setAlarm(holder.tvDate.getText().toString(),holder.tvTime.getText().toString());
 
-                String dateTime = holder.tvDate.getText().toString() +" "+holder.tvTime.getText().toString();
-                SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
-                Date date = new Date();
-                try {
-                    date = yourDateFormat.parse(dateTime);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(date);
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing date time failed", e);
-                }
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
-                Calendar current = Calendar.getInstance();
-
-                if(cal.compareTo(current) <= 0)
-                {
-                    //The set Date/Time already passed
-                    Toast.makeText(getApplicationContext(), "Invalid Date/Time", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 0, pendingIntent);
-                }
                 holder.btnNotes.setOnClickListener(view1 -> {
 
                     openNotesActivity(getSnapshots().getSnapshot(position).getId());
@@ -354,10 +332,34 @@ public class UpcomingFragment extends Fragment {
                 startMap = itemView.findViewById(R.id.btnStartTrip);
                 btnNotes = itemView.findViewById(R.id.btnNotes);
 
+            }
+            public void setAlarm(String Date ,String time) {
+                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
 
-//
+                String dateTime = Date +" "+ time;
+                SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
+                java.util.Date date = new Date();
+                try {
+                    date = yourDateFormat.parse(dateTime);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing date time failed", e);
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                Calendar current = Calendar.getInstance();
 
-
+                if(cal.compareTo(current) <= 0)
+                {
+                    //The set Date/Time already passed
+                    Toast.makeText(getApplicationContext(), "Invalid Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 0, pendingIntent);
+                }
             }
         }
 
