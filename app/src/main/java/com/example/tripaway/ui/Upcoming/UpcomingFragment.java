@@ -1,5 +1,12 @@
 package com.example.tripaway.ui.Upcoming;
+
+import static android.content.ContentValues.TAG;
+import static android.content.Context.ALARM_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,12 +19,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripaway.AlarmReceiver;
 import com.example.tripaway.EditTripActivity;
 import com.example.tripaway.NotesActivity;
 import com.example.tripaway.R;
@@ -35,6 +44,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +59,7 @@ public class UpcomingFragment extends Fragment {
     private FirebaseFirestore dbFireStore;
     private FirebaseAuth mAuth;
     FirestoreRecyclerAdapter adapter;
+    AlarmManager alarmManager;
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
@@ -95,14 +109,39 @@ public class UpcomingFragment extends Fragment {
             }
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
+                alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
                 getSnapshots().getSnapshot(position).getId();
-
                 getSnapshots().getSnapshot(position).getId();
                 holder.tvTripName.setText(model.getTripName());
                 holder.tvStartPoint.setText("From "+ model.getStartPoint());
                 holder.tvEndPoint.setText("to "+model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
+                Intent intent = new Intent(getActivity(), AlarmReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0, intent, 0);
+
+                String dateTime = holder.tvDate.getText().toString() +" "+holder.tvTime.getText().toString();
+                SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
+                Date date = new Date();
+                try {
+                    date = yourDateFormat.parse(dateTime);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(date);
+                } catch (ParseException e) {
+                    Log.e(TAG, "Parsing date time failed", e);
+                }
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                Calendar current = Calendar.getInstance();
+
+                if(cal.compareTo(current) <= 0)
+                {
+                    //The set Date/Time already passed
+                    Toast.makeText(getApplicationContext(), "Invalid Date/Time", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 0, pendingIntent);
+                }
                 holder.btnNotes.setOnClickListener(view1 -> {
 
                     openNotesActivity(getSnapshots().getSnapshot(position).getId());

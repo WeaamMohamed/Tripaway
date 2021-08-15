@@ -30,5 +30,8 @@
     <style name="Theme.Tripaway.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Tripaway.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AlertDialogMy" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item> //delete this line if you need to show Title.
+    </style>
 </resources>
 

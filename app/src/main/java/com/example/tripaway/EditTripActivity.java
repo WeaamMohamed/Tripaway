@@ -1,8 +1,6 @@
 package com.example.tripaway;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import static android.content.ContentValues.TAG;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -20,6 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tripaway.models.UpcomingTripModel;
 import com.google.android.gms.common.api.Status;
@@ -42,8 +44,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.content.ContentValues.TAG;
 
 public class EditTripActivity extends AppCompatActivity {
 
@@ -393,19 +393,35 @@ public class EditTripActivity extends AppCompatActivity {
     }
     private void handleTime() {
         Calendar calendar = Calendar.getInstance();
-        int HOUR = calendar.get(Calendar.HOUR);
+        int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
         int MINUTE = calendar.get(Calendar.MINUTE);
         boolean is24HourFormat = DateFormat.is24HourFormat(this);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                timePicker.setIs24HourView(true);
                 Log.i(TAG, "onTimeSet: " + hour + minute);
-                Calendar calendar1 = Calendar.getInstance();
-                calendar1.set(Calendar.HOUR, hour);
-                calendar1.set(Calendar.MINUTE, minute);
-                String dateText = DateFormat.format("h:mm a", calendar1).toString();
-                txtTimePicker.setText(dateText);
+//                Calendar calendar1 = Calendar.getInstance();
+//                calendar1.set(Calendar.HOUR_OF_DAY, hour);
+//                calendar1.set(Calendar.MINUTE, minute);
+//                String dateText = DateFormat.format("h:mm a", calendar1).toString();
+//
+//                time = calendar1.getTimeInMillis() - (calendar1.getTimeInMillis() % 60000);
+//               apm = calendar1.AM_PM;
+//               ////////////
+//                String myDate = hour+":"+minute;
+//                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+//                Date date = null;
+//                try {
+//                    date = sdf.parse(myDate);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                long millis = date.getTime();
+//                time2 = millis + System.currentTimeMillis();
+//                ///////////////
+                txtTimePicker.setText(hour+":"+minute);
             }
         }, HOUR, MINUTE, is24HourFormat);
 

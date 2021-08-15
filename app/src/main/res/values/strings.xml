@@ -78,6 +78,10 @@
     <string name="btn"><![CDATA[&#8942;]]></string>
     <string name="btnShowNotes">SHOW NOTES</string>
     <string name="deleteTrip">DELETE</string>
+    <string name="ok">start</string>
+    <string name="cancel">cancel</string>
+    <string name="title_activity_alert_dialog">title_activity_alert_dialog</string>
+    <string name="snooze">snooze</string>
 
     <string name="draw_other_app_permission_denied">Draw over other app permission not available. App won\'t work without permission. Please try again.</string>
     <string name="confirm_password">Confirm Password</string>
