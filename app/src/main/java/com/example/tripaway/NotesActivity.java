@@ -102,7 +102,7 @@ public class NotesActivity extends AppCompatActivity {
                 // When clicking this button, the data will be sent to firebase
                 // or we may store these notes into a list then we send the list to firebase
 
-//change
+//change2
                 for(int i=0; i <= lastIndex; i++)
                 {
                     Log.i("WEAAM", editTextList.get(i).getText().toString());
