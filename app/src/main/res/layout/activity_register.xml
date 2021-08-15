@@ -114,6 +114,8 @@
             android:paddingStart="50dp"
             android:layout_marginBottom="40dp"/>
 
+
+
         <Button
             android:id="@+id/btn_google"
             android:layout_width="wrap_content"
@@ -131,23 +133,26 @@
             android:layout_below="@id/btn_sign_up"
             android:layout_toEndOf="@id/btn_google">
 
+
+
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/btn_facebook_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
-
             <Button
                 android:id="@+id/btn_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/facebook"
+                android:onClick="onFaceBookClicked"
                 android:layout_below="@id/btn_sign_up"
                 android:layout_centerInParent="true"
                 android:layout_toEndOf="@id/btn_google"
                 android:layout_marginStart="5dp"/>
         </FrameLayout>
+
 
 
         <Button

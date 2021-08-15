@@ -6,6 +6,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +47,7 @@ import com.google.firebase.firestore.Query;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -122,7 +124,9 @@ public class UpcomingFragment extends Fragment {
 
                 holder.btnNotes.setOnClickListener(view1 -> {
 
-                    openNotesActivity(getSnapshots().getSnapshot(position).getId());
+                    openNotesDialog(getSnapshots().getSnapshot(position).getId());
+
+                 //   openNotesActivity(getSnapshots().getSnapshot(position).getId());
 
 
                 });
@@ -200,6 +204,59 @@ public class UpcomingFragment extends Fragment {
         return view;
     }
 
+
+    private void openNotesDialog(String selectedDocumentId) {
+
+
+
+        dbFireStore.collection("users")
+                .document(mAuth.getUid())
+                .collection("upcoming")
+                .document(selectedDocumentId)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                String message ="";
+                ArrayList<String> oldNotes = (ArrayList<String>) documentSnapshot.get("notes");
+                if(oldNotes != null)
+                    for(int i =0; i< oldNotes.size(); i++)
+                    {
+//                        //addNoteEditText();
+//                        editTextList.get(i).setText(oldNotes.get(i));
+
+                        message += oldNotes.get(i) + "\n";
+
+                    }
+
+                if(message.equals(""))
+                    message = "You haven't added any notes";
+
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+                // set title
+                alertDialogBuilder.setTitle("Notes");
+
+                // set dialog message
+                alertDialogBuilder.setMessage(message).setCancelable(false);
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                // To cancel dialog
+                alertDialog.setCanceledOnTouchOutside(true);
+
+
+                // alertDialog.dismiss();
+            }
+        });
+
+
+    }
 
 
     private void openNotesActivity(String clickedDocumentId) {

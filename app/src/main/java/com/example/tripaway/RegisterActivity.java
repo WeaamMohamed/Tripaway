@@ -44,7 +44,7 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     Button btnRegister;
-    EditText etName, etEmail, etPassword;
+    EditText etName, etEmail, etPassword, etConfirmPassword;
     private FirebaseAuth mAuth;
 
     Button btnFacebook, btnGoogle, btnTwitter;
@@ -64,12 +64,14 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         //TODO:
+        mAuth = FirebaseAuth.getInstance();
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         btnRegister = findViewById(R.id.btn_sign_up);
         etName = findViewById(R.id.edit_txt_name);
         etEmail = findViewById(R.id.edit_txt_email);
         etPassword = findViewById(R.id.edit_txt_password);
+        etConfirmPassword = findViewById(R.id.edit_confirm_password);
 
         btnFacebook = findViewById(R.id.btn_facebook);
         btnGoogle = findViewById(R.id.btn_google);
@@ -80,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
         btnFacebookLogin = (LoginButton) findViewById(R.id.btn_facebook_login);
 
         mCallbackManager = CallbackManager.Factory.create();
-        mAuth = FirebaseAuth.getInstance();
         btnFacebookLogin.setReadPermissions("email", "public_profile");
 
 
@@ -91,41 +92,6 @@ public class RegisterActivity extends AppCompatActivity {
         createGoogleRequest();
 
         // Callback registration
-        btnFacebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-
-                handleFacebookAccessToken(loginResult.getAccessToken());
-
-                Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
-                Log.i(TAG, "Authentication with facebook Successfully");
-//                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-//                startActivity(intent);
-                Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
-                //   set the new task and clear flags
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-
-
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-                //TODO:
-                Log.i("WEAAM", "onCancel");
-            }
-
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-                //TODO:
-                Log.i("WEAAM", "onError");
-
-            }
-        });
 
 
 
@@ -163,22 +129,38 @@ public class RegisterActivity extends AppCompatActivity {
 
             AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
             mAuth.signInWithCredential(credential)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithCredential:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
+                        public void onSuccess(AuthResult authResult) {
+                            Log.d(TAG, "signInWithCredential:success");
+                               FirebaseUser user = mAuth.getCurrentUser();
 
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithCredential:failure", task.getException());
-                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
                         }
-                    });
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "signInWithCredential:fail" + e.getMessage());
+//
+
+                }
+            });
+
+//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                            if (task.isSuccessful()) {
+//                                // Sign in success, update UI with the signed-in user's information
+//                                Log.d(TAG, "signInWithCredential:success");
+//                                FirebaseUser user = mAuth.getCurrentUser();
+//
+//                            } else {
+//                                // If sign in fails, display a message to the user.
+//                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+//                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    });
         }
 
 
@@ -211,8 +193,9 @@ public class RegisterActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String name = etName.getText().toString();
+        String confirmPassword = etConfirmPassword.getText().toString();
 
-        if(validate(name, email, password))
+        if(validate(name, email, password, confirmPassword))
         {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -275,7 +258,7 @@ public class RegisterActivity extends AppCompatActivity {
                     else {
 
                         //TODO: use red toast
-                        Toast.makeText(RegisterActivity.this, "Registration  failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         Log.i(TAG, "Registration  failed" + task.getException().getMessage());
 
 
@@ -290,10 +273,19 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private boolean validate(String name, String email, String password) {
+    private boolean validate(String name, String email, String password, String confirmPassword) {
         boolean valid = true;
 
 
+        if(name.isEmpty())
+        {
+            etName.setError("name cannot be empty.");
+            etName.requestFocus();
+            valid = false;
+        }
+        else {
+            etName.setError(null);
+        }
 
         if(email.isEmpty())
         {
@@ -333,15 +325,25 @@ public class RegisterActivity extends AppCompatActivity {
             etPassword.setError(null);
         }
 
-        if(name.isEmpty())
+
+        if(confirmPassword.isEmpty())
         {
-            etName.setError("name cannot be empty.");
-            etName.requestFocus();
+            etConfirmPassword.setError("Empty.");
+            etConfirmPassword.requestFocus();
             valid = false;
         }
-        else {
-            etName.setError(null);
+        else if(!confirmPassword.equals(password)){
+
+            etConfirmPassword.setError("Password doesn't match.");
+            etConfirmPassword.requestFocus();
+            valid = false;
+
         }
+        else
+        {
+            etConfirmPassword.setError(null);
+        }
+
 
         return valid;
     }
@@ -440,4 +442,46 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+    public void onFaceBookClicked(View view) {
+
+        if (view == btnRegister) {
+            btnFacebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    // App code
+
+                    handleFacebookAccessToken(loginResult.getAccessToken());
+
+                    Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "Authentication with facebook Successfully" + loginResult.getAccessToken().getUserId());
+//                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//                Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
+//                //   set the new task and clear flags
+//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                startActivity(i);
+
+
+                }
+
+                @Override
+                public void onCancel() {
+                    // App code
+                    //TODO:
+                    Log.i("WEAAM", "onCancel");
+                }
+
+
+                @Override
+                public void onError(FacebookException exception) {
+                    // App code
+                    //TODO:
+                    Log.i("WEAAM", "onError");
+
+                }
+            });
+
+        }
+
+    }
 }
