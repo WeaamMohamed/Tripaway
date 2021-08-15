@@ -1,23 +1,7 @@
 package com.example.tripaway.models;
 
 
-import static android.content.ContentValues.TAG;
-import static android.content.Context.ALARM_SERVICE;
-import static com.facebook.FacebookSdk.getApplicationContext;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.tripaway.AlarmReceiver;
-
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +21,7 @@ public class UpcomingTripModel {
     private Timestamp timestamp;
    // private Map<String , Object> map;
 
-    public UpcomingTripModel(String tripName, String date, String time, List<String> notes) {
+    public UpcomingTripModel(String tripName, String date, String time) {
         this.tripName = tripName;
         this.date = date;
         this.time = time;

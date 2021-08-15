@@ -122,6 +122,7 @@ public class UpcomingFragment extends Fragment {
                 holder.tvTime.setText(model.getTime());
                 holder.setAlarm(holder.tvDate.getText().toString(),holder.tvTime.getText().toString());
 
+
                 holder.btnNotes.setOnClickListener(view1 -> {
 
                     openNotesDialog(getSnapshots().getSnapshot(position).getId());

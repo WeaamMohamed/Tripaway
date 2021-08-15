@@ -6,12 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import org.w3c.dom.Text;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.util.Collections;
-
 public class DatabaseAdapter {
     private static Helper dbHelper;
     private Context context;
@@ -21,14 +15,13 @@ public class DatabaseAdapter {
         dbHelper = new Helper(context);
     }
 
-    public long insertTrip(String tripName,String time, String date, String notes) {
+    public long insertTrip(String tripName,String time, String date) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         cv.put(Helper.TRIP_NAME, tripName);
         cv.put(Helper.TIME.toString(), time);
         cv.put(Helper.DATE.toString(),date);
-        cv.put(String.valueOf(Helper.NOTES), notes);
         long id = db.insert(Helper.TABLE_NAME, null, cv);
         return id;
     }
@@ -38,11 +31,11 @@ public class DatabaseAdapter {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int i = 0;
         Cursor c;
-        String[] columns = {Helper.UID, Helper.TRIP_NAME, String.valueOf(Helper.TIME), String.valueOf(Helper.DATE), String.valueOf(Helper.NOTES)};
+        String[] columns = {Helper.UID, Helper.TRIP_NAME, Helper.DATE ,Helper.TIME};
         c = db.query(Helper.TABLE_NAME, columns, null, null, null, null, null);
         trips = new UpcomingTripModel[c.getCount()];
         while (c.moveToNext()) {
-            trips[i] = new UpcomingTripModel(c.getString(0),c.getString(1),c.getString(2), Collections.singletonList(c.getString(3)));
+            trips[i] = new UpcomingTripModel(c.getString(0),c.getString(1),c.getString(2));
             i++;
         }
         return trips;
@@ -61,11 +54,10 @@ public class DatabaseAdapter {
         static final String TABLE_NAME = "UPCOMINGTABLE";
         static final String UID = "_id";
         static final String TRIP_NAME = "trip_name";
-        static final Date DATE = Date.valueOf("01 January 2022");
-        static final Time TIME = Time.valueOf("00:00:00");
-        static final Text NOTES = null;
+        static final String DATE = "date";
+        static final String TIME = "time";
         static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME +
-                " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + DATE + " Date, " + TIME + " Time," + TIME + " varchar(25)," + NOTES + " Text;";
+                " (" + UID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + TRIP_NAME + " varchar(25), " + DATE + " varchar(25), " + TIME + " varchar(25)); ";
 
         public Helper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
