@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotesActivity"
-    android:orientation="horizontal">
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginRight="10dp"
+    android:orientation="horizontal"
+    tools:context=".NotesActivity">
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -26,29 +29,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
 
         <Button
             android:id="@+id/btn_plus"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="+"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="30dp"/>
+            android:text="+" />
 
         <Button
             android:id="@+id/btn_minus"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="-"
-            android:layout_marginStart="30dp"/>
+            android:layout_marginStart="30dp"
+            android:text="-" />
 
         <Button
             android:id="@+id/btn_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Notes"
-            android:layout_marginTop="30dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:text="save" />
 
     </LinearLayout>
 

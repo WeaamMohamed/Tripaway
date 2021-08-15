@@ -19,7 +19,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Customize your theme here.D69227 -->
     </style>
 
     <style name="Theme.Tripaway.NoActionBar">
@@ -31,3 +31,4 @@
 
     <style name="Theme.Tripaway.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
+

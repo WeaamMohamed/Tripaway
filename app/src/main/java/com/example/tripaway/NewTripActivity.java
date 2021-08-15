@@ -244,16 +244,16 @@ public class NewTripActivity extends AppCompatActivity  {
 
 
 
-
-        ArrayList<String > notesList = new ArrayList<>();
-        notesList.add("My note");
+//
+//        ArrayList<String > notesList = new ArrayList<>();
+//        notesList.add("My note");
 
         upcomingTripModel = new UpcomingTripModel(tripTitle.getText().toString(),
                 startPoint.getText().toString(), endPoint.getText().toString(),
                 txtDatePicker.getText().toString(),
                 txtTimePicker.getText().toString(),isOneDirection
                 , repeatedAlarm ,
-                notesList,
+                null,
                 new Timestamp( System.currentTimeMillis())
 
         );

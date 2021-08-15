@@ -51,6 +51,10 @@ public class UpcomingTripModel {
     public  Map<String, Object> getUpcomingTripsMap()
     {
 
+//        if(notes.isEmpty())
+//        {
+//            notes.add("You didn't have any note.");
+//        }
         // Create a new user with map
         Map<String, Object> upcomingMap = new HashMap<>();
         upcomingMap.put("tripName", tripName);
@@ -61,7 +65,7 @@ public class UpcomingTripModel {
         upcomingMap.put("repeat", repeat);
         upcomingMap.put("date", date);
         upcomingMap.put("time", time);
-        upcomingMap.put("Notes", notes);
+        upcomingMap.put("notes", notes);
         upcomingMap.put("isOneDirection", isOneDirection);
         upcomingMap.put("timestamp", timestamp);
 

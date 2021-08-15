@@ -1,15 +1,21 @@
 package com.example.tripaway.ui.history;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HistoryFragment extends Fragment {
     //ArrayList<OldTripsModel> historyList ;
@@ -36,12 +43,15 @@ public class HistoryFragment extends Fragment {
     private FragmentUpcomingBinding binding;
     View view;
     ArrayList<OldTripsModel> old;
+    Drawable drawable;
+    private List<String> notesList;
 
 
    // RecyclerView recyclerView;
     private FirebaseFirestore dbFireStore;
     private FirebaseAuth mAuth;
     FirestoreRecyclerAdapter adapter;
+
 
 
 
@@ -55,6 +65,8 @@ public class HistoryFragment extends Fragment {
         recyclerView=(RecyclerView) view.findViewById(R.id.idRVTrips);
         dbFireStore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+
+
         //Query
 
 
@@ -124,6 +136,26 @@ public class HistoryFragment extends Fragment {
                 holder.tvTime.setText(model.getTime());
                 holder.tvDistance.setText(model.getDistance());
                 holder.tvDuration.setText(model.getDuration());
+                holder.btnShowNotes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //
+//                        holder.mDialog.setContentView(R.layout.popup);
+//                        holder.mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    }
+                });
+              //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
+                if(model.isDone())
+                {
+                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.travel6);;
+
+                }
+                else
+                {
+                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.cancel);;
+                }
+
+                holder.imageHistory.setImageDrawable(drawable);
 
 
                 holder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -188,6 +220,9 @@ public class HistoryFragment extends Fragment {
         tvEndPoint, tvDuration, tvDistance;
 
         Button btnDelete, btnShowNotes;
+        ImageView imageHistory;
+        Dialog mDialog;
+
 
         public OldTripsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -201,6 +236,8 @@ public class HistoryFragment extends Fragment {
             tvDistance = itemView.findViewById(R.id.txtDistance);
             btnDelete = itemView.findViewById(R.id.btnStartTrip);
             btnShowNotes = itemView.findViewById(R.id.btnNotes);
+            imageHistory = itemView.findViewById(R.id.imgHistory);
+            mDialog = new Dialog(getActivity());
 
 
 

@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tripaway.EditTripActivity;
 import com.example.tripaway.NotesActivity;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
@@ -47,11 +49,7 @@ public class UpcomingFragment extends Fragment {
     private UpcomingViewModel upcomingViewModel;
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
-    String clickedDocumentId;
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
-//    private static final String ST_POINT = "START";
-//    private static final String END_POINT = "END";
-    // onTripItemClickListener listener;
 
 
 
@@ -98,76 +96,59 @@ public class UpcomingFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull UpcomingTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull UpcomingTripModel model) {
                 getSnapshots().getSnapshot(position).getId();
-//                Log.i("WEAAM", "document id: " +  getSnapshots().getSnapshot(position).getId());
-//                Log.i("WEAAM", "document : " +   getItem(position));
+
                 getSnapshots().getSnapshot(position).getId();
                 holder.tvTripName.setText(model.getTripName());
-                holder.tvStartPoint.setText(model.getStartPoint());
-                holder.tvEndPoint.setText(model.getEndPoint());
+                holder.tvStartPoint.setText("From "+ model.getStartPoint());
+                holder.tvEndPoint.setText("to "+model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
-                holder.buttonViewOption.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //creating a popup menu
-                        PopupMenu popup = new PopupMenu(view.getContext(), holder.buttonViewOption);
-                        //inflating menu from xml resource
-                        popup.inflate(R.menu.card);
-                        //adding click listener
-                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                switch (item.getItemId()) {
-                                    case R.id.menuActionNotes:
-                                        //handle menu1 click
-                                        Intent intent = new Intent(getContext(), NotesActivity.class);
-                                        startActivity(intent);
-                                        return true;
-                                    case R.id.menuActionEdit:
-                                        //handle menu2 click
-                                        return true;
-                                    case R.id.menuActionDelete:
-                                        deleteUpcomingTripFromFireStore(getSnapshots().getSnapshot(position).getId());
-                                        return true;
-                                    case R.id.menuActionCancel:
-                                        //handle menu3 click
-                                        return true;
-                                    default:
-                                        return false;
-                                }
+                holder.btnNotes.setOnClickListener(view1 -> {
+
+                    openNotesActivity(getSnapshots().getSnapshot(position).getId());
+
+
+                });
+                holder.buttonViewOption.setOnClickListener(view12 -> {
+                    //creating a popup menu
+                    PopupMenu popup = new PopupMenu(view12.getContext(), holder.buttonViewOption);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.card);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.menuActionNotes:
+                                    openNotesActivity(getSnapshots().getSnapshot(position).getId());
+                                    return true;
+
+                                case R.id.menuActionEdit:
+                                    openEditActivity(getSnapshots().getSnapshot(position).getId());
+                                    return true;
+
+                                case R.id.menuActionDelete:
+                                    deleteUpcomingTripFromFireStore(getSnapshots().getSnapshot(position).getId());
+                                    return true;
+
+                                case R.id.menuActionCancel:
+
+                                    sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId(), false);
+
+
+                                    return true;
+                                default:
+                                    return false;
                             }
-                        });
-                        //displaying the popup
-                        popup.show();
-                    }
+                        }
+                    });
+                    //displaying the popup
+                    popup.show();
                 });
                 holder.startMap.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-//                        Toast.makeText(getContext(), model.getStartPoint()+model.getEndPoint() , Toast.LENGTH_SHORT).show();
-//                        String source = model.getStartPoint();
-//                        String dest = model.getEndPoint();
-//                        Uri uri = Uri.parse("http://www.google.com/maps/dir/" + source + "/" + dest);
-//                        Intent MapIntent = new Intent(Intent.ACTION_VIEW, uri);
-//                        MapIntent.setPackage("com.google.android.apps.maps");
-//                        if(MapIntent.resolveActivity(getContext().getPackageManager())  != null){
-//                            startActivity(MapIntent);
-//                        }
-//
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(getActivity())) {
-//                            //If the draw over permission is not available open the settings screen
-//                            //to grant the permission.
-//                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-//                                    Uri.parse("package:" + getContext().getPackageName()));
-//                            getActivity().startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
-//                        }
-//                        else {
-//                            //If permission is granted start floating widget service
-//                            //startFloatingWidgetService();
-//                            getActivity().startService(new Intent(getActivity(), FloatingWidgetService.class));
-//                            getActivity().finish();
-//                        }
-                        clickedDocumentId = getSnapshots().getSnapshot(position).getId();
+
 
                         Intent intent = new Intent(getActivity(), FloatingWidgetActivity.class);
                         String stPoint = model.getStartPoint();
@@ -176,8 +157,7 @@ public class UpcomingFragment extends Fragment {
                         intent.putExtra("END", endPoint);
                         startActivity(intent);
 
-
-                        sendDataFromUpcomingToHistory(clickedDocumentId);
+                        sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId(), true);
 
                         // deleteUpcomingTripFromFireStore(clickedDocumentId);
 
@@ -203,7 +183,24 @@ public class UpcomingFragment extends Fragment {
         return view;
     }
 
-    private void sendDataFromUpcomingToHistory(String documentId) {
+
+
+    private void openNotesActivity(String clickedDocumentId) {
+        Intent intent = new Intent(getActivity(), NotesActivity.class);
+        intent.putExtra("documentId", clickedDocumentId);
+        startActivity(intent);
+
+    }
+
+    private void openEditActivity(String clickedDocumentId) {
+
+        Intent intent = new Intent(getActivity(), EditTripActivity.class);
+        intent.putExtra("documentId", clickedDocumentId);
+        startActivity(intent);
+
+    }
+
+    private void sendDataFromUpcomingToHistory(String documentId, boolean done) {
 
 
 
@@ -216,8 +213,8 @@ public class UpcomingFragment extends Fragment {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         upcomingMapData =  documentSnapshot.getData();
-                        sendingDataToOldTripsFireStore(upcomingMapData);
-                        deleteUpcomingTripFromFireStore(clickedDocumentId);
+                        sendingDataToOldTripsFireStore(upcomingMapData, done);
+                        deleteUpcomingTripFromFireStore(documentId);
                     }
                 });
 
@@ -231,9 +228,10 @@ public class UpcomingFragment extends Fragment {
 
     }
 
-    private void sendingDataToOldTripsFireStore(Map<String, Object> upcomingMapData) {
+    private void sendingDataToOldTripsFireStore(Map<String, Object> upcomingMapData, boolean done) {
 
 
+        upcomingMapData.put("done", done);
         upcomingMapData.put("timestamp", new Timestamp( System.currentTimeMillis()));
         dbFireStore.collection("users")
                 .document(mAuth.getUid())
@@ -304,6 +302,7 @@ public class UpcomingFragment extends Fragment {
                     tvDate, tvTime;
             TextView buttonViewOption;
             Button startMap;
+            ImageButton btnNotes;
 
             public UpcomingTripsViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -314,6 +313,7 @@ public class UpcomingFragment extends Fragment {
                 tvDate = itemView.findViewById(R.id.txtViewDate);
                 buttonViewOption = itemView.findViewById(R.id.btnViewOption);
                 startMap = itemView.findViewById(R.id.btnStartTrip);
+                btnNotes = itemView.findViewById(R.id.btnNotes);
 
 
 //
