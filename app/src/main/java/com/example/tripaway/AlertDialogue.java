@@ -22,8 +22,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import com.example.tripaway.ui.Upcoming.FloatingWidgetActivity;
+import com.example.tripaway.utils.FireStoreHelper;
+
 public class AlertDialogue extends AppCompatActivity {
     int i = 0;
+    int reqCode;
+    String tripName = null,alarmId = null,startPoint = null,endpoint= null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +41,17 @@ public class AlertDialogue extends AppCompatActivity {
             alarmUri=RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION); }
         Ringtone ringtone=RingtoneManager.getRingtone(this,alarmUri);
         ringtone.play();
+        Intent intent = getIntent();
+        reqCode = intent.getIntExtra("requestCode", 1);
+        tripName = intent.getStringExtra("tripName");
+        alarmId = intent.getStringExtra("alarmId");
+        startPoint = intent.getStringExtra("startPoint");
+        endpoint = intent.getStringExtra("endPoint");
 
 
 
         // Setting Dialog Title
-        builder.setTitle("trip name");
+        builder.setTitle(tripName);
 
         // Setting Dialog Message
         builder.setMessage("reminder your trip...");
@@ -48,11 +59,22 @@ public class AlertDialogue extends AppCompatActivity {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
+                Intent intent = new Intent(getApplicationContext(), FloatingWidgetActivity.class);
+                String stPoint = startPoint;
+                intent.putExtra("START", stPoint);
+                String endPoint = endpoint;
+                intent.putExtra("END", endPoint);
+                startActivity(intent);
+                FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, true);
+                ringtone.stop();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+                ringtone.stop();
+                finish();
+                FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, false);
             }
         });
         builder.setNeutralButton(R.string.snooze, new DialogInterface.OnClickListener() {

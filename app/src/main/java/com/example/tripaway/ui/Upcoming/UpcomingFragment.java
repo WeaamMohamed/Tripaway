@@ -118,8 +118,10 @@ public class UpcomingFragment extends Fragment {
                 holder.tvEndPoint.setText("to "+model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
+                String alarmId = getSnapshots().getSnapshot(position).getId();
+                holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position,
+                        holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString());
 
-                holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position);
 //                DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 //                UpcomingTripModel selected[] = new UpcomingTripModel[adapter.getAllTrips().length];
 //                String date_time = new String();
@@ -244,9 +246,14 @@ public class UpcomingFragment extends Fragment {
                 btnNotes = itemView.findViewById(R.id.btnNotes);
 
             }
-            public void setAlarm(String dt,int reqCode) {
+            public void setAlarm(String dt,int reqCode,String trip_name,String alarm_id,String start,String end) {
                 AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
                 Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                intent.putExtra("requestCode",reqCode);
+                intent.putExtra("tripName",trip_name);
+                intent.putExtra("alarmId",alarm_id);
+                intent.putExtra("startPoint",start);
+                intent.putExtra("endPoint",end);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), reqCode, intent, 0);
 
                 SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
