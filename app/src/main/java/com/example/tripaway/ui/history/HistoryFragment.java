@@ -1,7 +1,9 @@
 package com.example.tripaway.ui.history;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,9 +30,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.zxing.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +144,7 @@ public class HistoryFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         //
+                        openNotesDialog(getSnapshots().getSnapshot(position).getId());
 //                        holder.mDialog.setContentView(R.layout.popup);
 //                        holder.mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     }
@@ -164,7 +169,8 @@ public class HistoryFragment extends Fragment {
 
                         //handle indexOutOfBoundsException .. Activity main thread
                         try {
-                            deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
+                            showDeleteConfirmationDialog(getSnapshots().getSnapshot(position).getId());
+                           // deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
 
                         }
                         catch (Exception e)
@@ -211,6 +217,84 @@ public class HistoryFragment extends Fragment {
 
 
 
+        private void showDeleteConfirmationDialog(String selectedDocumentId) throws NotFoundException {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Delete Trip")
+                    .setMessage("Are you sure you want to delete Trip from history?")
+                    .setIcon( ContextCompat.getDrawable(getActivity(), R.drawable.travel_image2))
+                    .setPositiveButton(
+                            "yes",
+                            new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    //Do Something Here
+                                    deleteTripFromFireStore(selectedDocumentId);
+
+                                }
+                            })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).show();
+        }
+
+
+    private void openNotesDialog(String selectedDocumentId) {
+
+
+
+        dbFireStore.collection("users")
+                .document(mAuth.getUid())
+                .collection("oldTrips")
+                .document(selectedDocumentId)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                String message ="";
+                ArrayList<String> oldNotes = (ArrayList<String>) documentSnapshot.get("notes");
+                if(oldNotes != null)
+                    for(int i =0; i< oldNotes.size(); i++)
+                    {
+//                        //addNoteEditText();
+//                        editTextList.get(i).setText(oldNotes.get(i));
+
+                        message += oldNotes.get(i) + "\n";
+
+                    }
+
+                if(message.equals(""))
+                    message = "You haven't added any notes";
+
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+
+                // set title
+                alertDialogBuilder.setTitle("Notes");
+
+                // set dialog message
+                alertDialogBuilder.setMessage(message).setCancelable(false);
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+                // To cancel dialog
+                alertDialog.setCanceledOnTouchOutside(true);
+
+
+                // alertDialog.dismiss();
+            }
+        });
+
+
+    }
 
     //viewHolder
     private class OldTripsViewHolder extends  RecyclerView.ViewHolder{

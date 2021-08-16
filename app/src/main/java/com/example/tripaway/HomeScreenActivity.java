@@ -39,18 +39,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
-//        NavigationView navigationView2 = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView2.setNavigationItemSelectedListener(menuItem -> {
-//            switch (menuItem.getItemId()){
-//                case R.id.nav_sync:
-//                    Intent intent = new Intent(HomeScreenActivity.this,MainActivity.class);
-//                    startActivity(intent);
-//                    break;
-//            }
-//            return true;
-//        });
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_history, R.id.nav_upcoming, R.id.nav_logout ,R.id.nav_sync)
                 .setOpenableLayout(drawer)
