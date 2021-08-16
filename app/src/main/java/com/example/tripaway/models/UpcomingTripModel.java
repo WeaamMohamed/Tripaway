@@ -25,7 +25,6 @@ public class UpcomingTripModel {
         this.tripName = tripName;
         this.date = date;
         this.time = time;
-        this.notes = notes;
     }
     public UpcomingTripModel(String tripName, String startPoint, String endPoint,
                              String date, String time, boolean isOneDirection, int repeat,

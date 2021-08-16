@@ -9,8 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.tripaway.HomeScreenActivity;
-import com.example.tripaway.LoginActivity;
-import com.example.tripaway.RegisterActivity;
 import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +24,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 
 public class AuthHelper {
     private static final String TAG = "WEAAM";
@@ -105,6 +102,8 @@ public class AuthHelper {
                 {
                     Log.i("date",  data.getDocuments().get(i).getString("date"));
                     Log.i("time",  data.getDocuments().get(i).getString("time"));
+//                    DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+//                    adapter.insertTrip(data.getDocuments().get(i).getString("tripName"),data.getDocuments().get(i).getString("date"),data.getDocuments().get(i).getString("time"));
                 }
 
 

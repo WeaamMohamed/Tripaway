@@ -6,7 +6,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -36,19 +35,13 @@ import com.example.tripaway.models.UpcomingTripModel;
 import com.example.tripaway.utils.FireStoreHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -122,7 +115,16 @@ public class UpcomingFragment extends Fragment {
                 holder.tvEndPoint.setText("to "+model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
-                holder.setAlarm(holder.tvDate.getText().toString(),holder.tvTime.getText().toString());
+                holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position);
+//                DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
+//                UpcomingTripModel selected[] = new UpcomingTripModel[adapter.getAllTrips().length];
+//                String date_time = new String();
+//                for (int i = 0; i < adapter.getAllTrips().length; i++) {
+//                    selected[i] = adapter.getAllTrips()[i];
+//                    date_time = selected[i].getDate()+" "+selected[i].getTime();
+//                    holder.setAlarm(date_time,i);
+//
+//                }
 
 
                 holder.btnNotes.setOnClickListener(view1 -> {
@@ -238,16 +240,15 @@ public class UpcomingFragment extends Fragment {
                 btnNotes = itemView.findViewById(R.id.btnNotes);
 
             }
-            public void setAlarm(String Date ,String time) {
+            public void setAlarm(String dt,int reqCode) {
                 AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
                 Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), reqCode, intent, 0);
 
-                String dateTime = Date +" "+ time;
                 SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
                 java.util.Date date = new Date();
                 try {
-                    date = yourDateFormat.parse(dateTime);
+                    date = yourDateFormat.parse(dt);
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(date);
                 } catch (ParseException e) {
