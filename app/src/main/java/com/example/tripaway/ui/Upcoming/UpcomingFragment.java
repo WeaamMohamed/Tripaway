@@ -33,6 +33,7 @@ import com.example.tripaway.NotesActivity;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.UpcomingTripModel;
+import com.example.tripaway.utils.FireStoreHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -116,10 +117,6 @@ public class UpcomingFragment extends Fragment {
 
 
 
-
-
-                getSnapshots().getSnapshot(position).getId();
-                getSnapshots().getSnapshot(position).getId();
                 holder.tvTripName.setText(model.getTripName());
                 holder.tvStartPoint.setText("From "+ model.getStartPoint());
                 holder.tvEndPoint.setText("to "+model.getEndPoint());
@@ -130,9 +127,10 @@ public class UpcomingFragment extends Fragment {
 
                 holder.btnNotes.setOnClickListener(view1 -> {
 
-                    openNotesDialog(getSnapshots().getSnapshot(position).getId());
+                    FireStoreHelper.openNotesDialog(getSnapshots().getSnapshot(position).getId(),
+                            getActivity(),
+                            "upcoming");
 
-                 //   openNotesActivity(getSnapshots().getSnapshot(position).getId());
 
 
                 });
@@ -145,22 +143,22 @@ public class UpcomingFragment extends Fragment {
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
+                            String documentId = getSnapshots().getSnapshot(position).getId();
                             switch (item.getItemId()) {
                                 case R.id.menuActionNotes:
-                                    openNotesActivity(getSnapshots().getSnapshot(position).getId());
+                                    openNotesActivity(documentId);
                                     return true;
 
                                 case R.id.menuActionEdit:
-                                    openEditActivity(getSnapshots().getSnapshot(position).getId());
+                                    openEditActivity(documentId);
                                     return true;
 
                                 case R.id.menuActionDelete:
-                                    deleteUpcomingTripFromFireStore(getSnapshots().getSnapshot(position).getId());
+                                    FireStoreHelper.deleteUpcomingTripFromFireStore(documentId);
                                     return true;
 
                                 case R.id.menuActionCancel:
-
-                                    sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId(), false);
+                                    FireStoreHelper.sendDataFromUpcomingToHistory(documentId, false);
 
 
                                     return true;
@@ -184,15 +182,7 @@ public class UpcomingFragment extends Fragment {
                         intent.putExtra("END", endPoint);
                         startActivity(intent);
 
-                        sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId(), true);
-
-                        // deleteUpcomingTripFromFireStore(clickedDocumentId);
-
-
-
-
-
-
+                        FireStoreHelper.sendDataFromUpcomingToHistory(getSnapshots().getSnapshot(position).getId(), true);
 
 
 
@@ -202,7 +192,6 @@ public class UpcomingFragment extends Fragment {
             }
         };
         //view holder
-        // recyclerView.setHasFixedSize(false);
         //TODO:
         //  recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getActivity()));
@@ -210,60 +199,6 @@ public class UpcomingFragment extends Fragment {
 
 
         return view;
-    }
-
-
-    private void openNotesDialog(String selectedDocumentId) {
-
-
-
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("upcoming")
-                .document(selectedDocumentId)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                String message ="";
-                ArrayList<String> oldNotes = (ArrayList<String>) documentSnapshot.get("notes");
-                if(oldNotes != null)
-                    for(int i =0; i< oldNotes.size(); i++)
-                    {
-//                        //addNoteEditText();
-//                        editTextList.get(i).setText(oldNotes.get(i));
-
-                        message += oldNotes.get(i) + "\n";
-
-                    }
-
-                if(message.equals(""))
-                    message = "You haven't added any notes";
-
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-                // set title
-                alertDialogBuilder.setTitle("Notes");
-
-                // set dialog message
-                alertDialogBuilder.setMessage(message).setCancelable(false);
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
-
-                // To cancel dialog
-                alertDialog.setCanceledOnTouchOutside(true);
-
-
-                // alertDialog.dismiss();
-            }
-        });
-
-
     }
 
 
@@ -282,102 +217,7 @@ public class UpcomingFragment extends Fragment {
 
     }
 
-    private void sendDataFromUpcomingToHistory(String documentId, boolean done) {
 
-
-
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("upcoming")
-                .document(documentId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        upcomingMapData =  documentSnapshot.getData();
-                        sendingDataToOldTripsFireStore(upcomingMapData, done);
-                        deleteUpcomingTripFromFireStore(documentId);
-                    }
-                });
-
-
-
-
-
-
-
-
-
-    }
-
-    private void sendingDataToOldTripsFireStore(Map<String, Object> upcomingMapData, boolean done) {
-
-
-        upcomingMapData.put("done", done);
-        upcomingMapData.put("timestamp", new Timestamp( System.currentTimeMillis()));
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("oldTrips")
-                .add(upcomingMapData)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-
-                        Log.i("WEAAM", "Data Added to FireStore successfully.");
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure( Exception e) {
-
-
-                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
-
-
-            }
-        });
-
-    }
-
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE) {
-//            //Check if the permission is granted or not.
-//            if (resultCode == RESULT_OK){
-//                //If permission granted start floating widget service
-//                //startFloatingWidgetService();
-//                requireActivity().startService(new Intent(getActivity(), FloatingWidgetService.class));
-////              finish();
-//            }
-//            else
-//                //Permission is not available then display toast
-//                Toast.makeText(getActivity(), getResources().getString(R.string.draw_other_app_permission_denied),
-//                        Toast.LENGTH_SHORT).show();
-//
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
-
-        private void deleteUpcomingTripFromFireStore (String documentId){
-            dbFireStore.collection("users")
-                    .document(mAuth.getUid())
-                    .collection("upcoming")
-                    .document(documentId)
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("WEAAM", "document successfully deleted!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e("WEAAM", "Error deleting document: " + e.getMessage());
-                        }
-                    });
-        }
         //viewHolder
         private class UpcomingTripsViewHolder extends RecyclerView.ViewHolder {
             TextView tvTripName, tvStartPoint, tvEndPoint,

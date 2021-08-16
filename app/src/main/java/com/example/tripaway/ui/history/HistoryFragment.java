@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.OldTripsModel;
+import com.example.tripaway.utils.FireStoreHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,12 +44,9 @@ public class HistoryFragment extends Fragment {
     //ArrayList<OldTripsModel> historyList ;
     //
     RecyclerView recyclerView;
-    private HistoryViewModel historyViewModel;
     private FragmentUpcomingBinding binding;
     View view;
-    ArrayList<OldTripsModel> old;
     Drawable drawable;
-    private List<String> notesList;
 
 
    // RecyclerView recyclerView;
@@ -143,10 +141,10 @@ public class HistoryFragment extends Fragment {
                 holder.btnShowNotes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //
-                        openNotesDialog(getSnapshots().getSnapshot(position).getId());
-//                        holder.mDialog.setContentView(R.layout.popup);
-//                        holder.mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        //openNotesDialog();
+                        FireStoreHelper.openNotesDialog(getSnapshots().getSnapshot(position).getId(),
+                                getActivity(),
+                                "oldTrips");
                     }
                 });
               //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
@@ -224,77 +222,17 @@ public class HistoryFragment extends Fragment {
                     .setIcon( ContextCompat.getDrawable(getActivity(), R.drawable.travel_image2))
                     .setPositiveButton(
                             "yes",
-                            new DialogInterface.OnClickListener() {
+                            (dialog, which) -> {
+                                //Do Something Here
+                                FireStoreHelper.deleteOldTripFromFireStore(selectedDocumentId);
 
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    //Do Something Here
-                                    deleteTripFromFireStore(selectedDocumentId);
-
-                                }
                             })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                    .setNegativeButton("No", (dialogInterface, i) -> {
 
-                        }
                     }).show();
         }
 
 
-    private void openNotesDialog(String selectedDocumentId) {
-
-
-
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("oldTrips")
-                .document(selectedDocumentId)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                String message ="";
-                ArrayList<String> oldNotes = (ArrayList<String>) documentSnapshot.get("notes");
-                if(oldNotes != null)
-                    for(int i =0; i< oldNotes.size(); i++)
-                    {
-//                        //addNoteEditText();
-//                        editTextList.get(i).setText(oldNotes.get(i));
-
-                        message += oldNotes.get(i) + "\n";
-
-                    }
-
-                if(message.equals(""))
-                    message = "You haven't added any notes";
-
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-
-                // set title
-                alertDialogBuilder.setTitle("Notes");
-
-                // set dialog message
-                alertDialogBuilder.setMessage(message).setCancelable(false);
-
-                // create alert dialog
-                AlertDialog alertDialog = alertDialogBuilder.create();
-
-                // show it
-                alertDialog.show();
-
-                // To cancel dialog
-                alertDialog.setCanceledOnTouchOutside(true);
-
-
-                // alertDialog.dismiss();
-            }
-        });
-
-
-    }
 
     //viewHolder
     private class OldTripsViewHolder extends  RecyclerView.ViewHolder{
@@ -305,7 +243,6 @@ public class HistoryFragment extends Fragment {
 
         Button btnDelete, btnShowNotes;
         ImageView imageHistory;
-        Dialog mDialog;
 
 
         public OldTripsViewHolder(@NonNull View itemView) {
@@ -321,7 +258,6 @@ public class HistoryFragment extends Fragment {
             btnDelete = itemView.findViewById(R.id.btnStartTrip);
             btnShowNotes = itemView.findViewById(R.id.btnNotes);
             imageHistory = itemView.findViewById(R.id.imgHistory);
-            mDialog = new Dialog(getActivity());
 
 
 
@@ -356,32 +292,6 @@ public class HistoryFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
-
-    private void deleteTripFromFireStore(String documentId) {
-        dbFireStore.collection("users")
-                .document(mAuth.getUid())
-                .collection("oldTrips")
-                .document(documentId)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("WEAAM", "document successfully deleted!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("WEAAM", "Error deleting document: "+  e.getMessage());
-                    }
-                });
-
-
-    }
-
-
 
 //    This problem is caused by RecyclerView Data modified in different thread. The best way is checking all data access. And a workaround is wrapping LinearLayoutManager.
 //
