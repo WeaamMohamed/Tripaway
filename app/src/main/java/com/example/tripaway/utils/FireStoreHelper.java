@@ -23,10 +23,16 @@ public class FireStoreHelper {
     private static FirebaseAuth mAuth;
     private static FirebaseFirestore dbFireStore;
 
-    FireStoreHelper()
+    public FireStoreHelper()
     {
+
+    }
+
+    static {
+
         mAuth = FirebaseAuth.getInstance();
         dbFireStore = FirebaseFirestore.getInstance();
+
     }
 
     public static void saveUpcomingTrip(Map<String, Object> dataMap, String message){

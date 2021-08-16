@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tripaway.utils.AuthHelper;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -49,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     Button btnFacebook, btnGoogle, btnTwitter;
     private GoogleSignInClient mGoogleSignInClient;
-
     TextView tvLogin;
     LoginButton btnFacebookLogin;
     final String TAG = "WEAAM";
@@ -66,29 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
         //TODO:
         mAuth = FirebaseAuth.getInstance();
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-        btnRegister = findViewById(R.id.btn_sign_up);
-        etName = findViewById(R.id.edit_txt_name);
-        etEmail = findViewById(R.id.edit_txt_email);
-        etPassword = findViewById(R.id.edit_txt_password);
-        etConfirmPassword = findViewById(R.id.edit_confirm_password);
-
-        btnFacebook = findViewById(R.id.btn_facebook);
-        btnGoogle = findViewById(R.id.btn_google);
-        btnTwitter = findViewById(R.id.btn_twitter);
-        tvLogin = findViewById(R.id.txt_login_click);
-
-
-        btnFacebookLogin = (LoginButton) findViewById(R.id.btn_facebook_login);
+       initializeViews();
 
         mCallbackManager = CallbackManager.Factory.create();
         btnFacebookLogin.setReadPermissions("email", "public_profile");
-
-
         FacebookSdk.sdkInitialize(getApplicationContext());
-
-
-
         createGoogleRequest();
 
         // Callback registration
@@ -124,44 +106,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
-    private void handleFacebookAccessToken(AccessToken token) {
-            Log.d(TAG, "handleFacebookAccessToken:" + token);
 
-            AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-            mAuth.signInWithCredential(credential)
-                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Log.d(TAG, "signInWithCredential:success");
-                               FirebaseUser user = mAuth.getCurrentUser();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "signInWithCredential:fail" + e.getMessage());
+//    private void handleFacebookAccessToken(AccessToken token) {
+//            Log.d(TAG, "handleFacebookAccessToken:" + token);
 //
-
-                }
-            });
-
-//                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//            AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+//            mAuth.signInWithCredential(credential)
+//                    .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
 //                        @Override
-//                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                            if (task.isSuccessful()) {
-//                                // Sign in success, update UI with the signed-in user's information
-//                                Log.d(TAG, "signInWithCredential:success");
-//                                FirebaseUser user = mAuth.getCurrentUser();
+//                        public void onSuccess(AuthResult authResult) {
+//                            Log.d(TAG, "signInWithCredential:success");
+//                               FirebaseUser user = mAuth.getCurrentUser();
 //
-//                            } else {
-//                                // If sign in fails, display a message to the user.
-//                                Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                                Toast.makeText(RegisterActivity.this, "Authentication failed.",
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
 //                        }
-//                    });
-        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Log.d(TAG, "signInWithCredential:fail" + e.getMessage());
+////
+//
+//                }
+//            });
+//
+//
+//        }
 
 
 
@@ -243,18 +211,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                     }
-//                    {
-//                        Toast.makeText(RegisterActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
-//                        Log.i(TAG, "Registered Successfully");
-//
-//                        Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
-//                   //   set the new task and clear flags
-//                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(i);
-//
-//
-//
-//                    }
+
                     else {
 
                         //TODO: use red toast
@@ -371,7 +328,7 @@ public class RegisterActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
+                AuthHelper.firebaseAuthWithGoogle(account.getIdToken(), RegisterActivity.this);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.e(TAG, "Google sign in failed"+ e.getMessage().toString());
@@ -381,65 +338,65 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     //TODO: progressbar
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-
-
-                            //save email, name , uId to FireStore
-
-                            Map<String, Object> usersMap = new HashMap<>();
-                            usersMap.put("email", user.getEmail());
-                            usersMap.put("name", user.getDisplayName());
-                            usersMap.put("uId", mAuth.getUid());
-
-
-
-
-                            //  save users data (email, name, uId) in fireStore
-
-                            FirebaseFirestore dbFireStore = FirebaseFirestore.getInstance();
-                            dbFireStore.collection("users").document(mAuth.getUid())
-                                    .set(usersMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.i(TAG, "added to fireStore successfully ");
-
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                    Log.i(TAG, "failed added to fireStore " + e.getMessage());
-                                }
-                            });
-
-
-
-
-                            Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
-                            //   set the new task and clear flags
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            // updateUI(null);
-                        }
-                    }
-                });
-    }
+//    private void firebaseAuthWithGoogle(String idToken) {
+//        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "signInWithCredential:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//
+//
+//
+//                            //save email, name , uId to FireStore
+//
+//                            Map<String, Object> usersMap = new HashMap<>();
+//                            usersMap.put("email", user.getEmail());
+//                            usersMap.put("name", user.getDisplayName());
+//                            usersMap.put("uId", mAuth.getUid());
+//
+//
+//
+//
+//                            //  save users data (email, name, uId) in fireStore
+//
+//                            FirebaseFirestore dbFireStore = FirebaseFirestore.getInstance();
+//                            dbFireStore.collection("users").document(mAuth.getUid())
+//                                    .set(usersMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//                                    Log.i(TAG, "added to fireStore successfully ");
+//
+//                                }
+//                            }).addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//
+//                                    Log.i(TAG, "failed added to fireStore " + e.getMessage());
+//                                }
+//                            });
+//
+//
+//
+//
+//                            Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
+//                            //   set the new task and clear flags
+//                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity(i);
+//
+//                            //updateUI(user);
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+//                            // updateUI(null);
+//                        }
+//                    }
+//                });
+//    }
 
 
     public void onFaceBookClicked(View view) {
@@ -450,7 +407,7 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onSuccess(LoginResult loginResult) {
                     // App code
 
-                    handleFacebookAccessToken(loginResult.getAccessToken());
+                    AuthHelper.handleFacebookAccessToken(loginResult.getAccessToken());
 
                     Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
                     Log.i(TAG, "Authentication with facebook Successfully" + loginResult.getAccessToken().getUserId());
@@ -484,4 +441,18 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
     }
+
+    private void initializeViews() {
+        btnRegister = findViewById(R.id.btn_sign_up);
+        etName = findViewById(R.id.edit_txt_name);
+        etEmail = findViewById(R.id.edit_txt_email);
+        etPassword = findViewById(R.id.edit_txt_password);
+        etConfirmPassword = findViewById(R.id.edit_confirm_password);
+        btnFacebook = findViewById(R.id.btn_facebook);
+        btnGoogle = findViewById(R.id.btn_google);
+        btnTwitter = findViewById(R.id.btn_twitter);
+        tvLogin = findViewById(R.id.txt_login_click);
+        btnFacebookLogin = (LoginButton) findViewById(R.id.btn_facebook_login);
+    }
+
 }
