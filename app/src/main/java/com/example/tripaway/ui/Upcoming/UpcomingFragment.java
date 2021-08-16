@@ -60,11 +60,14 @@ public class UpcomingFragment extends Fragment {
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
+    static UpcomingFragment INSTANCE;
+    String data="FirstActivity";
 
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        INSTANCE=this;
 //
 //        //TODO: String date? String time?
         // Inflate the layout for this fragment
@@ -115,6 +118,7 @@ public class UpcomingFragment extends Fragment {
                 holder.tvEndPoint.setText("to "+model.getEndPoint());
                 holder.tvDate.setText(model.getDate());
                 holder.tvTime.setText(model.getTime());
+
                 holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position);
 //                DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 //                UpcomingTripModel selected[] = new UpcomingTripModel[adapter.getAllTrips().length];
@@ -311,8 +315,10 @@ public class UpcomingFragment extends Fragment {
                 }
             }
         }
-
-
-
-
+    public static UpcomingFragment getActivityInstance()
+    {
+        return INSTANCE;
     }
+
+
+}
