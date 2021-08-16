@@ -28,6 +28,10 @@ import com.example.tripaway.utils.FireStoreHelper;
 public class AlertDialogue extends AppCompatActivity {
     int i = 0;
     int reqCode;
+    NotificationCompat.Builder mBuilder;
+    Intent ii;
+    PendingIntent pendingIntent;
+
     String tripName = null,alarmId = null,startPoint = null,endpoint= null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,50 +60,59 @@ public class AlertDialogue extends AppCompatActivity {
         // Setting Dialog Message
         builder.setMessage("reminder your trip...");
         // Add the buttons
+        NotificationManager mNotificationManager;
+        mNotificationManager =
+                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-                Intent intent = new Intent(getApplicationContext(), FloatingWidgetActivity.class);
-                String stPoint = startPoint;
-                intent.putExtra("START", stPoint);
-                String endPoint = endpoint;
-                intent.putExtra("END", endPoint);
-                startActivity(intent);
                 FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, true);
+                Intent intent2 = new Intent(getApplicationContext(), FloatingWidgetActivity.class);
+                intent2.putExtra("START", startPoint);
+                intent2.putExtra("END", endpoint);
+                startActivity(intent2);
+                mNotificationManager.cancel(reqCode);
                 ringtone.stop();
+                finish();
+
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+                FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, false);
+                mNotificationManager.cancel(reqCode);
                 ringtone.stop();
                 finish();
-                FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, false);
             }
+
         });
         builder.setNeutralButton(R.string.snooze, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked snooze button
-                NotificationManager mNotificationManager;
-
-                NotificationCompat.Builder mBuilder =
+                mBuilder =
                         new NotificationCompat.Builder(getApplicationContext(), "notify_001");
-                Intent ii = new Intent(getApplicationContext(), AlertDialogue.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, ii, 0);
+                ii = new Intent(getApplicationContext(), AlarmReceiver.class);
+                ii.putExtra("requestCode",reqCode);
+                ii.putExtra("tripName",tripName);
+                ii.putExtra("alarmId",alarmId);
+                ii.putExtra("startPoint",startPoint);
+                ii.putExtra("endPoint",endpoint);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), reqCode, ii, 0);
 
                 NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-                bigText.bigText("verseurl");
-                bigText.setBigContentTitle("Today's Bible Verse");
-                bigText.setSummaryText("Text in detail");
+                bigText.bigText(tripName);
+                bigText.setBigContentTitle("Today's your trip");
+                bigText.setSummaryText(tripName);
 
                 mBuilder.setContentIntent(pendingIntent);
                 mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
-                mBuilder.setContentTitle("Your Title");
-                mBuilder.setContentText("Your text");
+                mBuilder.setContentTitle(tripName);
+                mBuilder.setContentText("reminder");
                 mBuilder.setPriority(Notification.PRIORITY_MAX);
                 mBuilder.setStyle(bigText);
-                mNotificationManager =
-                        (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
 
                 // === Removed some obsoletes
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -112,8 +125,10 @@ public class AlertDialogue extends AppCompatActivity {
                     mNotificationManager.createNotificationChannel(channel);
                     mBuilder.setChannelId(channelId);
                 }
-                i++;
-                mNotificationManager.notify(0, mBuilder.build());
+                mBuilder.setOngoing(true);
+                mNotificationManager.notify(reqCode, mBuilder.build());
+
+
                 //stop ring
                 BroadcastReceiver br = new AlarmReceiver();
                 IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
