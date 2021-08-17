@@ -92,7 +92,7 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/forget_password"
-            android:visibility="invisible" />
+            android:textColor="@color/dark_blue"/>
 
         <Button
             android:id="@+id/btn_login"

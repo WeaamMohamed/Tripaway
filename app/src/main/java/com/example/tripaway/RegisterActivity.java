@@ -97,6 +97,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        // TODO:
+        btnTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, TwitterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+
 
         btnRegister.setOnClickListener(view -> createUser());
 

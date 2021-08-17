@@ -86,4 +86,7 @@
     <string name="draw_other_app_permission_denied">Draw over other app permission not available. App won\'t work without permission. Please try again.</string>
     <string name="confirm_password">Confirm Password</string>
 
+    <string name="twitter_api_key" translatable="false">s1kNoeKtLSWaswXetxr3Iwsl9</string>
+    <string name="twitter_api_secret" translatable="false">ruahjSQPs7H5PnE4nNG6pSnPLlWjL5Wye08gsAjZ0lxAa4hGDg</string>
+
 </resources>

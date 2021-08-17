@@ -42,7 +42,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class LoginActivity extends AppCompatActivity {
 
     EditText etEmail, etPassword;
-    TextView tvSignUp;
+    TextView tvSignUp, txtForgetPassword;
     Button btnLogin;
     FirebaseAuth mAuth;
     final String TAG = "WEAAM";
@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.edit_txt_password);
         btnLogin = findViewById(R.id.btn_login);
         tvSignUp = findViewById(R.id.txt_signup);
+        txtForgetPassword = findViewById(R.id.txt_forgetPassword);
         mAuth = FirebaseAuth.getInstance();
         dbFireStore = FirebaseFirestore.getInstance();
 
@@ -79,6 +80,16 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+
+
+        txtForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
