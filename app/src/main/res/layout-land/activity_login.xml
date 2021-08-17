@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:context=".LoginActivity">
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/travel_image2" />
+
+        <TextView
+            android:id="@+id/txt_log_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/app_logo"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:text="@string/login"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/edit_txt_email"
+            android:layout_width="250dp"
+            android:layout_height="61dp"
+            android:layout_below="@id/txt_log_in"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:autofillHints=""
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_email"
+            android:drawablePadding="12dp"
+            android:ems="10"
+            android:hint="@string/email_address"
+            android:inputType="textEmailAddress"
+            android:paddingStart="5dp"
+            tools:ignore="RtlSymmetry" />
+
+        <EditText
+            android:id="@+id/edit_txt_password"
+            android:layout_width="250dp"
+            android:layout_height="62dp"
+            android:layout_below="@id/edit_txt_email"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="10dp"
+            android:autofillHints=""
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="12dp"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:paddingStart="5dp"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/txt_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_txt_password"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="Don't have an account? Sign Up"
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/txt_forgetPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_signup"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="136dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/forget_password"
+            android:textColor="@color/dark_blue"/>
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_forgetPassword"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
+            android:text="@string/log_in" />
+
+
+    </RelativeLayout>
+</ScrollView>
