@@ -1,12 +1,14 @@
 package com.example.tripaway.ui.history;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,23 +17,39 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.directions.route.AbstractRouting;
+import com.directions.route.Route;
+import com.directions.route.RouteException;
+import com.directions.route.Routing;
+import com.directions.route.RoutingListener;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
 import com.example.tripaway.models.OldTripsModel;
 import com.example.tripaway.utils.FireStoreHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -40,7 +58,8 @@ import com.google.zxing.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements OnMapReadyCallback,
+        GoogleApiClient.OnConnectionFailedListener, RoutingListener {
     //ArrayList<OldTripsModel> historyList ;
     //
     RecyclerView recyclerView;
@@ -48,25 +67,54 @@ public class HistoryFragment extends Fragment {
     View view;
     Drawable drawable;
 
+    ///
+    //google map object
+    private GoogleMap mMap;
+
+    //current and destination location objects
+    Location myLocation=null;
+    Location destinationLocation=null;
+    protected LatLng start=null;
+    protected LatLng end=null;
+
+    //to get location permissions.
+    private final static int LOCATION_REQUEST_CODE = 23;
+    boolean locationPermission=false;
+
+    //polyline object
+    private List<Polyline> polylines=null;
+
 
    // RecyclerView recyclerView;
     private FirebaseFirestore dbFireStore;
     private FirebaseAuth mAuth;
     FirestoreRecyclerAdapter adapter;
 
+    public static HistoryFragment newInstance() {
+        HistoryFragment fragment = new HistoryFragment();
+        return fragment;
+    }
 
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        //request location permission.
+        requestPermision();
 
 
 
 
-        View view=inflater.inflate(R.layout.fragment_upcoming, container, false);
+        View view=inflater.inflate(R.layout.fragment_history, container, false);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
         recyclerView=(RecyclerView) view.findViewById(R.id.idRVTrips);
         dbFireStore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        //init google map fragment to show map.
+
 
 
         //Query
@@ -121,7 +169,7 @@ public class HistoryFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull OldTripsViewHolder holder, int position, @NonNull OldTripsModel model) {
+            protected void onBindViewHolder(@NonNull OldTripsViewHolder holder, @SuppressLint("RecyclerView") int position, @NonNull OldTripsModel model) {
 
                 getSnapshots().getSnapshot(position).getId();
 
@@ -195,6 +243,7 @@ public class HistoryFragment extends Fragment {
                     holder.tvTime.setText(model.getTime());
                     holder.tvDistance.setText(model.getDistance());
                     holder.tvDuration.setText(model.getDuration());
+
                     //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
 //                    if(model.isDone() && model.isOneDirection())
 //                    {
@@ -353,6 +402,33 @@ public class HistoryFragment extends Fragment {
 
         return view;
     }
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//
+//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+//        if(getActivity()!=null) {
+//            SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+//                    .findFragmentById(R.id.map);
+//            if (mapFragment != null) {
+//                mapFragment.getMapAsync(this);
+//            }
+//        }
+//    }
+    private void requestPermision()
+    {
+        if(ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    OldTripsViewHolder.LOCATION_REQUEST_CODE);
+        }
+        else{
+            locationPermission=true;
+        }
+    }
+
 
 
 
@@ -373,10 +449,164 @@ public class HistoryFragment extends Fragment {
                     }).show();
         }
 
+    @Override
+    public void onRoutingFailure(RouteException e) {
+        View parentLayout = view.findViewById(android.R.id.content);
+        Snackbar snackbar= Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
+        snackbar.show();
+//        Findroutes(start,end);
+    }
+
+    @Override
+    public void onRoutingStart() {
+        Toast.makeText(getContext(),"Finding Route...",Toast.LENGTH_LONG).show();
+    }
+
+    //If Route finding success..
+    @Override
+    public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
+
+        CameraUpdate center = CameraUpdateFactory.newLatLng(start);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+        if(polylines!=null) {
+            polylines.clear();
+        }
+        PolylineOptions polyOptions = new PolylineOptions();
+        LatLng polylineStartLatLng=null;
+        LatLng polylineEndLatLng=null;
+
+
+        polylines = new ArrayList<>();
+        //add route(s) to the map using polyline
+        for (int i = 0; i <route.size(); i++) {
+
+            if(i==shortestRouteIndex)
+            {
+                polyOptions.color(getResources().getColor(R.color.design_default_color_primary));
+                polyOptions.width(7);
+                polyOptions.addAll(route.get(shortestRouteIndex).getPoints());
+                Polyline polyline = mMap.addPolyline(polyOptions);
+                polylineStartLatLng=polyline.getPoints().get(0);
+                int k=polyline.getPoints().size();
+                polylineEndLatLng=polyline.getPoints().get(k-1);
+                polylines.add(polyline);
+
+            }
+            else {
+
+            }
+
+        }
+
+        //Add Marker on route starting position
+        MarkerOptions startMarker = new MarkerOptions();
+        startMarker.position(polylineStartLatLng);
+        startMarker.title("My Location");
+        mMap.addMarker(startMarker);
+
+        //Add Marker on route ending position
+        MarkerOptions endMarker = new MarkerOptions();
+        endMarker.position(polylineEndLatLng);
+        endMarker.title("Destination");
+        mMap.addMarker(endMarker);
+    }
+
+    @Override
+    public void onRoutingCancelled() {
+        Findroutes(start,end);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Findroutes(start,end);
+
+    }
+    private LatLng getLatLngFromAddress(String address){
+
+        Geocoder geocoder=new Geocoder(getContext());
+        List<Address> addressList;
+
+        try {
+            addressList = geocoder.getFromLocationName(address, 1);
+            if(addressList!=null){
+                Address singleaddress = addressList.get(0);
+                LatLng latLng=new LatLng(singleaddress.getLatitude(),singleaddress.getLongitude());
+                return latLng;
+            }
+            else{
+                return null;
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        if(locationPermission) {
+            getMyLocation();
+
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private void getMyLocation(){
+        mMap.setMyLocationEnabled(true);
+        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+
+                myLocation=location;
+                LatLng ltlng=new LatLng(location.getLatitude(),location.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                        ltlng, 16f);
+                mMap.animateCamera(cameraUpdate);
+            }
+        });}
+
+    // function to find Routes.
+    public void Findroutes(LatLng Start, LatLng End)
+    {
+        if(Start==null || End==null) {
+            Toast.makeText(getContext(),"Unable to get location", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+
+            Routing routing = new Routing.Builder()
+                    .travelMode(AbstractRouting.TravelMode.DRIVING)
+                    .withListener(this)
+                    .alternativeRoutes(true)
+                    .waypoints(Start, End)
+                    .key("AIzaSyDzTHI4DXKFwrM0xAzwnI-Brz1_3UkcL7g")  //also define your api key here.
+                    .build();
+            routing.execute();
+        }
+    }
+
 
 
     //viewHolder
     private class OldTripsViewHolder extends  RecyclerView.ViewHolder{
+        //google map object
+        private GoogleMap mMap;
+
+        //current and destination location objects
+        Location myLocation=null;
+        Location destinationLocation=null;
+        protected LatLng start=null;
+        protected LatLng end=null;
+
+        //to get location permissions.
+        private final static int LOCATION_REQUEST_CODE = 23;
+        boolean locationPermission=false;
+
+        //polyline object
+        private List<Polyline> polylines=null;
+
 
 
         TextView tvTripName, tvDate, tvTime, tvStartPoint,
@@ -410,10 +640,6 @@ public class HistoryFragment extends Fragment {
             tvDuration2 = itemView.findViewById(R.id.txtDuration2);
             tvDistance2 = itemView.findViewById(R.id.txtDistance2);
             tvTripStatus = itemView.findViewById(R.id.txtTripStatus);
-
-
-
-
 
         }
     }
