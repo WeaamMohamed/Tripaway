@@ -166,7 +166,7 @@ public class FireStoreHelper {
 
     }
 
-    public static void sendingDataToOldTripsFireStore(Map<String, Object> upcomingMapData, boolean done) {
+    private static void sendingDataToOldTripsFireStore(Map<String, Object> upcomingMapData, boolean done) {
 
 
         upcomingMapData.put("done", done);

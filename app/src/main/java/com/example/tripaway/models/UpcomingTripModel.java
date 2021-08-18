@@ -2,6 +2,8 @@ package com.example.tripaway.models;
 
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +20,100 @@ public class UpcomingTripModel {
     private boolean isOneDirection;
     private int repeat;
     private List<String> notes;
-    private Timestamp timestamp;
+    protected Timestamp timestamp;
+
+
+
+
+    public List<String> getTripNameList() {
+        return tripNameList;
+    }
+
+    public void setTripNameList(List<String> tripNameList) {
+        this.tripNameList = tripNameList;
+    }
+
+    public List<String> getStartPointList() {
+        return startPointList;
+    }
+
+    public void setStartPointList(List<String> startPointList) {
+        this.startPointList = startPointList;
+    }
+
+    public List<String> getEndPointList() {
+        return endPointList;
+    }
+
+    public void setEndPointList(List<String> endPointList) {
+        this.endPointList = endPointList;
+    }
+
+    public List<String> getDateList() {
+        return dateList;
+    }
+
+    public void setDateList(List<String> dateList) {
+        this.dateList = dateList;
+    }
+
+    public List<String> getTimeList() {
+        return timeList;
+    }
+
+    public void setTimeList(List<String> timeList) {
+        this.timeList = timeList;
+    }
+
+//    public boolean isOneDirectionList() {
+//        return isOneDirectionList;
+//    }
+//
+//    public void setOneDirectionList(boolean oneDirectionList) {
+//        isOneDirectionList = oneDirectionList;
+//    }
+
+    //for round trip
+    private List<String> tripNameList = null;
+    private List<String> startPointList = new ArrayList<>();
+    private  List<String> endPointList = new ArrayList<>();
+    private List<String> dateList = new ArrayList<>();
+    private List<String> timeList ;
+    //private boolean isOneDirection;
+    private int repeatList;
+    private List<String> notesList = null;
+    private int finishedTrips ;
+    private int currentActiveTrip;
+
+    public int getRepeatList() {
+        return repeatList;
+    }
+
+    public void setRepeatList(int repeatList) {
+        this.repeatList = repeatList;
+    }
+
+    public List<String> getNotesList() {
+        return notesList;
+    }
+
+    public void setNotesList(List<String> notesList) {
+        this.notesList = notesList;
+    }
+
+    public ArrayList<UpcomingTripModel> getRoundTrip() {
+        return roundTrip;
+    }
+
+    public void setRoundTrip(ArrayList<UpcomingTripModel> roundTrip) {
+        this.roundTrip = roundTrip;
+    }
+
+    ArrayList<UpcomingTripModel> roundTrip;
    // private Map<String , Object> map;
+
+
+    public  UpcomingTripModel(){}
 
     public UpcomingTripModel(String tripName, String date, String time) {
         this.tripName = tripName;
@@ -41,10 +135,42 @@ public class UpcomingTripModel {
         this.timestamp = timestamp;
     }
 
-    public UpcomingTripModel(){}
+    public UpcomingTripModel(List<String> tripNameList,List<String> startPointList,
+                             List<String> endPointList,
+                             List<String> dateList,
+                             List<String> timeList,
+                             boolean isOneDirection,
+                              int repeatList,
+                             List<String> notesList,
+
+                             int finishedTrips,
+                             int currentActiveTrip,
+                             Timestamp timestamp
+
+                             ){
+
+        roundTrip = new ArrayList<>();
+        this.tripNameList =  tripNameList;
+        this.startPointList =  startPointList;
+        this.endPointList =  endPointList;
+        this.dateList =  dateList;
+        this.timeList =  timeList;
+        this.isOneDirection =  isOneDirection;
+        this.repeatList =  repeatList;
+        this.notesList =  notesList;
+        this.finishedTrips =  finishedTrips;
+        this.currentActiveTrip = currentActiveTrip;
+        this.timestamp = timestamp;
+
+
+
+
+
+    }
 
 //    public UpcomingTripModel(Map<String, Object> map){
 //        this.map = map;
+
 //    }
 
     public  Map<String, Object> getUpcomingTripsMap()
@@ -55,7 +181,9 @@ public class UpcomingTripModel {
 //            notes.add("You didn't have any note.");
 //        }
         // Create a new user with map
+
         Map<String, Object> upcomingMap = new HashMap<>();
+
         upcomingMap.put("tripName", tripName);
         upcomingMap.put("startPoint", startPoint);
         upcomingMap.put("endPoint", endPoint);
@@ -67,6 +195,8 @@ public class UpcomingTripModel {
         upcomingMap.put("notes", notes);
         upcomingMap.put("isOneDirection", isOneDirection);
         upcomingMap.put("timestamp", timestamp);
+        upcomingMap.put("finishedTrips", 0);
+
 
 
 
@@ -75,6 +205,63 @@ public class UpcomingTripModel {
     }
 
 
+
+    public  Map<String, Object> getRoundTripsMap()
+    {
+
+//        if(notes.isEmpty())
+//        {
+//            notes.add("You didn't have any note.");
+//        }
+        // Create a new user with map
+
+
+
+//        roundTrip.add(new UpcomingTripModel("first roundtrip", "start", "end" ,
+//                "Friday, Aug 20, 2021","5:24", false, 1, null,
+//                new Timestamp(System.currentTimeMillis())));
+//
+// roundTrip.add(new UpcomingTripModel("second round", "start", "end" ,
+//                "Friday, Aug 20, 2021","5:24", false, 1, null,
+//                new Timestamp(System.currentTimeMillis())));
+
+
+        Map<String, Object> roundTripMap = new HashMap<>();
+
+//        roundTripMap.put("tripNameList", Arrays.asList(roundTrip.get(0).tripName, roundTrip.get(1).tripName));
+//        roundTripMap.put("startPointList",  Arrays.asList(roundTrip.get(0).startPoint, roundTrip.get(1).startPoint));
+//        roundTripMap.put("endPointList",  Arrays.asList(roundTrip.get(0).endPoint, roundTrip.get(1).endPoint));
+//        //TODO:
+//        //repeat.ordinal() to convert
+//        roundTripMap.put("repeatList",  Arrays.asList(roundTrip.get(0).repeat, roundTrip.get(1).repeat));
+//        roundTripMap.put("dateList",  Arrays.asList(roundTrip.get(0).date, roundTrip.get(1).date));
+//        roundTripMap.put("timeList",  Arrays.asList(roundTrip.get(0).time, roundTrip.get(1).time));
+//        roundTripMap.put("notesList",  Arrays.asList(roundTrip.get(0).notes, roundTrip.get(1).notes));
+//        roundTripMap.put("isOneDirectionList",  Arrays.asList(roundTrip.get(0).isOneDirection, roundTrip.get(1).isOneDirection));
+//        roundTripMap.put("timestampList",  Arrays.asList(roundTrip.get(0).timestamp, roundTrip.get(1).timestamp));
+//        roundTripMap.put("isFinished",  false);
+
+        roundTripMap.put("tripNameList", tripNameList);
+        roundTripMap.put("startPointList", startPointList);
+        roundTripMap.put("endPointList",  endPointList);
+        //TODO:
+        //repeat.ordinal() to convert
+        roundTripMap.put("repeatList", repeatList);
+        roundTripMap.put("dateList", dateList);
+        roundTripMap.put("timeList",  timeList);
+        roundTripMap.put("notesList",  notesList);
+        roundTripMap.put("isOneDirection",  isOneDirection);
+        roundTripMap.put("timestamp", timestamp);
+        roundTripMap.put("finishedTrips",  finishedTrips);
+        roundTripMap.put("currentActiveTrip",  currentActiveTrip);
+
+
+
+
+        return roundTripMap;
+
+
+    }
 
 //    public void fromMap()
 //    {
@@ -168,4 +355,27 @@ public class UpcomingTripModel {
     }
 
 
+    public int finishedTrips() {
+        return finishedTrips;
+    }
+
+    public void setFinished(int finishedTrips) {
+        this.finishedTrips = finishedTrips;
+    }
+
+    public int getFinishedTrips() {
+        return finishedTrips;
+    }
+
+    public void setFinishedTrips(int finishedTrips) {
+        this.finishedTrips = finishedTrips;
+    }
+
+    public int getCurrentActiveTrip() {
+        return currentActiveTrip;
+    }
+
+    public void setCurrentActiveTrip(int currentActiveTrip) {
+        this.currentActiveTrip = currentActiveTrip;
+    }
 }

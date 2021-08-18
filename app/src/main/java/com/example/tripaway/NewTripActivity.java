@@ -24,16 +24,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tripaway.utils.FireStoreHelper;
 import com.example.tripaway.models.UpcomingTripModel;
+import com.example.tripaway.utils.RoundTripHelper;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -104,12 +108,56 @@ public class NewTripActivity extends AppCompatActivity  {
             public void onClick(View v) {
 
 
+               //RoundTripHelper roundTripHelper = new RoundTripHelper();
+//
+//               ArrayList<Timestamp> timestampsList =
+//                       new ArrayList<Timestamp> ();
+//                timestampsList.add(new Timestamp(System.currentTimeMillis()));
+//                timestampsList.add(new Timestamp(System.currentTimeMillis()));
+
+
                 //TODO: validation
 
                 if(validation())
                 {
-                    saveDataInFireStore();
+                    if(isOneDirection)
+                        saveDataInFireStore();
+
+                    if(!isOneDirection)
+                        saveRoundTripToFireStore();
+
+
                     NewTripActivity.this.finish();
+                }
+                else
+                {
+
+//                    UpcomingTripModel round = new UpcomingTripModel(
+//                            (List<String>) Arrays.asList("round first","round second"),
+//                            (List<String>)Arrays.asList("startPoint1","startPoint2"),
+//                            (List<String>)Arrays.asList("endPoint1","endPoint2"),
+//                            (List<String>)Arrays.asList("round date","round date"),
+//                            (List<String>)Arrays.asList("round time","time"),
+//                            false,
+//                            1,
+//                            null,
+//                            0,
+//                            0,
+//                            new Timestamp(System.currentTimeMillis())
+//                    );
+//
+//                    dbFireStore.collection("users")
+//                            .document(mAuth.getUid())
+//                            .collection("upcoming")
+//                            .add(round.getRoundTripsMap())
+//                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                @Override
+//                                public void onSuccess(DocumentReference documentReference) {
+//                                    Log.i("WEAAM", "Round added to firstore successfully");
+//                                }
+//                            });
+//
+//                    NewTripActivity.this.finish();
                 }
 
                // saveOLDDataToFireStore();
@@ -183,6 +231,26 @@ public class NewTripActivity extends AppCompatActivity  {
 
     }
 
+    private void saveRoundTripToFireStore() {
+
+        UpcomingTripModel round = new UpcomingTripModel(
+                (List<String>) Arrays.asList(tripTitle.getText().toString(), tripTitle.getText().toString()),
+                (List<String>)Arrays.asList(startPoint.getText().toString(), endPoint.getText().toString()),
+                (List<String>)Arrays.asList( endPoint.getText().toString(), startPoint.getText().toString()),
+                (List<String>)Arrays.asList(txtDatePicker.getText().toString(), txtDatePicker.getText().toString()),
+                (List<String>)Arrays.asList(txtTimePicker.getText().toString(), txtTimePicker.getText().toString()),
+                false,
+                0,
+                null,
+                0,
+                0,
+                new Timestamp(System.currentTimeMillis()));
+
+        FireStoreHelper.saveUpcomingTrip(round.getRoundTripsMap(), "round trip");
+
+
+    }
+
     private boolean validation() {
         boolean valid = true;
 
@@ -241,7 +309,7 @@ public class NewTripActivity extends AppCompatActivity  {
         upcomingTripModel = new UpcomingTripModel(tripTitle.getText().toString(),
                 startPoint.getText().toString(), endPoint.getText().toString(),
                 txtDatePicker.getText().toString(),
-                txtTimePicker.getText().toString(),isOneDirection
+                txtTimePicker.getText().toString(),true
                 , repeatedAlarm ,
                 null,
                 new Timestamp( System.currentTimeMillis())
@@ -249,30 +317,6 @@ public class NewTripActivity extends AppCompatActivity  {
         );
 
         FireStoreHelper.saveUpcomingTrip(upcomingTripModel.getUpcomingTripsMap(), null);
-
-//
-//        dbFireStore.collection("users")
-//                .document(mAuth.getUid())
-//                .collection("upcoming")
-//                .add(upcomingTripModel.getUpcomingTripsMap())
-//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                    @Override
-//                    public void onSuccess(DocumentReference documentReference) {
-//
-//                        Log.i("WEAAM", "Data Added to FireStore successfully.");
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure( Exception e) {
-//
-//
-//                Log.i("WEAAM", "failed to Add data to FireStore: " + e.getMessage());
-//
-//
-//            }
-//        });
-//
 
 
     }

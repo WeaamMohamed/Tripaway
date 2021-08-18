@@ -282,7 +282,7 @@ public class EditTripActivity extends AppCompatActivity {
         upcomingTripModel = new UpcomingTripModel(tripTitle.getText().toString(),
                 startPoint.getText().toString(), endPoint.getText().toString(),
                 txtDatePicker.getText().toString(),
-                txtTimePicker.getText().toString(),isOneDirection
+                txtTimePicker.getText().toString(),true
                 , repeatedAlarm ,
                 notesList,
                 new Timestamp( System.currentTimeMillis())
