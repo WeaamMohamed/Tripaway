@@ -66,6 +66,8 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
     private FragmentUpcomingBinding binding;
     View view;
     Drawable drawable;
+    String result;
+    private String lat = null,lon = null;
 
     ///
     //google map object
@@ -243,6 +245,15 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                     holder.tvTime.setText(model.getTime());
                     holder.tvDistance.setText(model.getDistance());
                     holder.tvDuration.setText(model.getDuration());
+                    String startAddress=holder.tvStartPoint.getText().toString();
+                    String[] sparts = startAddress.split(",");
+                    String spart1 = sparts[0];
+                    start = getLatLngFromAddress(spart1);
+                    String endtAddress=holder.tvEndPoint.getText().toString();
+                    String[] eparts = endtAddress.split(",");
+                    String epart1 = eparts[0];
+                    end = getLatLngFromAddress(epart1);
+                    Findroutes(start,end);
 
                     //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
 //                    if(model.isDone() && model.isOneDirection())
@@ -287,6 +298,9 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                     holder.tvEndPoint.setText("To "+ model.getStartPointList().get(1));
                     holder.tvDate.setText(model.getDateList().get(0));
                     holder.tvTime.setText(model.getTimeList().get(0));
+                    start = getLatLngFromAddress(holder.tvStartPoint.getText().toString());
+                    end = getLatLngFromAddress(holder.tvEndPoint.getText().toString());
+                    Findroutes(start,end);
                     //TODO:
                     holder.tvDistance.setText(model.getDistance());
                     holder.tvDuration.setText(model.getDuration());
@@ -366,21 +380,7 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                         }
                     });
 
-
-
-
-
-
-
-
-
-
-
                 }
-
-
-/////
-
             }
         };
 
@@ -521,13 +521,14 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
         Findroutes(start,end);
 
     }
+
     private LatLng getLatLngFromAddress(String address){
 
         Geocoder geocoder=new Geocoder(getContext());
         List<Address> addressList;
 
         try {
-            addressList = geocoder.getFromLocationName(address, 1);
+            addressList = geocoder.getFromLocationName(address,1);
             if(addressList!=null){
                 Address singleaddress = addressList.get(0);
                 LatLng latLng=new LatLng(singleaddress.getLatitude(),singleaddress.getLongitude());
@@ -562,7 +563,7 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                 myLocation=location;
                 LatLng ltlng=new LatLng(location.getLatitude(),location.getLongitude());
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                        ltlng, 16f);
+                        ltlng, 7.5f);
                 mMap.animateCamera(cameraUpdate);
             }
         });}
@@ -693,6 +694,4 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
             }
         }
     }
-
-
 }
