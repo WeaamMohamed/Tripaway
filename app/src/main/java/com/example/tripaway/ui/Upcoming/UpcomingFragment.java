@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -133,6 +134,8 @@ public class UpcomingFragment extends Fragment {
 
                 if((boolean) getSnapshots().getSnapshot(position).get("isOneDirection"))
                 {
+                   // holder.iamgeArrow.setVisibility(View.GONE);
+
 
                     setOneDirectionTripData(holder, model, position, getSnapshots().getSnapshot(position).getId());
                     Log.i("WEAAM", "setOneDirectionTripData" + model.isOneDirection());
@@ -143,6 +146,10 @@ public class UpcomingFragment extends Fragment {
                 }
                 else
                 {
+
+
+                    holder.iamgeArrow.setVisibility(View.VISIBLE);
+
 
                     setRoundTripData(holder, model, position, getSnapshots().getSnapshot(position).getId());
                     Log.i("WEAAM", "setRoundTripData" + model.isOneDirection());
@@ -534,6 +541,7 @@ public class UpcomingFragment extends Fragment {
             TextView buttonViewOption;
             Button startMap;
             ImageButton btnNotes;
+            ImageView iamgeArrow;
 
             TextView tvTripName2, tvStartPoint2, tvEndPoint2,
                     tvDate2, tvTime2;
@@ -548,6 +556,7 @@ public class UpcomingFragment extends Fragment {
                 buttonViewOption = itemView.findViewById(R.id.btnViewOption);
                 startMap = itemView.findViewById(R.id.btnStartTrip);
                 btnNotes = itemView.findViewById(R.id.btnNotes);
+                iamgeArrow = itemView.findViewById(R.id.imgArrow2);
 
 
 

@@ -131,13 +131,6 @@ public class HistoryFragment extends Fragment {
                 getSnapshots().getSnapshot(position).getId();
 
 
-                holder.tvTripName.setText(model.getTripName());
-                holder.tvStartPoint.setText("From " + model.getStartPoint());
-                holder.tvEndPoint.setText("To "+ model.getEndPoint());
-                holder.tvDate.setText(model.getDate());
-                holder.tvTime.setText(model.getTime());
-                holder.tvDistance.setText(model.getDistance());
-                holder.tvDuration.setText(model.getDuration());
                 holder.btnShowNotes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -147,19 +140,6 @@ public class HistoryFragment extends Fragment {
                                 "oldTrips");
                     }
                 });
-              //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
-                if(model.isDone())
-                {
-                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.travel6);;
-
-                }
-                else
-                {
-                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.cancel);;
-                }
-
-                holder.imageHistory.setImageDrawable(drawable);
-
 
                 holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -168,7 +148,7 @@ public class HistoryFragment extends Fragment {
                         //handle indexOutOfBoundsException .. Activity main thread
                         try {
                             showDeleteConfirmationDialog(getSnapshots().getSnapshot(position).getId());
-                           // deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
+                            // deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
 
                         }
                         catch (Exception e)
@@ -181,15 +161,176 @@ public class HistoryFragment extends Fragment {
                     }
                 });
 
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        View hiddenView = holder.itemView.findViewById(R.id.lytHidden);
-                        hiddenView.setVisibility( hiddenView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-                    }
-                });
+                if(getSnapshots().getSnapshot(position).getBoolean("done") && getSnapshots().getSnapshot(position).getBoolean("isOneDirection") )
+                {
+                    holder.tvTripStatus.setText("Done");
+                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.travel6);
+
+                }
+                else if(getSnapshots().getSnapshot(position).getBoolean("done") && !getSnapshots().getSnapshot(position).getBoolean("isOneDirection") )
+                {
+                    holder.tvTripStatus.setText("Done");
+                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.round);
+
+                }
+                else
+                {
+                    holder.tvTripStatus.setText("Canceled");
+                    drawable = ContextCompat.getDrawable(getActivity(), R.drawable.cancel);
+                }
+
+                holder.imageHistory.setImageDrawable(drawable);
 
 
+
+
+                if(getSnapshots().getSnapshot(position).getBoolean("isOneDirection"))
+                {
+
+
+                    holder.tvTripName.setText(model.getTripName());
+                    holder.tvStartPoint.setText("From " + model.getStartPoint());
+                    holder.tvEndPoint.setText("To "+ model.getEndPoint());
+                    holder.tvDate.setText(model.getDate());
+                    holder.tvTime.setText(model.getTime());
+                    holder.tvDistance.setText(model.getDistance());
+                    holder.tvDuration.setText(model.getDuration());
+                    //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
+//                    if(model.isDone() && model.isOneDirection())
+//                    {
+//                        holder.tvTripStatus.setText("Done");
+//                        drawable = ContextCompat.getDrawable(getActivity(), R.drawable.travel6);
+//
+//                    }
+//                    else if(model.isDone() && !model.isOneDirection())
+//                    {
+//                        holder.tvTripStatus.setText("Done");
+//                        drawable = ContextCompat.getDrawable(getActivity(), R.drawable.round);
+//
+//                    }
+//                    else
+//                    {
+//                        holder.tvTripStatus.setText("Canceled");
+//                        drawable = ContextCompat.getDrawable(getActivity(), R.drawable.cancel);
+//                    }
+//
+//                    holder.imageHistory.setImageDrawable(drawable);
+
+
+
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            View hiddenView = holder.itemView.findViewById(R.id.lytHidden);
+                            hiddenView.setVisibility( hiddenView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                        }
+                    });
+
+                }
+                else
+                {
+                    //round trip
+
+
+
+                    holder.tvTripName.setText(model.getTripNameList().get(0));
+                    holder.tvStartPoint.setText("From " + model.getStartPointList().get(0));
+                    holder.tvEndPoint.setText("To "+ model.getStartPointList().get(1));
+                    holder.tvDate.setText(model.getDateList().get(0));
+                    holder.tvTime.setText(model.getTimeList().get(0));
+                    //TODO:
+                    holder.tvDistance.setText(model.getDistance());
+                    holder.tvDuration.setText(model.getDuration());
+
+
+
+                    holder.tvTripName.setText(model.getTripNameList().get(0));
+                    holder.tvStartPoint2.setText("From " + model.getStartPointList().get(1));
+                    holder.tvEndPoint2.setText("To "+ model.getStartPointList().get(0));
+                    holder.tvDate2.setText(model.getDateList().get(1));
+                    holder.tvTime2.setText(model.getTimeList().get(1));
+                    //TODO:
+                    holder.tvDistance2.setText(model.getDistance());
+                    holder.tvDuration2.setText(model.getDuration());
+
+
+                    //TODO: common
+//                    holder.btnShowNotes.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            //openNotesDialog();
+//                            FireStoreHelper.openNotesDialog(getSnapshots().getSnapshot(position).getId(),
+//                                    getActivity(),
+//                                    "oldTrips");
+//                        }
+//                    });
+                    //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
+//                    if(model.isDone() && model.isOneDirection())
+//                    {
+//                        holder.tvTripStatus.setText("Done");
+//                        drawable = ContextCompat.getDrawable(getActivity(), R.drawable.travel6);
+//
+//                    }
+//                    else if(model.isDone() && !model.isOneDirection())
+//                    {
+//                        holder.tvTripStatus.setText("Done");
+//                        drawable = ContextCompat.getDrawable(getActivity(), R.drawable.round);
+//
+//                    }
+//                    else
+//                    {
+//                        holder.tvTripStatus.setText("Canceled");
+//                        drawable = ContextCompat.getDrawable(getActivity(), R.drawable.cancel);
+//                    }
+//
+//                    holder.imageHistory.setImageDrawable(drawable);
+
+
+//                    holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//
+//                            //handle indexOutOfBoundsException .. Activity main thread
+//                            try {
+//                                showDeleteConfirmationDialog(getSnapshots().getSnapshot(position).getId());
+//                                // deleteTripFromFireStore(getSnapshots().getSnapshot(position).getId());
+//
+//                            }
+//                            catch (Exception e)
+//                            {
+//                                Log.e("WEAAM", e.getMessage());
+//                            }
+//
+//
+//
+//                        }
+//                    });
+
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            View hiddenView = holder.itemView.findViewById(R.id.lytHidden);
+                            hiddenView.setVisibility( hiddenView.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+
+                            View hiddenRound = holder.itemView.findViewById(R.id.roundHiddenLayout);
+                            hiddenRound.setVisibility( hiddenRound.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                        }
+                    });
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+
+/////
 
             }
         };
@@ -240,6 +381,8 @@ public class HistoryFragment extends Fragment {
 
         TextView tvTripName, tvDate, tvTime, tvStartPoint,
         tvEndPoint, tvDuration, tvDistance;
+        TextView tvTripStatus, tvDate2, tvTime2, tvStartPoint2,
+                tvEndPoint2, tvDuration2, tvDistance2;
 
         Button btnDelete, btnShowNotes;
         ImageView imageHistory;
@@ -258,6 +401,15 @@ public class HistoryFragment extends Fragment {
             btnDelete = itemView.findViewById(R.id.btnStartTrip);
             btnShowNotes = itemView.findViewById(R.id.btnNotes);
             imageHistory = itemView.findViewById(R.id.imgHistory);
+
+
+            tvStartPoint2 = itemView.findViewById(R.id.txtStartPoint2);
+            tvEndPoint2 = itemView.findViewById(R.id.txtEndPoint2);
+            tvTime2 = itemView.findViewById(R.id.textViewTime2);
+            tvDate2 = itemView.findViewById(R.id.txtViewDate2);
+            tvDuration2 = itemView.findViewById(R.id.txtDuration2);
+            tvDistance2 = itemView.findViewById(R.id.txtDistance2);
+            tvTripStatus = itemView.findViewById(R.id.txtTripStatus);
 
 
 
