@@ -515,7 +515,7 @@ public class EditTripActivity extends AppCompatActivity {
 
     }
 
-
+//e
 //    private void handleDate() {
 //        Calendar calendar = Calendar.getInstance();
 //        int YEAR = calendar.get(Calendar.YEAR);
