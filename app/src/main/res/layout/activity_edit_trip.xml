@@ -158,6 +158,7 @@
         android:id="@+id/repeaterSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/txtRepeaterSpinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.411"
@@ -184,6 +185,7 @@
         android:layout_marginTop="36dp"
         android:hint="repeat"
         android:text="@string/txtEndPoint"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timePicker" />
 

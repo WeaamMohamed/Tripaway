@@ -138,7 +138,7 @@ public class EditTripActivity extends AppCompatActivity {
         txtTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleTime();
+                handleTime(1);
             }
         });
 
@@ -147,7 +147,7 @@ public class EditTripActivity extends AppCompatActivity {
         txtTimePicker2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //handleTime();
+                handleTime(2);
             }
         });
         txtDatePicker = (EditText) findViewById(R.id.datePicker);
@@ -155,7 +155,7 @@ public class EditTripActivity extends AppCompatActivity {
         txtDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleDate();
+                handleDate(1);
             }
 
         });
@@ -164,7 +164,7 @@ public class EditTripActivity extends AppCompatActivity {
         txtDatePicker2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // handleDate();
+              handleDate(2);
             }
 
         });
@@ -179,6 +179,7 @@ public class EditTripActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> arg0, View view, int arg2, long arg3) {
 
                 j_spinner_selected_direction.setText(j_spinner_direction.getSelectedItem().toString());
+
 
                 Log.i("WEAAM  direction", j_spinner_direction.getSelectedItemPosition() +" ");
                 isOneDirection = j_spinner_direction.getSelectedItemPosition() == 0? true: false ;
@@ -238,13 +239,32 @@ public class EditTripActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot data) {
 
+                        if(data.getBoolean("isOneDirection"))
+                        {
+                            tripTitle.setText(data.get("tripName").toString());
+                            startPoint.setText(data.get("startPoint").toString());
+                            endPoint.setText(data.get("endPoint").toString());
+                            txtDatePicker.setText(data.get("date").toString());
+                            txtTimePicker.setText(data.get("time").toString());
 
+                            isOneDirection = true;
+                        }
+                        else
+                        {
+                            tripTitle.setText(((List<String>) data.get("tripNameList")).get(0));
+                            startPoint.setText(((List<String>) data.get("startPointList")).get(0));
+                            endPoint.setText(((List<String>) data.get("startPointList")).get(1));
+                            txtDatePicker.setText(((List<String>) data.get("dateList")).get(0));
+                            txtDatePicker2.setText(((List<String>) data.get("dateList")).get(1));
+                            txtTimePicker.setText(((List<String>) data.get("timeList")).get(0));
+                            txtTimePicker2.setText(((List<String>) data.get("timeList")).get(1));
 
-                        tripTitle.setText(data.get("tripName").toString());
-                        startPoint.setText(data.get("startPoint").toString());
-                        endPoint.setText(data.get("endPoint").toString());
-                        txtDatePicker.setText(data.get("date").toString());
-                        txtTimePicker.setText(data.get("time").toString());
+                            //show date and time picker 2 and spinner
+                            isOneDirection = false;
+                            j_spinner_direction.setSelection(1);
+
+                        }
+
                       //  j_spinner_repeat.setSelection((Integer) data.get("repeat"));
                       //  j_spinner_direction.setse((Integer) data.get("isOneDirection"));
 
@@ -377,7 +397,7 @@ public class EditTripActivity extends AppCompatActivity {
             upcomingMap.put("endPoint", endPoint.getText().toString());
             //TODO:
             //repeat.ordinal() to convert
-            upcomingMap.put("repeat",repeatedAlarm);
+          //  upcomingMap.put("repeat",repeatedAlarm);
             upcomingMap.put("date", txtDatePicker.getText().toString());
             upcomingMap.put("time", txtTimePicker.getText().toString());
             // upcomingMap.put("Notes", notesList);
@@ -386,16 +406,16 @@ public class EditTripActivity extends AppCompatActivity {
         else
         {
 
-//            upcomingMap.put("tripNameList", tripTitle.getText().toString());
-//            upcomingMap.put("startPointList", (List<String>)Arrays.asList( startPoint.getText().toString(),endPoint.getText().toString()));
-//            upcomingMap.put("endPointList",  (List<String>)Arrays.asList( endPoint.getText().toString(),startPoint.getText().toString()));
-//            //TODO:
-//            //repeat.ordinal() to convert
-//          //  upcomingMap.put("repeatList", 1);
-//            upcomingMap.put("dateList", (List<String>)Arrays.asList( txtDatePicker.getText().toString(),txtDatePicker2.getText().toString()));
-//            upcomingMap.put("timeList",  (List<String>)Arrays.asList( txtTimePicker.getText().toString(),txtTimePicker2.getText().toString()));
-//          //  upcomingMap.put("notesList",  notesList);
-//            upcomingMap.put("isOneDirection",  isOneDirection);
+            upcomingMap.put("tripNameList", (List<String>)Arrays.asList( tripTitle.getText().toString(),tripTitle.getText().toString()));
+            upcomingMap.put("startPointList", (List<String>)Arrays.asList( startPoint.getText().toString(),endPoint.getText().toString()));
+            upcomingMap.put("endPointList",  (List<String>)Arrays.asList( endPoint.getText().toString(),startPoint.getText().toString()));
+            //TODO:
+            //repeat.ordinal() to convert
+          //  upcomingMap.put("repeatList", 1);
+            upcomingMap.put("dateList", (List<String>)Arrays.asList( txtDatePicker.getText().toString(),txtDatePicker2.getText().toString()));
+            upcomingMap.put("timeList",  (List<String>)Arrays.asList( txtTimePicker.getText().toString(),txtTimePicker2.getText().toString()));
+          //  upcomingMap.put("notesList",  notesList);
+            upcomingMap.put("isOneDirection",  isOneDirection);
            // upcomingMap.put("timestamp", timestamp);
            // upcomingMap.put("finishedTrips",  null);
             //upcomingMap.put("currentActiveTrip",  currentActiveTrip);
@@ -425,29 +445,34 @@ public class EditTripActivity extends AppCompatActivity {
 
     }
 
-
-    private void handleDate() {
+    private void handleDate(int id) {
         Calendar calendar = Calendar.getInstance();
         int YEAR = calendar.get(Calendar.YEAR);
         int MONTH = calendar.get(Calendar.MONTH);
         int DATE = calendar.get(Calendar.DATE);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int date) {
 
-                Calendar calendar1 = Calendar.getInstance();
-                calendar1.set(Calendar.YEAR, year);
-                calendar1.set(Calendar.MONTH, month);
-                calendar1.set(Calendar.DATE, date);
-                String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
+                        Calendar calendar1 = Calendar.getInstance();
+                        calendar1.set(Calendar.YEAR, year);
+                        calendar1.set(Calendar.MONTH, month);
+                        calendar1.set(Calendar.DATE, date);
+                        String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
+                        if (id==1){
+                            txtDatePicker.setText(dateText);
+                        }else{
+                            txtDatePicker2.setText(dateText);
+                        }
 
-                txtDatePicker.setText(dateText);
-            }
-        }, YEAR, MONTH, DATE);
+
+                    }
+                }, YEAR, MONTH, DATE);
         datePickerDialog.show();
     }
-    private void handleTime() {
+    private void handleTime(int id) {
         Calendar calendar = Calendar.getInstance();
         int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
         int MINUTE = calendar.get(Calendar.MINUTE);
@@ -477,13 +502,78 @@ public class EditTripActivity extends AppCompatActivity {
 //                long millis = date.getTime();
 //                time2 = millis + System.currentTimeMillis();
 //                ///////////////
-                txtTimePicker.setText(hour+":"+minute);
+                if (id==1){
+                    txtTimePicker.setText(hour+":"+minute);
+                }else{
+                    txtTimePicker2.setText(hour+":"+minute);
+                }
+
             }
         }, HOUR, MINUTE, is24HourFormat);
 
         timePickerDialog.show();
 
     }
+
+
+//    private void handleDate() {
+//        Calendar calendar = Calendar.getInstance();
+//        int YEAR = calendar.get(Calendar.YEAR);
+//        int MONTH = calendar.get(Calendar.MONTH);
+//        int DATE = calendar.get(Calendar.DATE);
+//
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+//
+//                Calendar calendar1 = Calendar.getInstance();
+//                calendar1.set(Calendar.YEAR, year);
+//                calendar1.set(Calendar.MONTH, month);
+//                calendar1.set(Calendar.DATE, date);
+//                String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
+//
+//                txtDatePicker.setText(dateText);
+//            }
+//        }, YEAR, MONTH, DATE);
+//        datePickerDialog.show();
+//    }
+//    private void handleTime() {
+//        Calendar calendar = Calendar.getInstance();
+//        int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
+//        int MINUTE = calendar.get(Calendar.MINUTE);
+//        boolean is24HourFormat = DateFormat.is24HourFormat(this);
+//
+//        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+//            @Override
+//            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+//                timePicker.setIs24HourView(true);
+//                Log.i(TAG, "onTimeSet: " + hour + minute);
+////                Calendar calendar1 = Calendar.getInstance();
+////                calendar1.set(Calendar.HOUR_OF_DAY, hour);
+////                calendar1.set(Calendar.MINUTE, minute);
+////                String dateText = DateFormat.format("h:mm a", calendar1).toString();
+////
+////                time = calendar1.getTimeInMillis() - (calendar1.getTimeInMillis() % 60000);
+////               apm = calendar1.AM_PM;
+////               ////////////
+////                String myDate = hour+":"+minute;
+////                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+////                Date date = null;
+////                try {
+////                    date = sdf.parse(myDate);
+////                } catch (ParseException e) {
+////                    e.printStackTrace();
+////                }
+////                long millis = date.getTime();
+////                time2 = millis + System.currentTimeMillis();
+////                ///////////////
+//                txtTimePicker.setText(hour+":"+minute);
+//            }
+//        }, HOUR, MINUTE, is24HourFormat);
+//
+//        timePickerDialog.show();
+//
+//    }
     private void searchPlace(int request_code) {
         Places.initialize(this, getApplication().getString(R.string.api_key));
         // Set the fields to specify which types of place data to

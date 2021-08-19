@@ -57,6 +57,11 @@
             android:exported="true"
             android:label="@string/title_activity_home_screen2"
             android:theme="@style/Theme.Tripaway.NoActionBar" />
+
+        <activity
+            android:name=".FacebookAuthActivity"
+            android:exported="true"
+             />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ui.Upcoming.FloatingWidgetActivity" />

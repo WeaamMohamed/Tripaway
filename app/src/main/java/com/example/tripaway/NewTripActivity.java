@@ -253,9 +253,9 @@ public class NewTripActivity extends AppCompatActivity  {
 
                 if(isOneDirection)
                 {
+
                     txtDatePicker2.setVisibility( View.GONE);
                     txtTimePicker2.setVisibility( View.GONE);
-
 
                 }
                 else
@@ -394,7 +394,8 @@ public class NewTripActivity extends AppCompatActivity  {
         int MONTH = calendar.get(Calendar.MONTH);
         int DATE = calendar.get(Calendar.DATE);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
 
@@ -414,6 +415,7 @@ public class NewTripActivity extends AppCompatActivity  {
         }, YEAR, MONTH, DATE);
         datePickerDialog.show();
     }
+
     private void handleTime(int id) {
         Calendar calendar = Calendar.getInstance();
         int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
