@@ -301,6 +301,7 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
 //                    start = getLatLngFromAddress(holder.tvStartPoint.getText().toString());
 //                    end = getLatLngFromAddress(holder.tvEndPoint.getText().toString());
 //                    Findroutes(start,end);
+                    ////
                     //TODO:
                     holder.tvDistance.setText(model.getDistance());
                     holder.tvDuration.setText(model.getDuration());
