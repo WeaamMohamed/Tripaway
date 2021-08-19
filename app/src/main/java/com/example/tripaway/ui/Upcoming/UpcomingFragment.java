@@ -289,8 +289,8 @@ public class UpcomingFragment extends Fragment {
             holder.tvEndPoint2.setText("to "+model.getEndPointList().get(1));
             holder.tvDate2.setText(model.getDateList().get(1));
             holder.tvTime2.setText(model.getTimeList().get(1));
-            holder.setAlarm(holder.tvDate2.getText().toString()+" "+holder.tvTime2.getText().toString(),position,
-                    holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint2.getText().toString(),holder.tvEndPoint2.getText().toString());
+            holder.setAlarm(holder.tvDate2.getText().toString()+" "+holder.tvTime2.getText().toString(),position/2,
+                    holder.tvTripName.getText().toString(),alarmId+"two",holder.tvStartPoint2.getText().toString(),holder.tvEndPoint2.getText().toString());
 
 
 
