@@ -330,7 +330,7 @@ public class UpcomingFragment extends Fragment {
 
                         case R.id.menuActionDelete:
                             try {
-                                showDeleteConfirmationDialog(documentId);
+                                showDeleteConfirmationDialog(documentId,position,true);
                             } catch (NotFoundException e) {
                                 e.printStackTrace();
                             }
@@ -424,8 +424,14 @@ public class UpcomingFragment extends Fragment {
         });
 
     }
-
-    private void showDeleteConfirmationDialog(String selectedDocumentId)
+  //  AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+    //                            Intent myIntent = new Intent(getApplicationContext(), SessionReceiver.class);
+//                            PendingIntent pendingIntent = PendingIntent.getBroadcast(
+//                                    getApplicationContext(), 1, myIntent,
+//                                    PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//                            alarmManager.cancel(pendingIntent);
+    private void showDeleteConfirmationDialog(String selectedDocumentId ,int pos,boolean round)
             throws NotFoundException {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Delete Trip")
@@ -434,7 +440,29 @@ public class UpcomingFragment extends Fragment {
                 .setPositiveButton(
                         "yes",
                         (dialog, which) -> {
+                            if (round==true){
+                                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+                                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                            PendingIntent pendingIntent1 = PendingIntent.getBroadcast(
+                                    getApplicationContext(), pos, intent,
+                                    PendingIntent.FLAG_UPDATE_CURRENT);
+                            alarmManager.cancel(pendingIntent1);
+                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
+                                        getApplicationContext(), pos/2, intent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
+                                alarmManager.cancel(pendingIntent2);
+
+                            }
+                            else {
+                                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+                                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                        getApplicationContext(), pos, intent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
+                                alarmManager.cancel(pendingIntent);
+                            }
                             //Do Something Here
+//
                             FireStoreHelper.deleteUpcomingTripFromFireStore(selectedDocumentId);
 
                            // FireStoreHelper.deleteOldTripFromFireStore(selectedDocumentId);
@@ -494,7 +522,7 @@ public class UpcomingFragment extends Fragment {
 
                         case R.id.menuActionDelete:
                             try {
-                                showDeleteConfirmationDialog(documentId);
+                                showDeleteConfirmationDialog(documentId,position,false);
                             } catch (NotFoundException e) {
                                 e.printStackTrace();
                             }
