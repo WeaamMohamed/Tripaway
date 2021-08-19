@@ -4,13 +4,19 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.ALARM_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +45,11 @@ import com.example.tripaway.models.UpcomingTripModel;
 import com.example.tripaway.utils.FireStoreHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -50,9 +62,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class UpcomingFragment extends Fragment {
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private double wayLatitude = 0.0, wayLongitude = 0.0;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+
+    List<Address> addresses;
+    public static final String add = "add";
   //  List<RoundTripModel> upcomingList ;
     //    UOCOMINGRecyclerViewAdapter myAdapter;
     RecyclerView recyclerView;
@@ -61,6 +82,7 @@ public class UpcomingFragment extends Fragment {
     FirestoreRecyclerAdapter adapter;
 
     private UpcomingViewModel upcomingViewModel;
+    String startPoint =null;
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
@@ -73,6 +95,8 @@ public class UpcomingFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        FindCurrentLocation();
+        GetCurrentAddress();
 
 
        //  roundTripHelper = new RoundTripHelper();
@@ -256,12 +280,18 @@ public class UpcomingFragment extends Fragment {
             holder.tvEndPoint.setText("to "+model.getEndPointList().get(0));
             holder.tvDate.setText(model.getDateList().get(0));
             holder.tvTime.setText(model.getTimeList().get(0));
+            String alarmId = documentId;
+            holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position,
+                    holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString());
 
 
             holder.tvStartPoint2.setText("From "+ model.getStartPointList().get(1));
             holder.tvEndPoint2.setText("to "+model.getEndPointList().get(1));
             holder.tvDate2.setText(model.getDateList().get(1));
             holder.tvTime2.setText(model.getTimeList().get(1));
+            holder.setAlarm(holder.tvDate2.getText().toString()+" "+holder.tvTime2.getText().toString(),position,
+                    holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint2.getText().toString(),holder.tvEndPoint2.getText().toString());
+
 
 
 
@@ -491,7 +521,11 @@ public class UpcomingFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), FloatingWidgetActivity.class);
                 String stPoint = model.getStartPoint();
-                intent.putExtra("START", stPoint);
+                if (startPoint==null){
+                    intent.putExtra("START", stPoint);
+                }else {
+                    intent.putExtra("START", startPoint);
+                }
                 String endPoint = model.getEndPoint();
                 intent.putExtra("END", endPoint);
                 startActivity(intent);
@@ -642,6 +676,62 @@ public class UpcomingFragment extends Fragment {
     public static UpcomingFragment getActivityInstance()
     {
         return INSTANCE;
+    }
+    public  void FindCurrentLocation(){
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION};
+            ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
+
+        } else {
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            locationRequest = LocationRequest.create();
+            locationRequest.setInterval(500)
+                    .setFastestInterval(0)
+                    .setMaxWaitTime(0)
+                    .setSmallestDisplacement(0)
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            wayLatitude = location.getLatitude();
+                            wayLongitude = location.getLongitude();
+//                            startPoint.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
+                        }
+                    }
+                }
+            };
+            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+
+        }
+        ;
+    }
+    public void GetCurrentAddress(){
+        try{
+            Geocoder geo = new Geocoder(getApplicationContext().getApplicationContext(), Locale.getDefault());
+            addresses = geo.getFromLocation(wayLatitude, wayLongitude, 1);
+            if (addresses.isEmpty()) {
+//                startPoint.setText("Waiting for Location");
+            }
+            else {
+                if (addresses.size() > 0) {
+                    startPoint = addresses.get(0).getFeatureName() + ", "
+                            + addresses.get(0).getLocality() +", "
+                            + addresses.get(0).getAdminArea() + ", "
+                            + addresses.get(0).getCountryName();
+
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 
