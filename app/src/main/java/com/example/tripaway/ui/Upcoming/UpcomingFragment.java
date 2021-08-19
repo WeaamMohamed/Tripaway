@@ -4,19 +4,13 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.ALARM_SERVICE;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,11 +38,6 @@ import com.example.tripaway.models.UpcomingTripModel;
 import com.example.tripaway.utils.FireStoreHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -61,20 +49,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class UpcomingFragment extends Fragment {
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private double wayLatitude = 0.0, wayLongitude = 0.0;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-
-    List<Address> addresses;
-    public static final String add = "add";
-  //  List<RoundTripModel> upcomingList ;
+    //  List<RoundTripModel> upcomingList ;
     //    UOCOMINGRecyclerViewAdapter myAdapter;
     RecyclerView recyclerView;
     private FirebaseFirestore dbFireStore;
@@ -82,7 +60,6 @@ public class UpcomingFragment extends Fragment {
     FirestoreRecyclerAdapter adapter;
 
     private UpcomingViewModel upcomingViewModel;
-    String startPoint =null;
     private FragmentUpcomingBinding binding;
     private Map<String, Object>upcomingMapData = new HashMap<>();
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
@@ -95,11 +72,9 @@ public class UpcomingFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        FindCurrentLocation();
-        GetCurrentAddress();
 
 
-       //  roundTripHelper = new RoundTripHelper();
+        //  roundTripHelper = new RoundTripHelper();
 
 
         INSTANCE=this;
@@ -153,7 +128,7 @@ public class UpcomingFragment extends Fragment {
 
                 if((boolean) getSnapshots().getSnapshot(position).get("isOneDirection"))
                 {
-                   // holder.iamgeArrow.setVisibility(View.GONE);
+                    // holder.iamgeArrow.setVisibility(View.GONE);
 
 
                     setOneDirectionTripData(holder, model, position, getSnapshots().getSnapshot(position).getId());
@@ -280,18 +255,12 @@ public class UpcomingFragment extends Fragment {
             holder.tvEndPoint.setText("to "+model.getEndPointList().get(0));
             holder.tvDate.setText(model.getDateList().get(0));
             holder.tvTime.setText(model.getTimeList().get(0));
-            String alarmId = documentId;
-            holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position,
-                    holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString());
 
 
             holder.tvStartPoint2.setText("From "+ model.getStartPointList().get(1));
             holder.tvEndPoint2.setText("to "+model.getEndPointList().get(1));
             holder.tvDate2.setText(model.getDateList().get(1));
             holder.tvTime2.setText(model.getTimeList().get(1));
-            holder.setAlarm(holder.tvDate2.getText().toString()+" "+holder.tvTime2.getText().toString(),position/2,
-                    holder.tvTripName.getText().toString(),alarmId+"two",holder.tvStartPoint2.getText().toString(),holder.tvEndPoint2.getText().toString());
-
 
 
 
@@ -330,7 +299,7 @@ public class UpcomingFragment extends Fragment {
 
                         case R.id.menuActionDelete:
                             try {
-                                showDeleteConfirmationDialog(documentId,position,true);
+                                showDeleteConfirmationDialog(documentId);
                             } catch (NotFoundException e) {
                                 e.printStackTrace();
                             }
@@ -424,14 +393,8 @@ public class UpcomingFragment extends Fragment {
         });
 
     }
-  //  AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-    //                            Intent myIntent = new Intent(getApplicationContext(), SessionReceiver.class);
-//                            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-//                                    getApplicationContext(), 1, myIntent,
-//                                    PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                            alarmManager.cancel(pendingIntent);
-    private void showDeleteConfirmationDialog(String selectedDocumentId ,int pos,boolean round)
+
+    private void showDeleteConfirmationDialog(String selectedDocumentId)
             throws NotFoundException {
         new AlertDialog.Builder(getActivity())
                 .setTitle("Delete Trip")
@@ -440,32 +403,10 @@ public class UpcomingFragment extends Fragment {
                 .setPositiveButton(
                         "yes",
                         (dialog, which) -> {
-                            if (round==true){
-                                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-                                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                            PendingIntent pendingIntent1 = PendingIntent.getBroadcast(
-                                    getApplicationContext(), pos, intent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT);
-                            alarmManager.cancel(pendingIntent1);
-                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
-                                        getApplicationContext(), pos/2, intent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-                                alarmManager.cancel(pendingIntent2);
-
-                            }
-                            else {
-                                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-                                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                                PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                                        getApplicationContext(), pos, intent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-                                alarmManager.cancel(pendingIntent);
-                            }
                             //Do Something Here
-//
                             FireStoreHelper.deleteUpcomingTripFromFireStore(selectedDocumentId);
 
-                           // FireStoreHelper.deleteOldTripFromFireStore(selectedDocumentId);
+                            // FireStoreHelper.deleteOldTripFromFireStore(selectedDocumentId);
 
                         })
                 .setNegativeButton("No", (dialogInterface, i) -> {
@@ -522,11 +463,11 @@ public class UpcomingFragment extends Fragment {
 
                         case R.id.menuActionDelete:
                             try {
-                                showDeleteConfirmationDialog(documentId,position,false);
+                                showDeleteConfirmationDialog(documentId);
                             } catch (NotFoundException e) {
                                 e.printStackTrace();
                             }
-                           // FireStoreHelper.deleteUpcomingTripFromFireStore(documentId);
+                            // FireStoreHelper.deleteUpcomingTripFromFireStore(documentId);
                             return true;
 
                         case R.id.menuActionCancel:
@@ -549,11 +490,7 @@ public class UpcomingFragment extends Fragment {
 
                 Intent intent = new Intent(getActivity(), FloatingWidgetActivity.class);
                 String stPoint = model.getStartPoint();
-                if (startPoint==null){
-                    intent.putExtra("START", stPoint);
-                }else {
-                    intent.putExtra("START", startPoint);
-                }
+                intent.putExtra("START", stPoint);
                 String endPoint = model.getEndPoint();
                 intent.putExtra("END", endPoint);
                 startActivity(intent);
@@ -591,175 +528,119 @@ public class UpcomingFragment extends Fragment {
     }
 
 
-        //viewHolder
-        private class UpcomingTripsViewHolder extends RecyclerView.ViewHolder {
-            TextView tvTripName, tvStartPoint, tvEndPoint,
-                    tvDate, tvTime;
-            TextView buttonViewOption;
-            Button startMap;
-            ImageButton btnNotes;
-            ImageView iamgeArrow;
+    //viewHolder
+    private class UpcomingTripsViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTripName, tvStartPoint, tvEndPoint,
+                tvDate, tvTime;
+        TextView buttonViewOption;
+        Button startMap;
+        ImageButton btnNotes;
+        ImageView iamgeArrow;
 
-            TextView tvTripName2, tvStartPoint2, tvEndPoint2,
-                    tvDate2, tvTime2;
+        TextView tvTripName2, tvStartPoint2, tvEndPoint2,
+                tvDate2, tvTime2;
 
-            public UpcomingTripsViewHolder(@NonNull View itemView) {
-                super(itemView);
-                tvTripName = itemView.findViewById(R.id.txtTripName);
-                tvStartPoint = itemView.findViewById(R.id.txtStartPoint);
-                tvEndPoint = itemView.findViewById(R.id.txtEndPoint);
-                tvTime = itemView.findViewById(R.id.textViewTime);
-                tvDate = itemView.findViewById(R.id.txtViewDate);
-                buttonViewOption = itemView.findViewById(R.id.btnViewOption);
-                startMap = itemView.findViewById(R.id.btnStartTrip);
-                btnNotes = itemView.findViewById(R.id.btnNotes);
-                iamgeArrow = itemView.findViewById(R.id.imgArrow2);
-
-
-
-              //  tvTripName2 = itemView.findViewById(R.id.txtTripName);
-                tvStartPoint2 = itemView.findViewById(R.id.txtStartPoint2);
-                tvEndPoint2 = itemView.findViewById(R.id.txtEndPoint2);
-                tvTime2 = itemView.findViewById(R.id.txtTime2);
-                tvDate2 = itemView.findViewById(R.id.txtDate2);
+        public UpcomingTripsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvTripName = itemView.findViewById(R.id.txtTripName);
+            tvStartPoint = itemView.findViewById(R.id.txtStartPoint);
+            tvEndPoint = itemView.findViewById(R.id.txtEndPoint);
+            tvTime = itemView.findViewById(R.id.textViewTime);
+            tvDate = itemView.findViewById(R.id.txtViewDate);
+            buttonViewOption = itemView.findViewById(R.id.btnViewOption);
+            startMap = itemView.findViewById(R.id.btnStartTrip);
+            btnNotes = itemView.findViewById(R.id.btnNotes);
+            iamgeArrow = itemView.findViewById(R.id.imgArrow2);
 
 
-            }
-            public void setAlarm(String dt,int reqCode,String trip_name,String alarm_id,String start,String end) {
-                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                intent.putExtra("requestCode",reqCode);
-                intent.putExtra("tripName",trip_name);
-                intent.putExtra("alarmId",alarm_id);
-                intent.putExtra("startPoint",start);
-                intent.putExtra("endPoint",end);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), reqCode, intent, 0);
 
-                SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
-                java.util.Date date = new Date();
-                try {
-                    date = yourDateFormat.parse(dt);
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(date);
-                } catch (ParseException e) {
-                    Log.e(TAG, "Parsing date time failed", e);
-                }
+            //  tvTripName2 = itemView.findViewById(R.id.txtTripName);
+            tvStartPoint2 = itemView.findViewById(R.id.txtStartPoint2);
+            tvEndPoint2 = itemView.findViewById(R.id.txtEndPoint2);
+            tvTime2 = itemView.findViewById(R.id.txtTime2);
+            tvDate2 = itemView.findViewById(R.id.txtDate2);
+
+
+        }
+        public void setAlarm(String dt,int reqCode,String trip_name,String alarm_id,String start,String end) {
+            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
+            Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+            intent.putExtra("requestCode",reqCode);
+            intent.putExtra("tripName",trip_name);
+            intent.putExtra("alarmId",alarm_id);
+            intent.putExtra("startPoint",start);
+            intent.putExtra("endPoint",end);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), reqCode, intent, 0);
+
+            SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");
+            java.util.Date date = new Date();
+            try {
+                date = yourDateFormat.parse(dt);
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
-                Calendar current = Calendar.getInstance();
+            } catch (ParseException e) {
+                Log.e(TAG, "Parsing date time failed", e);
+            }
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            Calendar current = Calendar.getInstance();
 
-                if(cal.compareTo(current) <= 0)
-                {
-                    //The set Date/Time already passed
-                    Toast.makeText(getApplicationContext(), "Invalid Date/Time", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 0, pendingIntent);
-                }
+            if(cal.compareTo(current) <= 0)
+            {
+                //The set Date/Time already passed
+                Toast.makeText(getApplicationContext(), "Invalid Date/Time", Toast.LENGTH_LONG).show();
+            }
+            else{
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 0, pendingIntent);
             }
         }
+    }
 
-        @Override
-        public void onStart () {
-            super.onStart();
-            if (adapter != null) {
-                adapter.startListening();
-            }
-            //  adapter.startListening();
+    @Override
+    public void onStart () {
+        super.onStart();
+        if (adapter != null) {
+            adapter.startListening();
         }
-        @Override
-        public void onStop () {
-            super.onStop();
-            if (adapter != null) {
-                adapter.stopListening();
-            }
-            //adapter.stopListening();
+        //  adapter.startListening();
+    }
+    @Override
+    public void onStop () {
+        super.onStop();
+        if (adapter != null) {
+            adapter.stopListening();
         }
-        @Override
-        public void onDestroyView () {
-            super.onDestroyView();
-            binding = null;
-        }
-//    This problem is caused by RecyclerView Data modified in different thread. The best way is checking all data access. And a workaround is wrapping LinearLayoutManager.
+        //adapter.stopListening();
+    }
+    @Override
+    public void onDestroyView () {
+        super.onDestroyView();
+        binding = null;
+    }
+    //    This problem is caused by RecyclerView Data modified in different thread. The best way is checking all data access. And a workaround is wrapping LinearLayoutManager.
 //
 //    Previous answer
 //    There was actually a bug in RecyclerView and the support 23.1.1 still not fixed.
 //
 //    For a workaround, notice that backtrace stacks, if we can catch this Exception in one of some class it may skip this crash. For me, I create a LinearLayoutManagerWrapper and override the onLayoutChildren:
-        public class WrapContentLinearLayoutManager extends LinearLayoutManager {
-            public WrapContentLinearLayoutManager(Context context) {
-                super(context);
-            }
+    public class WrapContentLinearLayoutManager extends LinearLayoutManager {
+        public WrapContentLinearLayoutManager(Context context) {
+            super(context);
+        }
 
-            //... constructor
-            @Override
-            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-                try {
-                    super.onLayoutChildren(recycler, state);
-                } catch (IndexOutOfBoundsException e) {
-                    Log.e("TAG", "meet a IOOBE in RecyclerView");
-                }
+        //... constructor
+        @Override
+        public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+            try {
+                super.onLayoutChildren(recycler, state);
+            } catch (IndexOutOfBoundsException e) {
+                Log.e("TAG", "meet a IOOBE in RecyclerView");
             }
         }
+    }
     public static UpcomingFragment getActivityInstance()
     {
         return INSTANCE;
-    }
-    public  void FindCurrentLocation(){
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION};
-            ActivityCompat.requestPermissions(getActivity(), permissions, LOCATION_PERMISSION_REQUEST_CODE);
-
-        } else {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            locationRequest = LocationRequest.create();
-            locationRequest.setInterval(500)
-                    .setFastestInterval(0)
-                    .setMaxWaitTime(0)
-                    .setSmallestDisplacement(0)
-                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationCallback = new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
-                        return;
-                    }
-                    for (Location location : locationResult.getLocations()) {
-                        if (location != null) {
-                            wayLatitude = location.getLatitude();
-                            wayLongitude = location.getLongitude();
-//                            startPoint.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
-                        }
-                    }
-                }
-            };
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-
-        }
-        ;
-    }
-    public void GetCurrentAddress(){
-        try{
-            Geocoder geo = new Geocoder(getApplicationContext().getApplicationContext(), Locale.getDefault());
-            addresses = geo.getFromLocation(wayLatitude, wayLongitude, 1);
-            if (addresses.isEmpty()) {
-//                startPoint.setText("Waiting for Location");
-            }
-            else {
-                if (addresses.size() > 0) {
-                    startPoint = addresses.get(0).getFeatureName() + ", "
-                            + addresses.get(0).getLocality() +", "
-                            + addresses.get(0).getAdminArea() + ", "
-                            + addresses.get(0).getCountryName();
-
-                }
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
 

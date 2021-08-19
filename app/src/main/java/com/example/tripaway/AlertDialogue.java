@@ -1,7 +1,6 @@
 package com.example.tripaway;
 
 
-import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,43 +10,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
+import android.util.Log;
 import android.view.Window;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.example.tripaway.ui.Upcoming.FloatingWidgetActivity;
 import com.example.tripaway.utils.FireStoreHelper;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-
-import java.util.List;
-import java.util.Locale;
 
 public class AlertDialogue extends AppCompatActivity {
-    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private double wayLatitude = 0.0, wayLongitude = 0.0;
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
-    List<Address> addresses;
-    String sPoint = null;
     int i = 0;
     int reqCode;
     NotificationCompat.Builder mBuilder;
@@ -89,14 +68,10 @@ public class AlertDialogue extends AppCompatActivity {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
+                Log.i("ALAA",alarmId);
                 FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, true);
                 Intent intent2 = new Intent(getApplicationContext(), FloatingWidgetActivity.class);
-                if (sPoint==null){
-                    intent2.putExtra("START", startPoint);
-                }else {
-                    intent2.putExtra("START", sPoint);
-                }
-//                intent2.putExtra("START", startPoint);
+                intent2.putExtra("START", startPoint);
                 intent2.putExtra("END", endpoint);
                 startActivity(intent2);
                 mNotificationManager.cancel(reqCode);
@@ -172,62 +147,6 @@ public class AlertDialogue extends AppCompatActivity {
         // Create the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
-
-    }
-    public  void FindCurrentLocation(){
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION};
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-
-        } else {
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-            locationRequest = LocationRequest.create();
-            locationRequest.setInterval(500)
-                    .setFastestInterval(0)
-                    .setMaxWaitTime(0)
-                    .setSmallestDisplacement(0)
-                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationCallback = new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult == null) {
-                        return;
-                    }
-                    for (Location location : locationResult.getLocations()) {
-                        if (location != null) {
-                            wayLatitude = location.getLatitude();
-                            wayLongitude = location.getLongitude();
-//                            startPoint.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
-                        }
-                    }
-                }
-            };
-            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-
-        }
-        ;
-    }
-    public void GetCurrentAddress(){
-        try{
-            Geocoder geo = new Geocoder(getApplicationContext().getApplicationContext(), Locale.getDefault());
-            addresses = geo.getFromLocation(wayLatitude, wayLongitude, 1);
-            if (addresses.isEmpty()) {
-//                startPoint.setText("Waiting for Location");
-            }
-            else {
-                if (addresses.size() > 0) {
-                    startPoint = addresses.get(0).getFeatureName() + ", "
-                            + addresses.get(0).getLocality() +", "
-                            + addresses.get(0).getAdminArea() + ", "
-                            + addresses.get(0).getCountryName();
-
-                }
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 }
