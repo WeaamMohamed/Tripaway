@@ -2,10 +2,18 @@ package com.example.tripaway;
 
 import static android.content.ContentValues.TAG;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.telephony.SmsManager;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -21,27 +29,50 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
-import com.example.tripaway.utils.FireStoreHelper;
 import com.example.tripaway.models.UpcomingTripModel;
+import com.example.tripaway.utils.FireStoreHelper;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class NewTripActivity extends AppCompatActivity  {
+    Button btnFindLocation;
+    LocationManager manager;
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int SEND_SMS_PERMISSIONS_REQUEST_SEND_SMS =2 ;
+    private double wayLatitude = 0.0, wayLongitude = 0.0;
+    private FusedLocationProviderClient mFusedLocationClient;
+    TextView txtLocation;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    Button btnGetAddress;
+    TextView txtAddress;
+    Button btnSMS;
+    String phoneNo;
+    String message;
+    List<Address> addresses;
+    public static final String lat = "lat";
+    public static final String lon = "lon";
+    public static final String add = "add";
+
 
     EditText tripTitle,startPoint,endPoint,txtTimePicker,txtDatePicker,
     txtDatePicker2, txtTimePicker2;
@@ -74,8 +105,10 @@ public class NewTripActivity extends AppCompatActivity  {
             }
 
         });
-        startPoint = (EditText) findViewById(R.id.edtStartPoint);
+        startPoint =  findViewById(R.id.edtStartPoint);
         startPoint.setFocusable(false);
+        FindCurrentLocation();
+
         startPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +129,7 @@ public class NewTripActivity extends AppCompatActivity  {
         btnCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                GetCurrentAddress();
             }
 
         });
@@ -175,7 +208,7 @@ public class NewTripActivity extends AppCompatActivity  {
         txtTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleTime();
+                handleTime(1);
             }
         });
         txtTimePicker2 = (EditText) findViewById(R.id.timePicker3);
@@ -183,7 +216,7 @@ public class NewTripActivity extends AppCompatActivity  {
         txtTimePicker2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleTime();
+                handleTime(2);
             }
         });
         txtDatePicker = (EditText) findViewById(R.id.datePicker);
@@ -191,7 +224,7 @@ public class NewTripActivity extends AppCompatActivity  {
         txtDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleDate();
+                handleDate(1);
             }
 
         });
@@ -200,7 +233,7 @@ public class NewTripActivity extends AppCompatActivity  {
         txtDatePicker2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleDate();
+                handleDate(2);
             }
 
         });
@@ -229,6 +262,7 @@ public class NewTripActivity extends AppCompatActivity  {
                 {
                     txtDatePicker2.setVisibility( View.VISIBLE);
                     txtTimePicker2.setVisibility( View.VISIBLE);
+
 
 
                 }
@@ -287,6 +321,7 @@ public class NewTripActivity extends AppCompatActivity  {
 
         String tripName = tripTitle.getText().toString();
         String start = startPoint.getText().toString();
+
         String end = endPoint.getText().toString();
         String time = txtTimePicker.getText().toString();
         String date = txtDatePicker.getText().toString();
@@ -353,7 +388,7 @@ public class NewTripActivity extends AppCompatActivity  {
     }
 
 
-    private void handleDate() {
+    private void handleDate(int id) {
         Calendar calendar = Calendar.getInstance();
         int YEAR = calendar.get(Calendar.YEAR);
         int MONTH = calendar.get(Calendar.MONTH);
@@ -368,13 +403,18 @@ public class NewTripActivity extends AppCompatActivity  {
                 calendar1.set(Calendar.MONTH, month);
                 calendar1.set(Calendar.DATE, date);
                 String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
+                if (id==1){
+                    txtDatePicker.setText(dateText);
+                }else{
+                    txtDatePicker2.setText(dateText);
+                }
 
-                txtDatePicker.setText(dateText);
+
             }
         }, YEAR, MONTH, DATE);
         datePickerDialog.show();
     }
-    private void handleTime() {
+    private void handleTime(int id) {
         Calendar calendar = Calendar.getInstance();
         int HOUR = calendar.get(Calendar.HOUR_OF_DAY);
         int MINUTE = calendar.get(Calendar.MINUTE);
@@ -404,7 +444,12 @@ public class NewTripActivity extends AppCompatActivity  {
 //                long millis = date.getTime();
 //                time2 = millis + System.currentTimeMillis();
 //                ///////////////
-                txtTimePicker.setText(hour+":"+minute);
+                if (id==1){
+                    txtTimePicker.setText(hour+":"+minute);
+                }else{
+                    txtTimePicker2.setText(hour+":"+minute);
+                }
+
             }
         }, HOUR, MINUTE, is24HourFormat);
 
@@ -438,4 +483,88 @@ public class NewTripActivity extends AppCompatActivity  {
                 Log.i(TAG, status.getStatusMessage());
             }
         }
+    public  void FindCurrentLocation(){
+        if (ActivityCompat.checkSelfPermission(NewTripActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(NewTripActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION};
+            ActivityCompat.requestPermissions(NewTripActivity.this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+
+        } else {
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(NewTripActivity.this);
+            locationRequest = LocationRequest.create();
+            locationRequest.setInterval(500)
+                    .setFastestInterval(0)
+                    .setMaxWaitTime(0)
+                    .setSmallestDisplacement(0)
+                    .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            locationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            wayLatitude = location.getLatitude();
+                            wayLongitude = location.getLongitude();
+//                            startPoint.setText(String.format(Locale.US, "%s -- %s", wayLatitude, wayLongitude));
+                        }
+                    }
+                }
+            };
+            mFusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+
+        }
+        ;
+    }
+    public void GetCurrentAddress(){
+        try{
+            Geocoder geo = new Geocoder(NewTripActivity.this.getApplicationContext(), Locale.getDefault());
+            addresses = geo.getFromLocation(wayLatitude, wayLongitude, 1);
+            if (addresses.isEmpty()) {
+                startPoint.setText("Waiting for Location");
+            }
+            else {
+                if (addresses.size() > 0) {
+                    startPoint.setText(addresses.get(0).getFeatureName() + ", "
+                            + addresses.get(0).getLocality() +", "
+                            + addresses.get(0).getAdminArea() + ", "
+                            + addresses.get(0).getCountryName());
+
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                if (ActivityCompat.checkSelfPermission(NewTripActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(NewTripActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(NewTripActivity.this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+
+                } else {
+                    Toast.makeText(NewTripActivity.this, "Location refused", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case SEND_SMS_PERMISSIONS_REQUEST_SEND_SMS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS refused, please try again.", Toast.LENGTH_LONG).show();
+
+                }
+                break;
+
+        }
+    }
+
 }

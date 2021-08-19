@@ -468,7 +468,7 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
     public void onRoutingSuccess(ArrayList<Route> route, int shortestRouteIndex) {
 
         CameraUpdate center = CameraUpdateFactory.newLatLng(start);
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(7);
         if(polylines!=null) {
             polylines.clear();
         }
@@ -554,6 +554,7 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
 
         }
     }
+
     @SuppressLint("MissingPermission")
     private void getMyLocation(){
         mMap.setMyLocationEnabled(true);
@@ -564,7 +565,7 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                 myLocation=location;
                 LatLng ltlng=new LatLng(location.getLatitude(),location.getLongitude());
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                        ltlng, 7.5f);
+                        ltlng, 7);
                 mMap.animateCamera(cameraUpdate);
             }
         });}
