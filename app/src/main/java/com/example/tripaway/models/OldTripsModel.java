@@ -19,7 +19,7 @@ public class OldTripsModel {
     private List<String> notes;
     private String date;
     private String time;
-    private Timestamp timestamp;
+    protected Timestamp timestamp;
     private boolean isOneDirection;
 
 

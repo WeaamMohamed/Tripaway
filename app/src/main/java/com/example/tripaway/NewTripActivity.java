@@ -24,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tripaway.utils.FireStoreHelper;
 import com.example.tripaway.models.UpcomingTripModel;
-import com.example.tripaway.utils.RoundTripHelper;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -44,7 +43,8 @@ import java.util.List;
 
 public class NewTripActivity extends AppCompatActivity  {
 
-    EditText tripTitle,startPoint,endPoint,txtTimePicker,txtDatePicker;
+    EditText tripTitle,startPoint,endPoint,txtTimePicker,txtDatePicker,
+    txtDatePicker2, txtTimePicker2;
     Button btnCurrentLocation,btnAddTrip;
     String[] direction = {"ONE_WAY", "ROUND"};
     String[] repeat = {"NO_REPEAT", "DAILY","WEAKLY","MONTHLY"};
@@ -178,9 +178,26 @@ public class NewTripActivity extends AppCompatActivity  {
                 handleTime();
             }
         });
+        txtTimePicker2 = (EditText) findViewById(R.id.timePicker3);
+        txtTimePicker2.setFocusable(false);
+        txtTimePicker2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleTime();
+            }
+        });
         txtDatePicker = (EditText) findViewById(R.id.datePicker);
         txtDatePicker.setFocusable(false);
         txtDatePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDate();
+            }
+
+        });
+        txtDatePicker2 = (EditText) findViewById(R.id.datePicker3);
+        txtDatePicker2.setFocusable(false);
+        txtDatePicker2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleDate();
@@ -201,6 +218,20 @@ public class NewTripActivity extends AppCompatActivity  {
                 Log.i("WEAAM  direction", j_spinner_direction.getSelectedItemPosition() +" ");
                 isOneDirection = j_spinner_direction.getSelectedItemPosition() == 0? true: false ;
 
+                if(isOneDirection)
+                {
+                    txtDatePicker2.setVisibility( View.GONE);
+                    txtTimePicker2.setVisibility( View.GONE);
+
+
+                }
+                else
+                {
+                    txtDatePicker2.setVisibility( View.VISIBLE);
+                    txtTimePicker2.setVisibility( View.VISIBLE);
+
+
+                }
 
             }
 
@@ -237,8 +268,8 @@ public class NewTripActivity extends AppCompatActivity  {
                 (List<String>) Arrays.asList(tripTitle.getText().toString(), tripTitle.getText().toString()),
                 (List<String>)Arrays.asList(startPoint.getText().toString(), endPoint.getText().toString()),
                 (List<String>)Arrays.asList( endPoint.getText().toString(), startPoint.getText().toString()),
-                (List<String>)Arrays.asList(txtDatePicker.getText().toString(), txtDatePicker.getText().toString()),
-                (List<String>)Arrays.asList(txtTimePicker.getText().toString(), txtTimePicker.getText().toString()),
+                (List<String>)Arrays.asList(txtDatePicker.getText().toString(), txtDatePicker2.getText().toString()),
+                (List<String>)Arrays.asList(txtTimePicker.getText().toString(), txtTimePicker2.getText().toString()),
                 false,
                 0,
                 null,

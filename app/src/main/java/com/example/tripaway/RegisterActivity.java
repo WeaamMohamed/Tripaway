@@ -110,6 +110,17 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+        btnFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(RegisterActivity.this, FacebookAuthActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+
+            }
+        });
+
         btnRegister.setOnClickListener(view -> createUser());
 
 
@@ -411,48 +422,48 @@ public class RegisterActivity extends AppCompatActivity {
 //    }
 
 
-    public void onFaceBookClicked(View view) {
-
-        if (view == btnRegister) {
-            btnFacebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    // App code
-
-                    AuthHelper.handleFacebookAccessToken(loginResult.getAccessToken());
-
-                    Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, "Authentication with facebook Successfully" + loginResult.getAccessToken().getUserId());
-//                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-//                startActivity(intent);
-//                Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
-//                //   set the new task and clear flags
-//                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                startActivity(i);
-
-
-                }
-
-                @Override
-                public void onCancel() {
-                    // App code
-                    //TODO:
-                    Log.i("WEAAM", "onCancel");
-                }
-
-
-                @Override
-                public void onError(FacebookException exception) {
-                    // App code
-                    //TODO:
-                    Log.i("WEAAM", "onError");
-
-                }
-            });
-
-        }
-
-    }
+//    public void onFaceBookClicked(View view) {
+//
+//        if (view == btnRegister) {
+//            btnFacebookLogin.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//                @Override
+//                public void onSuccess(LoginResult loginResult) {
+//                    // App code
+//
+//                    AuthHelper.handleFacebookAccessToken(loginResult.getAccessToken());
+//
+//                    Toast.makeText(RegisterActivity.this,  "Welcome!", Toast.LENGTH_SHORT).show();
+//                    Log.i(TAG, "Authentication with facebook Successfully" + loginResult.getAccessToken().getUserId());
+////                Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+////                startActivity(intent);
+////                Intent i = new Intent(RegisterActivity.this, HomeScreenActivity.class);
+////                //   set the new task and clear flags
+////                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+////                startActivity(i);
+//
+//
+//                }
+//
+//                @Override
+//                public void onCancel() {
+//                    // App code
+//                    //TODO:
+//                    Log.i("WEAAM", "onCancel");
+//                }
+//
+//
+//                @Override
+//                public void onError(FacebookException exception) {
+//                    // App code
+//                    //TODO:
+//                    Log.i("WEAAM", "onError");
+//
+//                }
+//            });
+//
+//        }
+//
+//    }
 
     private void initializeViews() {
         btnRegister = findViewById(R.id.btn_sign_up);

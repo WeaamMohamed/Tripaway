@@ -146,7 +146,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/facebook"
-                android:onClick="onFaceBookClicked"
                 android:layout_below="@id/btn_sign_up"
                 android:layout_centerInParent="true"
                 android:layout_toEndOf="@id/btn_google"

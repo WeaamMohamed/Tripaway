@@ -4,8 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".NewTripActivity">
 
+
+    <EditText
+        android:id="@+id/timePicker2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="284dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="Pick time"
+        android:inputType="textPersonName"
+        android:text="@string/timePicker"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+
+    <EditText
+        android:id="@+id/datePicker2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="300dp"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:hint="Pick date"
+        android:inputType="textPersonName"
+        android:text="@string/datePicker"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtEndPoint" />
 
     <EditText
         android:id="@+id/edtTitleNew"
@@ -82,7 +115,8 @@
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:gravity="center_vertical"
         android:hint="Pick date"
@@ -96,7 +130,8 @@
         android:id="@+id/timePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:gravity="center_vertical"
         android:hint="Pick time"
@@ -125,8 +160,10 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/txtRepeaterSpinner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toEndOf="@+id/txtRepeaterSpinner"
-        app:layout_constraintTop_toTopOf="@+id/txtRepeaterSpinner" />
+        app:layout_constraintTop_toTopOf="@+id/txtRepeaterSpinner"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Spinner
         android:id="@+id/directionSpinner"
@@ -134,13 +171,16 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/txtDirectionSpinner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.394"
         app:layout_constraintStart_toEndOf="@+id/txtDirectionSpinner"
-        app:layout_constraintTop_toTopOf="@+id/txtDirectionSpinner" />
+        app:layout_constraintTop_toTopOf="@+id/txtDirectionSpinner"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/txtRepeaterSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="36dp"
         android:hint="repeat"
         android:text="@string/txtEndPoint"
@@ -151,7 +191,8 @@
         android:id="@+id/txtDirectionSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="58dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
         android:hint="direcion"
         android:text="@string/txtDirectionSpinner"
         app:layout_constraintStart_toStartOf="parent"

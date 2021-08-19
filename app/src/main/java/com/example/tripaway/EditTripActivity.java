@@ -47,7 +47,8 @@ import java.util.Map;
 
 public class EditTripActivity extends AppCompatActivity {
 
-    EditText tripTitle,startPoint,endPoint,txtTimePicker,txtDatePicker;
+    EditText tripTitle,startPoint,endPoint,txtTimePicker,txtDatePicker, txtDatePicker2,
+    txtTimePicker2;
     Button btnCurrentLocation,btnEditTrip;
     String[] direction = {"ONE_WAY", "ROUND"};
     String[] repeat = {"NO_REPEAT", "DAILY","WEAKLY","MONTHLY"};
@@ -140,6 +141,15 @@ public class EditTripActivity extends AppCompatActivity {
                 handleTime();
             }
         });
+
+        txtTimePicker2 = (EditText) findViewById(R.id.timePicker2);
+        txtTimePicker2.setFocusable(false);
+        txtTimePicker2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //handleTime();
+            }
+        });
         txtDatePicker = (EditText) findViewById(R.id.datePicker);
         txtDatePicker.setFocusable(false);
         txtDatePicker.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +159,16 @@ public class EditTripActivity extends AppCompatActivity {
             }
 
         });
+        txtDatePicker2 = (EditText) findViewById(R.id.datePicker2);
+        txtDatePicker2.setFocusable(false);
+        txtDatePicker2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // handleDate();
+            }
+
+        });
+
         j_spinner_direction = findViewById(R.id.directionSpinner);
         j_spinner_selected_direction = findViewById(R.id.txtDirectionSpinner);
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, direction);
@@ -162,6 +182,20 @@ public class EditTripActivity extends AppCompatActivity {
 
                 Log.i("WEAAM  direction", j_spinner_direction.getSelectedItemPosition() +" ");
                 isOneDirection = j_spinner_direction.getSelectedItemPosition() == 0? true: false ;
+                if(isOneDirection)
+                {
+                    txtDatePicker2.setVisibility( View.GONE);
+                    txtTimePicker2.setVisibility( View.GONE);
+
+
+                }
+                else
+                {
+                    txtDatePicker2.setVisibility( View.VISIBLE);
+                    txtTimePicker2.setVisibility( View.VISIBLE);
+
+
+                }
 
 
             }
@@ -321,8 +355,8 @@ public class EditTripActivity extends AppCompatActivity {
 
 
 
-        ArrayList<String > notesList = new ArrayList<>();
-        notesList.add("My note");
+//        ArrayList<String > notesList = new ArrayList<>();
+//        notesList.add("My note");
 
 //        upcomingTripModel = new UpcomingTripModel(tripTitle.getText().toString(),
 //                startPoint.getText().toString(), endPoint.getText().toString(),
@@ -333,19 +367,41 @@ public class EditTripActivity extends AppCompatActivity {
 //              new Timestamp( System.currentTimeMillis())
 //
 //        );
-
-        // Create a new user with map
         Map<String, Object> upcomingMap = new HashMap<>();
-        upcomingMap.put("tripName", tripTitle.getText().toString());
-        upcomingMap.put("startPoint", startPoint.getText().toString());
-        upcomingMap.put("endPoint", endPoint.getText().toString());
-        //TODO:
-        //repeat.ordinal() to convert
-        upcomingMap.put("repeat",repeatedAlarm);
-        upcomingMap.put("date", txtDatePicker.getText().toString());
-        upcomingMap.put("time", txtTimePicker.getText().toString());
-        upcomingMap.put("Notes", notesList);
-        upcomingMap.put("isOneDirection", isOneDirection);
+
+        if(isOneDirection)
+        {
+            // Create a new user with map
+            upcomingMap.put("tripName", tripTitle.getText().toString());
+            upcomingMap.put("startPoint", startPoint.getText().toString());
+            upcomingMap.put("endPoint", endPoint.getText().toString());
+            //TODO:
+            //repeat.ordinal() to convert
+            upcomingMap.put("repeat",repeatedAlarm);
+            upcomingMap.put("date", txtDatePicker.getText().toString());
+            upcomingMap.put("time", txtTimePicker.getText().toString());
+            // upcomingMap.put("Notes", notesList);
+            upcomingMap.put("isOneDirection", isOneDirection);
+        }
+        else
+        {
+
+//            upcomingMap.put("tripNameList", tripTitle.getText().toString());
+//            upcomingMap.put("startPointList", (List<String>)Arrays.asList( startPoint.getText().toString(),endPoint.getText().toString()));
+//            upcomingMap.put("endPointList",  (List<String>)Arrays.asList( endPoint.getText().toString(),startPoint.getText().toString()));
+//            //TODO:
+//            //repeat.ordinal() to convert
+//          //  upcomingMap.put("repeatList", 1);
+//            upcomingMap.put("dateList", (List<String>)Arrays.asList( txtDatePicker.getText().toString(),txtDatePicker2.getText().toString()));
+//            upcomingMap.put("timeList",  (List<String>)Arrays.asList( txtTimePicker.getText().toString(),txtTimePicker2.getText().toString()));
+//          //  upcomingMap.put("notesList",  notesList);
+//            upcomingMap.put("isOneDirection",  isOneDirection);
+           // upcomingMap.put("timestamp", timestamp);
+           // upcomingMap.put("finishedTrips",  null);
+            //upcomingMap.put("currentActiveTrip",  currentActiveTrip);
+
+        }
+
 
         dbFireStore.collection("users")
                 .document(mAuth.getUid())

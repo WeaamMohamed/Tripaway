@@ -31,19 +31,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tripaway.AlarmReceiver;
 import com.example.tripaway.EditTripActivity;
-import com.example.tripaway.LoginActivity;
 import com.example.tripaway.NotesActivity;
 import com.example.tripaway.R;
 import com.example.tripaway.databinding.FragmentUpcomingBinding;
-import com.example.tripaway.models.RoundTripModel;
 import com.example.tripaway.models.UpcomingTripModel;
 import com.example.tripaway.utils.FireStoreHelper;
-import com.example.tripaway.utils.RoundTripHelper;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.firebase.ui.firestore.ObservableSnapshotArray;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -58,7 +53,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UpcomingFragment extends Fragment {
-    List<RoundTripModel> upcomingList ;
+  //  List<RoundTripModel> upcomingList ;
     //    UOCOMINGRecyclerViewAdapter myAdapter;
     RecyclerView recyclerView;
     private FirebaseFirestore dbFireStore;

@@ -110,7 +110,7 @@ public class UpcomingTripModel {
     }
 
     ArrayList<UpcomingTripModel> roundTrip;
-   // private Map<String , Object> map;
+    // private Map<String , Object> map;
 
 
     public  UpcomingTripModel(){}
@@ -140,14 +140,14 @@ public class UpcomingTripModel {
                              List<String> dateList,
                              List<String> timeList,
                              boolean isOneDirection,
-                              int repeatList,
+                             int repeatList,
                              List<String> notesList,
 
                              int finishedTrips,
                              int currentActiveTrip,
                              Timestamp timestamp
 
-                             ){
+    ){
 
         roundTrip = new ArrayList<>();
         this.tripNameList =  tripNameList;
