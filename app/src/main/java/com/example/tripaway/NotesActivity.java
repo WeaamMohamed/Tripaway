@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tripaway.ui.Upcoming.FloatingWidgetService;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,7 +28,7 @@ public class NotesActivity extends AppCompatActivity {
     ArrayList<EditText> editTextList;
     ArrayList<String> noteList;
     String selectedDocumentId;
-
+    private final String NOTES_LIST = "notes list";
     FirebaseFirestore dbFireStore;
     FirebaseAuth mAuth;
     int lastIndex = -1;
@@ -152,8 +153,15 @@ public class NotesActivity extends AppCompatActivity {
                    addNoteEditText();
                    editTextList.get(i).setText(oldNotes.get(i));
                }
+
+//                Intent notesIntent = new Intent(NotesActivity.this, FloatingWidgetService.class);
+//                notesIntent.putStringArrayListExtra(NOTES_LIST, oldNotes);
+//                startActivity(notesIntent);
             }
         });
+
+
+
     }
 
     private void addNoteListToFireStore() {

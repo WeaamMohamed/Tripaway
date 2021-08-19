@@ -14,11 +14,16 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
 import com.example.tripaway.R;
+
+import java.util.ArrayList;
+import java.util.Vector;
 
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
@@ -27,6 +32,8 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private ImageView remove_image_view;
     private Point szWindow = new Point();
     private View removeFloatingWidgetView;
+    private LinearLayout linearLayout;
+    private CheckBox checkBox;
 
 
 
@@ -105,6 +112,24 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private void addFloatingWidgetView(LayoutInflater inflater) {
         //Inflate the floating view layout we created
         mFloatingWidgetView = inflater.inflate(R.layout.floating_widget_layout, null);
+
+        // Adding notes to the floating widget
+        linearLayout = mFloatingWidgetView.findViewById(R.id.checkbox_layout);
+        checkBox = new CheckBox(this);
+        
+        // TODO: add notes list
+        Vector<String> notes = new Vector<>();
+        notes.add("This is note 2");
+        notes.add("This is note 3");
+        notes.add("This is note 4");
+
+        //ArrayList<String> notes = new ArrayList<>();
+
+        for (int i = 0; i < notes.size(); i++) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(notes.get(i));
+            linearLayout.addView(checkBox);
+        }
 
         //Add the view to the window.
         WindowManager.LayoutParams params;

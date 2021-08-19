@@ -153,8 +153,6 @@
                 android:layout_marginStart="5dp"/>
         </FrameLayout>
 
-
-
         <Button
             android:id="@+id/btn_twitter"
             android:layout_width="wrap_content"

@@ -26,7 +26,8 @@
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity android:name=".ForgotPassActivity"></activity>
+<!--        <activity android:name=".TwitterActivity"></activity>-->
+        <activity android:name=".ForgotPassActivity" />
         <activity
             android:name=".AlertDialogue"
             android:exported="true"
@@ -39,7 +40,6 @@
 
         <activity android:name=".EditTripActivity" />
         <activity android:name=".NotesActivity" />
-        <activity android:name=".TwitterActivity" />
         <activity android:name=".UpcomingTripsActivity" />
         <activity
             android:name=".Splash"
