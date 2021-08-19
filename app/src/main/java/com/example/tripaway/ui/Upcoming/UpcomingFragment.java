@@ -257,7 +257,7 @@ public class UpcomingFragment extends Fragment {
             holder.tvTime.setText(model.getTimeList().get(0));
             String alarmId = documentId;
             holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position,
-                holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString());
+                holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString(),false);
 
 
             holder.tvStartPoint2.setText("From "+ model.getStartPointList().get(1));
@@ -265,7 +265,7 @@ public class UpcomingFragment extends Fragment {
             holder.tvDate2.setText(model.getDateList().get(1));
             holder.tvTime2.setText(model.getTimeList().get(1));
             holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position/2,
-               holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString());
+               holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString(),true);
 
 
 
@@ -451,7 +451,7 @@ public class UpcomingFragment extends Fragment {
         holder.tvTime.setText(model.getTime());
         String alarmId = documentId;
         holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position,
-                holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString());
+                holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString(),true);
 
 //                DatabaseAdapter adapter = new DatabaseAdapter(getApplicationContext());
 //                UpcomingTripModel selected[] = new UpcomingTripModel[adapter.getAllTrips().length];
@@ -588,7 +588,7 @@ public class UpcomingFragment extends Fragment {
 
 
         }
-        public void setAlarm(String dt,int reqCode,String trip_name,String alarm_id,String start,String end) {
+        public void setAlarm(String dt,int reqCode,String trip_name,String alarm_id,String start,String end,boolean delete) {
             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(ALARM_SERVICE);
             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
             intent.putExtra("requestCode",reqCode);
@@ -596,6 +596,7 @@ public class UpcomingFragment extends Fragment {
             intent.putExtra("alarmId",alarm_id);
             intent.putExtra("startPoint",start);
             intent.putExtra("endPoint",end);
+            intent.putExtra("delete",delete);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), reqCode, intent, 0);
 
             SimpleDateFormat yourDateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy HH:mm");

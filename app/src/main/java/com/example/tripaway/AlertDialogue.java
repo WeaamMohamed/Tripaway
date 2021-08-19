@@ -32,6 +32,7 @@ public class AlertDialogue extends AppCompatActivity {
     NotificationCompat.Builder mBuilder;
     Intent ii;
     PendingIntent pendingIntent;
+    boolean delete = true;
 
     String tripName = null,alarmId = null,startPoint = null,endpoint= null;
     @Override
@@ -52,6 +53,7 @@ public class AlertDialogue extends AppCompatActivity {
         alarmId = intent.getStringExtra("alarmId");
         startPoint = intent.getStringExtra("startPoint");
         endpoint = intent.getStringExtra("endPoint");
+        delete = intent.getBooleanExtra("delete",true);
 
 
 
@@ -69,7 +71,9 @@ public class AlertDialogue extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 Log.i("ALAA",alarmId);
-                FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, true);
+                if (delete == true){
+                    FireStoreHelper.sendDataFromUpcomingToHistory(alarmId, true);
+                }
                 Intent intent2 = new Intent(getApplicationContext(), FloatingWidgetActivity.class);
                 intent2.putExtra("START", startPoint);
                 intent2.putExtra("END", endpoint);
