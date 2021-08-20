@@ -60,13 +60,14 @@ import java.util.List;
 
 public class HistoryFragment extends Fragment implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, RoutingListener {
+    String tripName = "trip name";
     //ArrayList<OldTripsModel> historyList ;
     //
     RecyclerView recyclerView;
     private FragmentUpcomingBinding binding;
     View view;
     Drawable drawable;
-    String result;
+    boolean round = false;
     private String lat = null,lon = null;
 
     ///
@@ -239,21 +240,27 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
 
 
                     holder.tvTripName.setText(model.getTripName());
+                    tripName = model.getTripName();
                     holder.tvStartPoint.setText("From " + model.getStartPoint());
                     holder.tvEndPoint.setText("To "+ model.getEndPoint());
                     holder.tvDate.setText(model.getDate());
                     holder.tvTime.setText(model.getTime());
                     holder.tvDistance.setText(model.getDistance());
                     holder.tvDuration.setText(model.getDuration());
-                    String startAddress=holder.tvStartPoint.getText().toString();
-                    String[] sparts = startAddress.split(",");
-                    String spart1 = sparts[0];
-                    start = getLatLngFromAddress(spart1);
-                    String endtAddress=holder.tvEndPoint.getText().toString();
-                    String[] eparts = endtAddress.split(",");
-                    String epart1 = eparts[0];
-                    end = getLatLngFromAddress(epart1);
-                    Findroutes(start,end);
+                    round = false;
+                    if(getSnapshots().getSnapshot(position).getBoolean("done")){
+                        String startAddress=holder.tvStartPoint.getText().toString();
+                        String[] sparts = startAddress.split(",");
+                        String spart1 = sparts[0];
+                        start = getLatLngFromAddress(spart1);
+                        String endtAddress=holder.tvEndPoint.getText().toString();
+                        String[] eparts = endtAddress.split(",");
+                        String epart1 = eparts[0];
+                        end = getLatLngFromAddress(epart1);
+                        Findroutes(start,end);
+                 }
+
+
 
                     //  Drawable drawable  = getResources().getDrawable(R.drawable.cancel);
 //                    if(model.isDone() && model.isOneDirection())
@@ -298,9 +305,18 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                     holder.tvEndPoint.setText("To "+ model.getStartPointList().get(1));
                     holder.tvDate.setText(model.getDateList().get(0));
                     holder.tvTime.setText(model.getTimeList().get(0));
-//                    start = getLatLngFromAddress(holder.tvStartPoint.getText().toString());
-//                    end = getLatLngFromAddress(holder.tvEndPoint.getText().toString());
-//                    Findroutes(start,end);
+                    if(getSnapshots().getSnapshot(position).getBoolean("done")){
+                        round = true;
+                        String startAddress=holder.tvStartPoint.getText().toString();
+                        String[] sparts = startAddress.split(",");
+                        String spart1 = sparts[0];
+                        start = getLatLngFromAddress(spart1);
+                        String endtAddress=holder.tvEndPoint.getText().toString();
+                        String[] eparts = endtAddress.split(",");
+                        String epart1 = eparts[0];
+                        end = getLatLngFromAddress(epart1);
+                        Findroutes(start,end);
+                    }
                     ////
                     //TODO:
                     holder.tvDistance.setText(model.getDistance());
@@ -313,9 +329,12 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
                     holder.tvEndPoint2.setText("To "+ model.getStartPointList().get(0));
                     holder.tvDate2.setText(model.getDateList().get(1));
                     holder.tvTime2.setText(model.getTimeList().get(1));
+
+
                     //TODO:
                     holder.tvDistance2.setText(model.getDistance());
                     holder.tvDuration2.setText(model.getDuration());
+
 
 
                     //TODO: common
@@ -452,8 +471,8 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onRoutingFailure(RouteException e) {
-        View parentLayout = view.findViewById(android.R.id.content);
-        Snackbar snackbar= Snackbar.make(parentLayout, e.toString(), Snackbar.LENGTH_LONG);
+//        View parentLayout = view.findViewById(android.R.id.content);
+        Snackbar snackbar= Snackbar.make(getView(), e.toString(), Snackbar.LENGTH_LONG);
         snackbar.show();
 //        Findroutes(start,end);
     }
@@ -483,7 +502,8 @@ public class HistoryFragment extends Fragment implements OnMapReadyCallback,
 
             if(i==shortestRouteIndex)
             {
-                polyOptions.color(getResources().getColor(R.color.design_default_color_primary));
+                if (round == false){polyOptions.color(getResources().getColor(R.color.design_default_color_primary));}
+                else {polyOptions.color(getResources().getColor(R.color.quantum_googgreenA700));}
                 polyOptions.width(7);
                 polyOptions.addAll(route.get(shortestRouteIndex).getPoints());
                 Polyline polyline = mMap.addPolyline(polyOptions);
