@@ -175,12 +175,12 @@ public class UpcomingFragment extends Fragment {
 
                                 holder.tvTripName.setText(model.getTripNameList().get(1));
                                 holder.tvStartPoint.setText("From "+ model.getStartPointList().get(1));
-                                holder.tvEndPoint.setText("to "+model.getStartPointList().get(1));
+                                holder.tvEndPoint.setText("to "+model.getStartPointList().get(0));
                                 holder.tvDate.setText(model.getDateList().get(1));
                                 holder.tvTime.setText(model.getTimeList().get(1));
 
                                 holder.tvStartPoint2.setText("From "+ model.getStartPointList().get(0));
-                                holder.tvEndPoint2.setText("to "+model.getStartPointList().get(0));
+                                holder.tvEndPoint2.setText("to "+model.getStartPointList().get(1));
                                 holder.tvDate2.setText(model.getDateList().get(0));
                                 holder.tvTime2.setText(model.getTimeList().get(0));
 
@@ -257,15 +257,15 @@ public class UpcomingFragment extends Fragment {
             holder.tvTime.setText(model.getTimeList().get(0));
             String alarmId = documentId;
             holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position,
-                holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString(),false);
+                holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString(),true);
 
 
             holder.tvStartPoint2.setText("From "+ model.getStartPointList().get(1));
             holder.tvEndPoint2.setText("to "+model.getEndPointList().get(1));
             holder.tvDate2.setText(model.getDateList().get(1));
             holder.tvTime2.setText(model.getTimeList().get(1));
-            holder.setAlarm(holder.tvDate.getText().toString()+" "+holder.tvTime.getText().toString(),position/2,
-               holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint.getText().toString(),holder.tvEndPoint.getText().toString(),true);
+//            holder.setAlarm(holder.tvDate2.getText().toString()+" "+holder.tvTime2.getText().toString(),position/2,
+//               holder.tvTripName.getText().toString(),alarmId,holder.tvStartPoint2.getText().toString(),holder.tvEndPoint2.getText().toString(),true);
 
 
 
