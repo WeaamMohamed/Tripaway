@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/drawable/custom_input.xml" value="0.2703125" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout-land/activity_splash.xml" value="0.20625" />
+        <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout-land/card_layout.xml" value="0.20625" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout-land/fragment_history.xml" value="0.21516754850088182" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout-land/fragment_upcoming.xml" value="0.21516754850088182" />
         <entry key="..\:/Users/East-Sound/AndroidStudioProjects/Tripaway/app/src/main/res/layout/activity_alert_dialogue.xml" value="0.15052083333333333" />

@@ -44,6 +44,15 @@
 
     <!--    </menu>-->
 
+    <ImageView
+        android:id="@+id/imgArrow3"
+        android:layout_width="42dp"
+        android:layout_height="58dp"
+        android:contentDescription="@string/fromTo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTripName"
+        app:srcCompat="@drawable/arrow" />
+
     <TextView
         android:id="@+id/btnViewOption"
         android:layout_width="40dp"
@@ -106,7 +115,7 @@
         android:id="@+id/txtStartPoint"
         android:layout_width="wrap_content"
         android:layout_height="33dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="48dp"
         android:text="@string/txtStartPoint"
         android:textColor="@color/text_color"
         app:layout_constraintStart_toEndOf="@+id/imgArrow"
@@ -116,7 +125,7 @@
         android:id="@+id/txtEndPoint"
         android:layout_width="wrap_content"
         android:layout_height="33dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="4dp"
         android:text="@string/txtEndPoint"
         android:textColor="@color/text_color"
@@ -204,7 +213,7 @@
         android:id="@+id/btnStartTrip"
         android:layout_width="276dp"
         android:layout_height="48dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:contentDescription="@string/StartTrip"
         android:text="@string/btnStartTrip"
@@ -214,8 +223,8 @@
 
     <ImageButton
         android:id="@+id/btnNotes"
-        android:layout_width="60dp"
-        android:layout_height="51dp"
+        android:layout_width="75dp"
+        android:layout_height="52dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="80dp"
         android:contentDescription="@string/btnNotes"

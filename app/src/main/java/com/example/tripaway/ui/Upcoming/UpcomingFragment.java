@@ -415,10 +415,10 @@ public class UpcomingFragment extends Fragment {
                                         getApplicationContext(), pos, intent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
                                 alarmManager.cancel(pendingIntent1);
-                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
-                                        getApplicationContext(), pos/2, intent,
-                                        PendingIntent.FLAG_UPDATE_CURRENT);
-                                alarmManager.cancel(pendingIntent2);
+//                                PendingIntent pendingIntent2 = PendingIntent.getBroadcast(
+//                                        getApplicationContext(), pos/2, intent,
+//                                        PendingIntent.FLAG_UPDATE_CURRENT);
+//                                alarmManager.cancel(pendingIntent2);
 
                             }
                             else {
