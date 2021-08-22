@@ -1,5 +1,6 @@
 package com.example.tripaway;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private static FirebaseAuth mAuth;
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
 //            navUsername.setText("Welcome "+displayName);
             navUsername.setText("Tripawy ");
+            navUsername.setTextColor(R.color.dark_blue);
         }
 
 
