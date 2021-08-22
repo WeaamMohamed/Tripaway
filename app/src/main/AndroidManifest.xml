@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:testOnly="false"
+        android:debuggable="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -41,9 +43,20 @@
         <activity android:name=".EditTripActivity" />
         <activity android:name=".NotesActivity" />
         <activity android:name=".UpcomingTripsActivity" />
+<!--        <activity-->
+<!--            android:name=".Splash"-->
+<!--            android:exported="true" />-->
         <activity
-            android:name=".Splash"
-            android:exported="true" />
+            android:name=".MainActivity">
+        </activity>
+        <activity android:name=".Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+        </activity>
         <activity
             android:name=".NewTripActivity"
             android:exported="true" />
@@ -65,13 +78,13 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ui.Upcoming.FloatingWidgetActivity" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--        <activity android:name=".MainActivity">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <service
             android:name=".ui.Upcoming.FloatingWidgetService"
